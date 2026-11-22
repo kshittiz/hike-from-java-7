@@ -1,0 +1,5 @@
+VarError.java:3: error: cannot infer type for local variable later
+        var later;          // no initializer, nothing to infer from
+            ^
+  (cannot use 'var' on variable without initializer)
+1 error

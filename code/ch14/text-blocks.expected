@@ -1,0 +1,8 @@
+{
+  "title": "A Hike from Java 7",
+  "chapters": 20
+}
+same text: true
+SELECT name
+  FROM releases
+ WHERE lts = true ORDER BY year

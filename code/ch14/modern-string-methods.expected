@@ -1,0 +1,7 @@
+trim()  length 8
+strip() length 4
+true
+ababab
+3
+7 -> 17 -> 27
+Java 27 is here

@@ -1,0 +1,3 @@
+StringTokenizer: java|seven|twenty-seven
+split(","):    java|  seven ||twenty-seven
+split regex:     java|seven|twenty-seven

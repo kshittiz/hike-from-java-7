@@ -1,0 +1,1 @@
+A catch for a subclass after its parent is unreachable and does not compile.

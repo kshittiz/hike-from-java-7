@@ -1,0 +1,1 @@
+Two modules: one exports a package, the other requires it (Java 9+).

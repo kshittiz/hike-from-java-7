@@ -1,0 +1,5 @@
+WeakerAccess.java:4: error: greet() in Child cannot override greet() in Parent
+        @Override void greet() { }          // package-private is weaker than public
+                       ^
+  attempting to assign weaker access privileges; was public
+1 error

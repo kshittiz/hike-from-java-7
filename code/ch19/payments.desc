@@ -1,0 +1,1 @@
+Sealed interface + records + record patterns with guards in an exhaustive switch (Java 21+).

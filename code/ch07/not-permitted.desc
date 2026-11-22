@@ -1,0 +1,1 @@
+A class outside the permits list cannot extend a sealed type (Java 17+).

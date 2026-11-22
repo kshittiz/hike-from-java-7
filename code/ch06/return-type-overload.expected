@@ -1,0 +1,4 @@
+ReturnTypeOverload.java:3: error: method show(int) is already defined in class ReturnTypeOverload
+    String show(int n) { return "n"; }     // differs only by return type
+           ^
+1 error

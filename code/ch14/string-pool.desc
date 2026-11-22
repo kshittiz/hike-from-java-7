@@ -1,0 +1,1 @@
+Literals share pooled objects; new String and run-time concatenation create new ones.

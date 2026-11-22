@@ -1,0 +1,1 @@
+Lambdas and inner classes may only capture effectively final locals (Java 8+).

@@ -1,0 +1,12 @@
+--- compiled with --release 8
+magic = 0xCAFEBABE
+class file major version = 52  ->  built for Java 8
+--- compiled with --release 11
+magic = 0xCAFEBABE
+class file major version = 55  ->  built for Java 11
+--- compiled with --release 17
+magic = 0xCAFEBABE
+class file major version = 61  ->  built for Java 17
+--- compiled with --release 21
+magic = 0xCAFEBABE
+class file major version = 65  ->  built for Java 21

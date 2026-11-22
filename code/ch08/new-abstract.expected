@@ -1,0 +1,4 @@
+NewAbstract.java:4: error: Shape is abstract; cannot be instantiated
+        Shape s = new Shape();
+                  ^
+1 error

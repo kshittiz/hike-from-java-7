@@ -1,0 +1,1 @@
+jdeps lists exactly the JDK modules a class needs, ready for jlink.

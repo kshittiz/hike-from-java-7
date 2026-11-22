@@ -1,0 +1,1 @@
+Validating constructor arguments before super(...) the old way, with a static helper.

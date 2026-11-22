@@ -1,0 +1,11 @@
+static nested
+inner sees counter = 7
+local class: hello
+anonymous class: hello
+lambda: no class file of its own
+--- class files:
+NestedKinds$1.class
+NestedKinds$1Local.class
+NestedKinds$Inner.class
+NestedKinds$StaticNested.class
+NestedKinds.class

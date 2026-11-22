@@ -1,0 +1,1 @@
+The Integer cache makes == true for small values only; use equals.

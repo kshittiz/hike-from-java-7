@@ -1,0 +1,10 @@
+open  db
+open  file
+working
+close file
+close db
+caught:     work failed
+suppressed: close failed: db
+open  shared
+using shared
+close shared

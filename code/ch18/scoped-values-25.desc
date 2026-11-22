@@ -1,0 +1,1 @@
+Scoped values: per-call context without ThreadLocal (Java 25+).

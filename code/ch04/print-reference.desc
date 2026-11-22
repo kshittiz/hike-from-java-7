@@ -1,0 +1,1 @@
+Printing an object shows ClassName@hashCode in hex, not a memory address.

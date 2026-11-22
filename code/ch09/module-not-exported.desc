@@ -1,0 +1,1 @@
+A public class in an unexported package is invisible to other modules (Java 9+).

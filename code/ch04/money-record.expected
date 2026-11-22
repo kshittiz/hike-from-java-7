@@ -1,0 +1,3 @@
+Money[currency=USD, cents=1250]  ==: false  equals: true
+same hashCode: true
+accessor: 1250

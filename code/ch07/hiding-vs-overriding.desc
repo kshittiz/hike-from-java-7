@@ -1,0 +1,1 @@
+Fields are hidden (static type decides); methods are overridden (object decides).

@@ -1,0 +1,4 @@
+sum(int, int) = 3
+sum(int...) over 3 values = 6
+sum(int...) over 0 values = 0
+varargs, in, the, JDK

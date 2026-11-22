@@ -1,0 +1,1 @@
+Integer division truncates; the remainder takes the dividend's sign; Math.floorMod.

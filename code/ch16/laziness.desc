@@ -1,0 +1,1 @@
+Streams are lazy and short-circuit: elements flow one at a time.

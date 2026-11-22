@@ -1,0 +1,1 @@
+try-with-resources closes in reverse order and records suppressed exceptions (Java 7; Java 9 form).

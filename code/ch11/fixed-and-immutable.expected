@@ -1,0 +1,6 @@
+Arrays.asList set: ok
+Arrays.asList add: UnsupportedOperationException
+List.of set     : UnsupportedOperationException
+List.of null    : NullPointerException
+ArrayList add   : ok
+[z, b] [a, b] [a, b, c]

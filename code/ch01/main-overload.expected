@@ -1,0 +1,2 @@
+JVM called main(String[]) with 2 args
+I am an overload, called by ordinary code: 42

@@ -1,0 +1,6 @@
+&& (short-circuit):
+  evaluated left
+&  (always both):
+  evaluated left
+  evaluated right
+safe: false

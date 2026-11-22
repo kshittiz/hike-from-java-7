@@ -1,0 +1,1 @@
+byte + byte is an int, so assigning it to a byte does not compile.

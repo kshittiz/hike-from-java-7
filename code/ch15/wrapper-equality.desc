@@ -1,0 +1,1 @@
+Long.equals(Integer) is false, which silently breaks map lookups.

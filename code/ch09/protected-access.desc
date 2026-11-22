@@ -1,0 +1,1 @@
+protected members are reachable from another package only through inheritance.

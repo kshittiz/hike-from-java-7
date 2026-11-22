@@ -1,0 +1,6 @@
+MAX_VALUE + 1  = -2147483648
+(byte) 130     = -126
+(int) 3.99     = 3
+(int) -3.99    = -3
+(int) 1e20     = 2147483647
+Math.addExact  = ArithmeticException: integer overflow

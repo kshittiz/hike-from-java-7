@@ -1,0 +1,4 @@
+InterfaceConstants.java:7: error: cannot assign a value to static final variable MAX_USERS
+        Limits.MAX_USERS = 200;
+              ^
+1 error

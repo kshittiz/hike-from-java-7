@@ -1,0 +1,1 @@
+Arrays.asList is fixed-size; List.of (Java 9) is unmodifiable and rejects null.

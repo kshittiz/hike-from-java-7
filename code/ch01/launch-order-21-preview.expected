@@ -1,0 +1,3 @@
+OrderA -> static main(String[])
+OrderB -> static main()
+OrderC -> instance main()

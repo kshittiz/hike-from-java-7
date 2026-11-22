@@ -1,0 +1,4 @@
+Promotion.java:5: error: incompatible types: possible lossy conversion from int to byte
+        byte sum = a + b;      // does not compile: a + b is an int
+                     ^
+1 error

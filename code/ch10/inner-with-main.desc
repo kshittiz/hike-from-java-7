@@ -1,0 +1,1 @@
+Inner classes may declare static members, even main (Java 16+).

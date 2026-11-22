@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you cite this book, please use the metadata below."
+title: "A Hike from Java 7: The Trail to Java 27"
+type: book
+authors:
+  - family-names: "Kumar"
+    given-names: "Kshittiz"
+version: "0.1.0"
+date-released: "2026-11-21"
+url: "https://hikefromjava7.com/"
+repository-code: "https://github.com/kshittiz/hike-from-java-7"
+license-url: "https://github.com/kshittiz/hike-from-java-7/blob/main/LICENSE"

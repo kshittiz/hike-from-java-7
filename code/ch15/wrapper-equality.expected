@@ -1,0 +1,4 @@
+Long(1).equals(1)  : false
+Long(1).equals(1L) : true
+get(42)  : null
+get(42L) : Asha

@@ -1,0 +1,1 @@
+Java always passes copies: of primitives, and of references.
