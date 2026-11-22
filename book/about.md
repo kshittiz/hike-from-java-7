@@ -19,6 +19,4 @@ Along the way he has written production software in C, C++, C#, Go and Python. J
 
 Questions and corrections are welcome as issues on the book's [GitHub repository](https://github.com/kshittiz/hike-from-java-7/issues).
 
-*This book is a personal project, written on the author's own time with his own resources. The views in it are his own and do not represent those of any employer.*
-
 <!-- AUTHOR: add a public contact email above if you want readers to reach you directly. -->

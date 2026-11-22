@@ -18,7 +18,7 @@ Java and OpenJDK are trademarks or registered trademarks of Oracle and/or its af
 
 ## Disclaimer
 
-The information in this book is provided "as is," without warranty of any kind. Every example was run and every factual claim checked against primary sources at the time of writing, but Java continues to change, and preview features in particular may change before they are final. The author is not liable for any loss or damage arising from the use of this information.
+The information in this book is provided "as is," without warranty of any kind. Every example was run and every factual claim checked against primary sources at the time of writing, but Java continues to change, and preview features in particular may change before they are final. The author is not liable for any loss or damage arising from the use of this information. The opinions expressed are the author's own.
 
 ## Corrections
 
