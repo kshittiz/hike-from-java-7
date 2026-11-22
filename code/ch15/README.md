@@ -8,7 +8,7 @@ Run one sample from this folder with the command shown, or run them all from the
 
 Source: [DeprecatedConstructor.java](DeprecatedConstructor.java)
 
-**Wrapper constructors are deprecated for removal (Java 16+).** (Java 16+)
+**Java 16-24: wrapper constructors are deprecated for removal.** (Java 16–24)
 
 ```bash
 javac -Xlint:removal -d out DeprecatedConstructor.java
@@ -18,9 +18,21 @@ Expected output:
 
 ```text
 DeprecatedConstructor.java:2: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
-    Integer old = new Integer(10);             // deprecated in Java 9, for removal since Java 16
+    Integer old = new Integer(10);             // deprecated since Java 9
                   ^
 1 warning
+```
+
+**Java 25+: the constructors are deprecated, but no longer for removal.** (Java 25+)
+
+```bash
+javac -Xlint:deprecation -d out DeprecatedConstructor.java 2>&1 | grep -o "warning: \[[a-z]*\].*"
+```
+
+Expected output:
+
+```text
+warning: [deprecation] Integer(int) in Integer has been deprecated
 ```
 
 ## IntegerCache.java

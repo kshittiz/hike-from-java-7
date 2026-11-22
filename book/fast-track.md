@@ -121,7 +121,7 @@ The key points of every chapter on one page. Follow any heading to read the full
 - **Autoboxing** (**Java 5**) converts between them automatically: `Integer i = 10;` calls `Integer.valueOf(10)`.
 - `Integer.valueOf` **caches** -128 to 127, so `==` happens to work for small values and fails for larger ones. Always compare wrappers with `equals`.
 - Unboxing `null` throws `NullPointerException`. `Long.valueOf(1).equals(1)` is `false`.
-- `new Integer(10)` was deprecated in **Java 9** and marked **for removal** in **Java 16**. Use `Integer.valueOf` or autoboxing.
+- `new Integer(10)` was deprecated in **Java 9**, marked **for removal** in **Java 16**, and reprieved in **Java 25**: still deprecated, but no longer scheduled for removal. Use `Integer.valueOf` or autoboxing either way.
 
 ## [16. Functional Java: Streams](part6/ch16-functional-java-streams.md)
 

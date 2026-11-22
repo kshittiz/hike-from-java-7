@@ -1,4 +1,4 @@
 DeprecatedConstructor.java:2: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
-    Integer old = new Integer(10);             // deprecated in Java 9, for removal since Java 16
+    Integer old = new Integer(10);             // deprecated since Java 9
                   ^
 1 warning

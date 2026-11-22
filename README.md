@@ -81,7 +81,7 @@ This repository is the **complete edition**: a reference guide that follows each
 | [Chapter 12](code/ch12/README.md) | 3 |
 | [Chapter 13](code/ch13/README.md) | 7 |
 | [Chapter 14](code/ch14/README.md) | 6 |
-| [Chapter 15](code/ch15/README.md) | 5 |
+| [Chapter 15](code/ch15/README.md) | 6 |
 | [Chapter 16](code/ch16/README.md) | 6 |
 | [Chapter 17](code/ch17/README.md) | 4 |
 | [Chapter 18](code/ch18/README.md) | 6 |
