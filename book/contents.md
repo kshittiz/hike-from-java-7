@@ -42,4 +42,4 @@ flowchart LR
 | | **Appendices** | |
 | A | [Java 7 → 27 at a glance](at-a-glance.md) | One page, twenty releases |
 | B | [Migration checklist](appendices/b-migration-checklist.md) | Moving a Java 7/8 code base to Java 25 |
-| C | [Good to know: look-alike interfaces](appendices/c-good-to-know.md) | Comparable vs Comparator, Iterable vs Iterator |
+| C | [Good to know: look-alikes](appendices/c-good-to-know.md) | Ten look-alike pairs, from Comparable vs Comparator to fail-fast vs snapshot iterators |

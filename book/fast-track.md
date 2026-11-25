@@ -170,9 +170,15 @@ The key points of every chapter on one page. Follow any heading to read the full
 4. Remove **obsolete JVM flags** (PermGen, CMS, old GC logging).
 5. Run your tests, then **modernize gradually**: records, switch expressions, text blocks, virtual threads.
 
-## [C. Good to know: look-alike interfaces](appendices/c-good-to-know.md)
+## [C. Good to know: look-alikes](appendices/c-good-to-know.md)
 
 - **`Comparable`** is a class saying "here is my **one** natural order" (`compareTo`). **`Comparator`** is an outside rule for **any other** order (`compare`). You can have many comparators, but only one natural order.
 - Never compare numbers with `a - b`: it can overflow. Use `Integer.compare(a, b)` or `Comparator.comparingInt`.
 - **`Iterable`** is something you can loop over: the **book**. **`Iterator`** is one pass over it: a **bookmark** that remembers its place and only moves forward.
 - Removing from a collection inside a for-each loop throws `ConcurrentModificationException`. Use `iterator.remove()` or `removeIf` (**Java 8**).
+- **`==`** asks "same object?"; **`equals`** asks "same meaning?". Override `equals` and `hashCode` together, or let a record do it.
+- **`Collection`** is the interface; **`Collections`** is a toolbox of static helpers. An unmodifiable *view* still shows changes; `List.copyOf` (**Java 10**) doesn't.
+- **`final`**, **`finally`** and **`finalize`** are unrelated; `finalize` is deprecated for removal (**Java 18**).
+- **`throws`** is the label on a method; **`throw`** is the act. **`Runnable`** is a chore; **`Callable`** (**Java 5**) returns an answer.
+- **`AutoCloseable`** (**Java 7**) is anything try-with-resources can close; **`Closeable`** is its older I/O cousin, which must tolerate a second `close()`.
+- **`HashMap`**: no order. **`LinkedHashMap`**: insertion order. **`TreeMap`**: sorted keys.

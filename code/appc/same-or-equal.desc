@@ -1,0 +1,1 @@
+== compares identity; equals compares content; HashSet needs equals and hashCode together.

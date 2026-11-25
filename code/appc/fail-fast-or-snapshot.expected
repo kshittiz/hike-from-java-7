@@ -1,0 +1,3 @@
+ArrayList      : ConcurrentModificationException
+loop saw       : 7 8 11
+list now holds : [7, 8, 11, 17]

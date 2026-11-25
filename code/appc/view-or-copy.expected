@@ -1,0 +1,6 @@
+size            : 4
+water bottles   : 2
+last A-Z        : water
+view            : [boots, tent]
+copy            : [boots]
+view.add        : refused

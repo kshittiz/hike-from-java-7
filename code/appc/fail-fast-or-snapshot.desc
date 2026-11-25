@@ -1,0 +1,1 @@
+ArrayList's iterator fails fast; CopyOnWriteArrayList's iterator walks a snapshot.

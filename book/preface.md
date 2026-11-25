@@ -2,7 +2,7 @@
 
 Twenty releases separate Java 7 from Java 27. This book connects the Java many of us first learned with the Java we write today, one concept at a time.
 
-It began with a Java course I took in 2013; [About the Author](about.md) tells that story.
+It began with a year-long course in 2013 that taught me Java in depth; [About the Author](about.md) tells that story.
 
 ## What makes this book different
 

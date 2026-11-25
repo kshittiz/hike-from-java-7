@@ -1,0 +1,1 @@
+Collection is the interface, Collections the toolbox; an unmodifiable view sees changes, a copy does not.

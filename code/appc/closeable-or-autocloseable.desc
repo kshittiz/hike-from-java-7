@@ -1,0 +1,1 @@
+Both work with try-with-resources; Closeable is the I/O kind and must tolerate a second close().

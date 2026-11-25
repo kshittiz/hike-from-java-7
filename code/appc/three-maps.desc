@@ -1,0 +1,1 @@
+LinkedHashMap keeps insertion order, TreeMap keeps keys sorted and answers nearest-key questions.

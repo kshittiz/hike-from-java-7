@@ -1,0 +1,4 @@
+LinkedHashMap : {Ravi=95, Asha=88, Mia=102, Leo=91}
+TreeMap       : {Asha=88, Leo=91, Mia=102, Ravi=95}
+fastest       : 88=Asha
+first >= 90   : 91=Leo

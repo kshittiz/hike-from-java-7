@@ -1,0 +1,5 @@
+a == b          : false
+a.equals(b)     : false
+V1 set has b?   : false
+V2 set has it?  : true
+record set has? : true
