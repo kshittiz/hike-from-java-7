@@ -1,6 +1,6 @@
-package com.notes.app;
+package com.trail.app;
 
-import com.notes.util.Greeter;                 // a single-type import
+import com.trail.util.Greeter;                 // a single-type import
 import static java.lang.Math.max;              // a static import (Java 5)
 
 public class Main {

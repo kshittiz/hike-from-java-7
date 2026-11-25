@@ -7,7 +7,7 @@ It began with a Java course I took in 2013; [About the Author](about.md) tells t
 ## What makes this book different
 
 - **It's a hike, not a catalogue.** Features appear in the story of the concept they changed, not in a list of release notes. Each chapter starts where a Java 7 developer stands, then walks forward release by release, asking at each step: *what problem did this change solve?* If you know why a feature exists, you'll know when to use it.
-- **It corrects the classics.** Some things every Java 7 course taught were never quite right, like "the verifier removes viruses" or "a boolean takes one bit." Where my old notes were wrong, the book says so.
+- **It corrects the classics.** Some classic Java 7-era explanations were never quite right, like "the verifier removes viruses" or "a boolean takes one bit." Where those Java 7-era explanations were wrong, the book says so.
 - **Every example runs.** Each example is a complete program, and every output shown comes from running it. An automated test suite checks them all against current Java releases.
 - **It's free to read.**
 
@@ -24,7 +24,7 @@ Read it front to back if you're new to Java. If you already write Java, skim eac
 | **What changed** box | How a release changed the concept |
 | **Common mistake** box | A trap, or a correction to a classic misconception |
 | **Migration tip** box | Advice for upgrading older code |
-| **The classic rule** box | A rule that Java 7-era courses taught, checked against modern Java |
+| **The classic rule** box | A Java 7-era rule, checked against modern Java |
 | **Rule** box | A short rule worth memorizing |
 | `code/ch01/Hello.java` | The example's source file, runnable from the book's GitHub repository |
 

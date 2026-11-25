@@ -118,7 +118,7 @@ child field / parent field / parent method
 - A method with the same signature **overrides** the parent's. Which one runs depends on the **object**: `p.name()` runs `Child.name()`.
 - `super.name` and `super.name()` reach the parent's versions from inside the child.
 
-Older courses call the first **data hiding** and the second **function overriding**. Hiding fields is legal but confusing, and it's almost always a mistake. Keep fields `private` and the problem disappears.
+In the Java 7 era, the first was often called **data hiding** and the second **method overriding**. Hiding fields is legal but confusing, and it's almost always a mistake. Keep fields `private` and the problem disappears.
 
 ### Overriding rules
 

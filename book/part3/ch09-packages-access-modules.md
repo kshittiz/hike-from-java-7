@@ -8,7 +8,7 @@
 > [!TIP]
 > **Key points**
 >
-> - A **package** is a namespace and a folder: `package com.notes.util;` lives in `com/notes/util/`. Compile with `javac -d out` to build the folder tree.
+> - A **package** is a namespace and a folder: `package com.trail.util;` lives in `com/trail/util/`. Compile with `javac -d out` to build the folder tree.
 > - Four access levels: `private` < package-private (no keyword) < `protected` < `public`. `protected` from another package works **only through inheritance**.
 > - Before **Java 9**, `public` meant "anyone on the classpath." **Modules** (`module-info.java`) add `requires` and `exports`, so a public class in an unexported package is invisible outside its module.
 > - Since **Java 16/17**, JDK internals are strongly encapsulated; `--illegal-access` is gone.
@@ -16,17 +16,17 @@
 
 ## Packages
 
-A package groups related classes and gives them a unique name. The rule of thumb is a reversed domain name, like `com.notes.util`. Two rules connect packages to the file system:
+A package groups related classes and gives them a unique name. The rule of thumb is a reversed domain name, like `com.trail.util`. Two rules connect packages to the file system:
 
 - The `package` statement is the first statement in the file.
 - The compiled [class file](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.1) must live in a folder path that matches the package.
 
-**Example:** [`code/ch09/packages/com/notes/app/Main.java`](../../code/ch09/packages/com/notes/app/Main.java) · [how to run it](../../code/ch09/README.md#packagescomnotesappmainjava) · any Java
+**Example:** [`code/ch09/packages/com/trail/app/Main.java`](../../code/ch09/packages/com/trail/app/Main.java) · [how to run it](../../code/ch09/README.md#packagescomtrailappmainjava) · any Java
 
 ```java
-package com.notes.app;
+package com.trail.app;
 
-import com.notes.util.Greeter;                 // a single-type import
+import com.trail.util.Greeter;                 // a single-type import
 import static java.lang.Math.max;              // a static import (Java 5)
 
 public class Main {
@@ -38,13 +38,13 @@ public class Main {
 ```
 
 ```text
-$ javac -d out packages/com/notes/util/Greeter.java packages/com/notes/app/Main.java
-$ java -cp out com.notes.app.Main
+$ javac -d out packages/com/trail/util/Greeter.java packages/com/trail/app/Main.java
+$ java -cp out com.trail.app.Main
 Hello, packages
 max = 27
 ```
 
-`-d out` tells [`javac`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/javac.html) to create `out/com/notes/app/Main.class` and so on, building the folders for you. `-cp out` (the **classpath**) tells the JVM where those folders start, and the class is named by its fully qualified name.
+`-d out` tells [`javac`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/javac.html) to create `out/com/trail/app/Main.class` and so on, building the folders for you. `-cp out` (the **classpath**) tells the JVM where those folders start, and the class is named by its fully qualified name.
 
 > [!NOTE]
 > **The classic rule**
@@ -55,8 +55,8 @@ max = 27
 
 ### Imports
 
-- `import com.notes.util.Greeter;` imports one type.
-- `import com.notes.util.*;` imports every type in that package, but **not** its sub-packages. `com.notes` and `com.notes.util` are unrelated as far as access goes; the dot only *looks* hierarchical.
+- `import com.trail.util.Greeter;` imports one type.
+- `import com.trail.util.*;` imports every type in that package, but **not** its sub-packages. `com.trail` and `com.trail.util` are unrelated as far as access goes; the dot only *looks* hierarchical.
 - `java.lang` is imported automatically, which is why [`String`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html) and `System` need no import.
 - `import static java.lang.Math.max;` (Java 5) imports static members, so you can write `max(7, 27)`.
 
@@ -123,48 +123,48 @@ The Java Platform Module System ([JEP 261](https://openjdk.org/jeps/261), Projec
 
 ```mermaid
 flowchart LR
-    subgraph APP["module com.notes.app"]
-        A["com.notes.app"]
+    subgraph APP["module com.trail.app"]
+        A["com.trail.app"]
     end
-    subgraph GREET["module com.notes.greet"]
-        G["com.notes.greet<br/>(exported)"]
-        I["com.notes.greet.internal<br/>(not exported)"]
+    subgraph GREET["module com.trail.greet"]
+        G["com.trail.greet<br/>(exported)"]
+        I["com.trail.greet.internal<br/>(not exported)"]
     end
     APP -- "requires" --> GREET
     A --> G
     A -. "not visible" .-> I
 ```
 
-**Example:** [`code/ch09/modules/com.notes.greet/module-info.java`](../../code/ch09/modules/com.notes.greet/module-info.java) · [how to run it](../../code/ch09/README.md#modulescomnotesgreetmodule-infojava) · Java 9+
+**Example:** [`code/ch09/modules/com.trail.greet/module-info.java`](../../code/ch09/modules/com.trail.greet/module-info.java) · [how to run it](../../code/ch09/README.md#modulescomtrailgreetmodule-infojava) · Java 9+
 
 ```java
-module com.notes.greet {
-    exports com.notes.greet;            // only this package is visible to other modules
+module com.trail.greet {
+    exports com.trail.greet;            // only this package is visible to other modules
 }
 ```
 
-**Example:** [`code/ch09/modules/com.notes.app/module-info.java`](../../code/ch09/modules/com.notes.app/module-info.java) · [how to run it](../../code/ch09/README.md#modulescomnotesappmodule-infojava) · Java 9+
+**Example:** [`code/ch09/modules/com.trail.app/module-info.java`](../../code/ch09/modules/com.trail.app/module-info.java) · [how to run it](../../code/ch09/README.md#modulescomtrailappmodule-infojava) · Java 9+
 
 ```java
-module com.notes.app {
-    requires com.notes.greet;           // an explicit, checked dependency
+module com.trail.app {
+    requires com.trail.greet;           // an explicit, checked dependency
 }
 ```
 
 ```text
-$ javac -d mods --module-source-path modules --module com.notes.app
-$ java -p mods -m com.notes.app/com.notes.app.App
+$ javac -d mods --module-source-path modules --module com.trail.app
+$ java -p mods -m com.trail.app/com.trail.app.App
 [ Hello, modules ]
-running in module: com.notes.app
+running in module: com.trail.app
 ```
 
 `-p` is the **module path**, the modular replacement for the classpath, and `-m module/class` names what to run. Now try to use the internal package from another module:
 
 ```text
-sneaky/com.notes.sneaky/com/notes/sneaky/Sneaky.java:3: error: package com.notes.greet.internal is not visible
-import com.notes.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
                       ^
-  (package com.notes.greet.internal is declared in module com.notes.greet, which does not export it)
+  (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
 ```
 
@@ -219,15 +219,15 @@ chapter09.md
 
 ## Exercises
 
-1. Call `Greeter.secret()` from `com.notes.app.Main`. Read the error.
+1. Call `Greeter.secret()` from `com.trail.app.Main`. Read the error.
 2. Move `Discounted` into the `shop` package. Does `peek` compile now? Why?
-3. Add `exports com.notes.greet.internal to com.notes.sneaky;` to `com.notes.greet` and recompile `Sneaky`.
+3. Add `exports com.trail.greet.internal to com.trail.sneaky;` to `com.trail.greet` and recompile `Sneaky`.
 4. Run `java --describe-module java.base | head -20`. Which packages does it export?
 
 ## IQ corner
 
 1. **Can a top-level class be `protected` or `private`?** No. Only `public` or package-private. Nested classes may use all four.
-2. **Does importing `com.notes.*` import `com.notes.util`?** No. Sub-packages must be imported separately.
+2. **Does importing `com.trail.*` import `com.trail.util`?** No. Sub-packages must be imported separately.
 3. **Difference between classpath and module path?** The classpath is a flat list with no boundaries. The module path holds modules with declared dependencies and exported packages.
 4. **Is a `public` class always accessible?** Not since Java 9: only if its module exports its package to you.
 5. **What does `opens` do that `exports` doesn't?** It allows deep reflection, including private members, at run time.

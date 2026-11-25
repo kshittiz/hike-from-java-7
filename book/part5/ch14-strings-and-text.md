@@ -21,25 +21,25 @@
 ```java
 public class Immutable {
     public static void main(String[] args) {
-        String s = "notes";
-        s.concat(" 2013");                   // returns a new String, which we discard
+        String s = "hike";
+        s.concat(" 27");                   // returns a new String, which we discard
         s.toUpperCase();
         System.out.println(s);               // unchanged
 
-        s = s.concat(" 2013").toUpperCase(); // keep the result
+        s = s.concat(" 27").toUpperCase(); // keep the result
         System.out.println(s);
 
-        StringBuilder sb = new StringBuilder("notes");   // mutable (Java 5)
-        sb.append(" 2013").insert(0, "my ").reverse();
+        StringBuilder sb = new StringBuilder("hike");   // mutable (Java 5)
+        sb.append(" 27").insert(0, "my ").reverse();
         System.out.println(sb);
     }
 }
 ```
 
 ```text
-notes
-NOTES 2013
-3102 seton ym
+hike
+HIKE 27
+72 ekih ym
 ```
 
 Once created, a `String` never changes. Every "modifying" method returns a new string, so a call whose result you ignore does nothing. Immutability is why strings are safe to share between threads, safe as [`HashMap`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/HashMap.html) keys, and safe to pool.
@@ -110,7 +110,7 @@ flowchart LR
 > [!WARNING]
 > **A common misconception**
 >
-> Java 7-era courses taught that the pool lives in the class (method) area and that *"Garbage Collection is never done on a String object kept in the String constant pool."* That described Java 6. **Java 7 moved interned strings to the main heap**, and pooled strings that nothing references anymore *can* be garbage collected. One reason for the move was that heavy `intern()` use used to crash applications with `OutOfMemoryError: PermGen space`.
+> Java 7-era explanations often said the pool lives in the class (method) area and that *"Garbage Collection is never done on a String object kept in the String constant pool."* That described Java 6. **Java 7 moved interned strings to the main heap**, and pooled strings that nothing references anymore *can* be garbage collected. One reason for the move was that heavy `intern()` use used to crash applications with `OutOfMemoryError: PermGen space`.
 
 ## Concatenation
 

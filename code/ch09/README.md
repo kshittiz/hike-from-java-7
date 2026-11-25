@@ -21,184 +21,184 @@ Expected output:
 chapter09.md
 ```
 
-## modules/com.notes.app/com/notes/app/App.java
+## modules/com.trail.app/com/trail/app/App.java
 
-Source: [modules/com.notes.app/com/notes/app/App.java](modules/com.notes.app/com/notes/app/App.java)
+Source: [modules/com.trail.app/com/trail/app/App.java](modules/com.trail.app/com/trail/app/App.java)
 
 **A public class in an unexported package is invisible to other modules (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.greet
+javac -d mods --module-source-path modules --module com.trail.greet
 javac -p mods -d sneakyout $(find sneaky -name "*.java")
 ```
 
 Expected output:
 
 ```text
-sneaky/com.notes.sneaky/com/notes/sneaky/Sneaky.java:3: error: package com.notes.greet.internal is not visible
-import com.notes.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
                       ^
-  (package com.notes.greet.internal is declared in module com.notes.greet, which does not export it)
+  (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
 ```
 
 **Two modules: one exports a package, the other requires it (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.app && java -p mods -m com.notes.app/com.notes.app.App
+javac -d mods --module-source-path modules --module com.trail.app && java -p mods -m com.trail.app/com.trail.app.App
 ```
 
 Expected output:
 
 ```text
 [ Hello, modules ]
-running in module: com.notes.app
+running in module: com.trail.app
 ```
 
-## modules/com.notes.app/module-info.java
+## modules/com.trail.app/module-info.java
 
-Source: [modules/com.notes.app/module-info.java](modules/com.notes.app/module-info.java)
+Source: [modules/com.trail.app/module-info.java](modules/com.trail.app/module-info.java)
 
 **A public class in an unexported package is invisible to other modules (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.greet
+javac -d mods --module-source-path modules --module com.trail.greet
 javac -p mods -d sneakyout $(find sneaky -name "*.java")
 ```
 
 Expected output:
 
 ```text
-sneaky/com.notes.sneaky/com/notes/sneaky/Sneaky.java:3: error: package com.notes.greet.internal is not visible
-import com.notes.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
                       ^
-  (package com.notes.greet.internal is declared in module com.notes.greet, which does not export it)
+  (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
 ```
 
 **Two modules: one exports a package, the other requires it (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.app && java -p mods -m com.notes.app/com.notes.app.App
+javac -d mods --module-source-path modules --module com.trail.app && java -p mods -m com.trail.app/com.trail.app.App
 ```
 
 Expected output:
 
 ```text
 [ Hello, modules ]
-running in module: com.notes.app
+running in module: com.trail.app
 ```
 
-## modules/com.notes.greet/com/notes/greet/Greetings.java
+## modules/com.trail.greet/com/trail/greet/Greetings.java
 
-Source: [modules/com.notes.greet/com/notes/greet/Greetings.java](modules/com.notes.greet/com/notes/greet/Greetings.java)
+Source: [modules/com.trail.greet/com/trail/greet/Greetings.java](modules/com.trail.greet/com/trail/greet/Greetings.java)
 
 **A public class in an unexported package is invisible to other modules (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.greet
+javac -d mods --module-source-path modules --module com.trail.greet
 javac -p mods -d sneakyout $(find sneaky -name "*.java")
 ```
 
 Expected output:
 
 ```text
-sneaky/com.notes.sneaky/com/notes/sneaky/Sneaky.java:3: error: package com.notes.greet.internal is not visible
-import com.notes.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
                       ^
-  (package com.notes.greet.internal is declared in module com.notes.greet, which does not export it)
+  (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
 ```
 
 **Two modules: one exports a package, the other requires it (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.app && java -p mods -m com.notes.app/com.notes.app.App
+javac -d mods --module-source-path modules --module com.trail.app && java -p mods -m com.trail.app/com.trail.app.App
 ```
 
 Expected output:
 
 ```text
 [ Hello, modules ]
-running in module: com.notes.app
+running in module: com.trail.app
 ```
 
-## modules/com.notes.greet/com/notes/greet/internal/Formatter.java
+## modules/com.trail.greet/com/trail/greet/internal/Formatter.java
 
-Source: [modules/com.notes.greet/com/notes/greet/internal/Formatter.java](modules/com.notes.greet/com/notes/greet/internal/Formatter.java)
+Source: [modules/com.trail.greet/com/trail/greet/internal/Formatter.java](modules/com.trail.greet/com/trail/greet/internal/Formatter.java)
 
 **A public class in an unexported package is invisible to other modules (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.greet
+javac -d mods --module-source-path modules --module com.trail.greet
 javac -p mods -d sneakyout $(find sneaky -name "*.java")
 ```
 
 Expected output:
 
 ```text
-sneaky/com.notes.sneaky/com/notes/sneaky/Sneaky.java:3: error: package com.notes.greet.internal is not visible
-import com.notes.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
                       ^
-  (package com.notes.greet.internal is declared in module com.notes.greet, which does not export it)
+  (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
 ```
 
 **Two modules: one exports a package, the other requires it (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.app && java -p mods -m com.notes.app/com.notes.app.App
+javac -d mods --module-source-path modules --module com.trail.app && java -p mods -m com.trail.app/com.trail.app.App
 ```
 
 Expected output:
 
 ```text
 [ Hello, modules ]
-running in module: com.notes.app
+running in module: com.trail.app
 ```
 
-## modules/com.notes.greet/module-info.java
+## modules/com.trail.greet/module-info.java
 
-Source: [modules/com.notes.greet/module-info.java](modules/com.notes.greet/module-info.java)
+Source: [modules/com.trail.greet/module-info.java](modules/com.trail.greet/module-info.java)
 
 **A public class in an unexported package is invisible to other modules (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.greet
+javac -d mods --module-source-path modules --module com.trail.greet
 javac -p mods -d sneakyout $(find sneaky -name "*.java")
 ```
 
 Expected output:
 
 ```text
-sneaky/com.notes.sneaky/com/notes/sneaky/Sneaky.java:3: error: package com.notes.greet.internal is not visible
-import com.notes.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
                       ^
-  (package com.notes.greet.internal is declared in module com.notes.greet, which does not export it)
+  (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
 ```
 
 **Two modules: one exports a package, the other requires it (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.app && java -p mods -m com.notes.app/com.notes.app.App
+javac -d mods --module-source-path modules --module com.trail.app && java -p mods -m com.trail.app/com.trail.app.App
 ```
 
 Expected output:
 
 ```text
 [ Hello, modules ]
-running in module: com.notes.app
+running in module: com.trail.app
 ```
 
-## packages/com/notes/app/Main.java
+## packages/com/trail/app/Main.java
 
-Source: [packages/com/notes/app/Main.java](packages/com/notes/app/Main.java)
+Source: [packages/com/trail/app/Main.java](packages/com/trail/app/Main.java)
 
 **Two packages compiled into a directory tree, plus a static import.** (any Java)
 
 ```bash
-javac -d out packages/com/notes/util/Greeter.java packages/com/notes/app/Main.java && java -cp out com.notes.app.Main
+javac -d out packages/com/trail/util/Greeter.java packages/com/trail/app/Main.java && java -cp out com.trail.app.Main
 ```
 
 Expected output:
@@ -208,14 +208,14 @@ Hello, packages
 max = 27
 ```
 
-## packages/com/notes/util/Greeter.java
+## packages/com/trail/util/Greeter.java
 
-Source: [packages/com/notes/util/Greeter.java](packages/com/notes/util/Greeter.java)
+Source: [packages/com/trail/util/Greeter.java](packages/com/trail/util/Greeter.java)
 
 **Two packages compiled into a directory tree, plus a static import.** (any Java)
 
 ```bash
-javac -d out packages/com/notes/util/Greeter.java packages/com/notes/app/Main.java && java -cp out com.notes.app.Main
+javac -d out packages/com/trail/util/Greeter.java packages/com/trail/app/Main.java && java -cp out com.trail.app.Main
 ```
 
 Expected output:
@@ -263,44 +263,44 @@ protectedaccess/sale/Discounted.java:8: error: price has protected access in Pro
 1 error
 ```
 
-## sneaky/com.notes.sneaky/com/notes/sneaky/Sneaky.java
+## sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java
 
-Source: [sneaky/com.notes.sneaky/com/notes/sneaky/Sneaky.java](sneaky/com.notes.sneaky/com/notes/sneaky/Sneaky.java)
+Source: [sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java](sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java)
 
 **A public class in an unexported package is invisible to other modules (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.greet
+javac -d mods --module-source-path modules --module com.trail.greet
 javac -p mods -d sneakyout $(find sneaky -name "*.java")
 ```
 
 Expected output:
 
 ```text
-sneaky/com.notes.sneaky/com/notes/sneaky/Sneaky.java:3: error: package com.notes.greet.internal is not visible
-import com.notes.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
                       ^
-  (package com.notes.greet.internal is declared in module com.notes.greet, which does not export it)
+  (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
 ```
 
-## sneaky/com.notes.sneaky/module-info.java
+## sneaky/com.trail.sneaky/module-info.java
 
-Source: [sneaky/com.notes.sneaky/module-info.java](sneaky/com.notes.sneaky/module-info.java)
+Source: [sneaky/com.trail.sneaky/module-info.java](sneaky/com.trail.sneaky/module-info.java)
 
 **A public class in an unexported package is invisible to other modules (Java 9+).** (Java 9+)
 
 ```bash
-javac -d mods --module-source-path modules --module com.notes.greet
+javac -d mods --module-source-path modules --module com.trail.greet
 javac -p mods -d sneakyout $(find sneaky -name "*.java")
 ```
 
 Expected output:
 
 ```text
-sneaky/com.notes.sneaky/com/notes/sneaky/Sneaky.java:3: error: package com.notes.greet.internal is not visible
-import com.notes.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
                       ^
-  (package com.notes.greet.internal is declared in module com.notes.greet, which does not export it)
+  (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
 ```

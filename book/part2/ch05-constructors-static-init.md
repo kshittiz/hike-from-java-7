@@ -19,7 +19,7 @@
 
 A constructor looks like a method with the class's name and no return type. It runs exactly once per object, right after memory is allocated and fields are set to their defaults.
 
-Java 7-era courses distinguished two styles:
+In the Java 7 era, two styles were usually distinguished:
 
 - A **default** (no-argument) constructor gives every object the same starting values.
 - A **parameterized** constructor gives each object its own values.

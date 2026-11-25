@@ -1,1 +1,1 @@
-$JAVAC -d mods --module-source-path modules --module com.notes.app && $JAVA -p mods -m com.notes.app/com.notes.app.App
+$JAVAC -d mods --module-source-path modules --module com.trail.app && $JAVA -p mods -m com.trail.app/com.trail.app.App

@@ -139,7 +139,7 @@ The result is a fraction of a full JDK's size and contains nothing your applicat
 **Step 3, optionally: a native installer** (`jpackage`, [JEP 392](https://openjdk.org/jeps/392), Java 16):
 
 ```text
-$ jpackage --name HikeFromJava7 --input out --main-jar app.jar --main-class com.notes.app.Main
+$ jpackage --name HikeFromJava7 --input out --main-jar app.jar --main-class com.trail.app.Main
 ```
 
 `jpackage` must run on the target platform: build the Windows installer on Windows, the macOS package on macOS.

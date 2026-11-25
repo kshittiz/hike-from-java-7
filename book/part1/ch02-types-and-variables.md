@@ -109,7 +109,7 @@ The Java Virtual Machine Specification doesn't fix a size for `boolean`. In prac
 > [!WARNING]
 > **A common misconception**
 >
-> Some notes say a `boolean` used 1 bit up to JDK 1.4 and "no memory" afterwards. Neither is right. The size was never specified, and real JVMs use a whole byte for a boolean field or array element, because CPUs can't address single bits efficiently. If you need millions of flags, use `java.util.BitSet`, which really does pack one flag per bit.
+> Some Java 7-era tutorials say a `boolean` used 1 bit up to JDK 1.4 and "no memory" afterwards. Neither is right. The size was never specified, and real JVMs use a whole byte for a boolean field or array element, because CPUs can't address single bits efficiently. If you need millions of flags, use `java.util.BitSet`, which really does pack one flag per bit.
 
 ## Writing numbers: literals
 

@@ -1,6 +1,6 @@
-package com.notes.app;
+package com.trail.app;
 
-import com.notes.greet.Greetings;
+import com.trail.greet.Greetings;
 
 public class App {
     public static void main(String[] args) {

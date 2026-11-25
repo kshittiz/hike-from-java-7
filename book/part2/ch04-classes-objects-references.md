@@ -115,7 +115,7 @@ hex is the hash code:   true
 > [!WARNING]
 > **A common misconception**
 >
-> Many courses call this a "reference ID" or address. It isn't. The JVM moves objects around during garbage collection, so a fixed address couldn't be printed meaningfully, and the default hash code is a number the JVM generates once and stores in the object header. Java deliberately gives you no way to see an object's address.
+> Java 7-era tutorials often called this a "reference ID" or address. It isn't. The JVM moves objects around during garbage collection, so a fixed address couldn't be printed meaningfully, and the default hash code is a number the JVM generates once and stores in the object header. Java deliberately gives you no way to see an object's address.
 
 ## Pointers vs. references
 

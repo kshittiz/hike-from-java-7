@@ -38,7 +38,7 @@ Expected output:
 ```text
 2013-07-01 was a MONDAY
 plus one month: 2013-08-01
-course unchanged: 2013-07-01
+start unchanged: 2013-07-01
 gap: P13Y4M20D = 13 years, 4 months, 20 days
 days: 4891
 2024 leap? true

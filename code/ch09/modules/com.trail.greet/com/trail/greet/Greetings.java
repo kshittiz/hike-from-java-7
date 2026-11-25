@@ -1,6 +1,6 @@
-package com.notes.greet;
+package com.trail.greet;
 
-import com.notes.greet.internal.Formatter;
+import com.trail.greet.internal.Formatter;
 
 public class Greetings {
     public static String hello(String who) { return Formatter.box("Hello, " + who); }

@@ -69,7 +69,7 @@ The key points of every chapter on one page. Follow any heading to read the full
 
 ## [9. Packages, Access and Modules](part3/ch09-packages-access-modules.md)
 
-- A **package** is a namespace and a folder: `package com.notes.util;` lives in `com/notes/util/`. Compile with `javac -d out` to build the folder tree.
+- A **package** is a namespace and a folder: `package com.trail.util;` lives in `com/trail/util/`. Compile with `javac -d out` to build the folder tree.
 - Four access levels: `private` < package-private (no keyword) < `protected` < `public`. `protected` from another package works **only through inheritance**.
 - Before **Java 9**, `public` meant "anyone on the classpath." **Modules** (`module-info.java`) add `requires` and `exports`, so a public class in an unexported package is invisible outside its module.
 - Since **Java 16/17**, JDK internals are strongly encapsulated; `--illegal-access` is gone.

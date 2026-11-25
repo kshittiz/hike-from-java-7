@@ -37,9 +37,9 @@ javac -d out Immutable.java && java -cp out Immutable
 Expected output:
 
 ```text
-notes
-NOTES 2013
-3102 seton ym
+hike
+HIKE 27
+72 ekih ym
 ```
 
 ## ModernStringMethods.java

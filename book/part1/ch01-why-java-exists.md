@@ -157,13 +157,13 @@ flowchart TD
 > [!WARNING]
 > **A common misconception**
 >
-> Older notes often say the verifier "removes viruses." It doesn't. It's not an antivirus and it doesn't remove anything. It **rejects** bytecode that breaks the JVM's safety rules, so a malformed or malicious class file can't corrupt memory. Code that is valid but harmful, such as a program that deletes your files, passes verification just fine.
+> Java 7-era tutorials often said the verifier "removes viruses." It doesn't. It's not an antivirus and it doesn't remove anything. It **rejects** bytecode that breaks the JVM's safety rules, so a malformed or malicious class file can't corrupt memory. Code that is valid but harmful, such as a program that deletes your files, passes verification just fine.
 
 **The interpreter and the JIT compiler** share the actual running. The interpreter starts executing bytecode immediately, which keeps startup fast. Meanwhile the JVM counts how often each method and loop runs. Code that runs a lot, a *hot spot* (hence the name **HotSpot JVM**), gets handed to the **Just-In-Time (JIT) compiler**, which compiles it into optimized machine code for the exact CPU it's running on. That's why a Java program often gets faster during its first few seconds: the JVM is still learning what to optimize.
 
 ## Where things live: the JVM's memory areas
 
-Java 7-era courses drew the JVM's memory as a set of boxes. The picture still holds, with one important rename in Java 8.
+In the Java 7 era, the JVM's memory was usually drawn as a set of boxes. The picture still holds, with one important rename in Java 8.
 
 ```mermaid
 flowchart TB
