@@ -31,10 +31,13 @@ import java.nio.charset.StandardCharsets;
 
 public class HttpClientDemo {
     public static void main(String[] args) throws Exception {
-        // A tiny local server so the example needs no internet (com.sun.net.httpserver: since Java 6)
-        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        // A tiny local server so the example needs no internet
+        // (com.sun.net.httpserver: since Java 6)
+        HttpServer server =
+                HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
         server.createContext("/release", exchange -> {
-            byte[] body = "Java 27 shipped on 2026-09-15".getBytes(StandardCharsets.UTF_8);
+            byte[] body = "Java 27 shipped on 2026-09-15"
+                    .getBytes(StandardCharsets.UTF_8);
             exchange.getResponseHeaders().add("Content-Type", "text/plain");
             exchange.sendResponseHeaders(200, body.length);
             exchange.getResponseBody().write(body);
@@ -42,10 +45,12 @@ public class HttpClientDemo {
         });
         server.start();
         try {
-            HttpClient client = HttpClient.newHttpClient();                       // Java 11
-            HttpRequest request = HttpRequest.newBuilder(
-                    URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/release")).build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpClient client = HttpClient.newHttpClient();  // Java 11
+            int port = server.getAddress().getPort();
+            URI uri = URI.create("http://127.0.0.1:" + port + "/release");
+            HttpRequest request = HttpRequest.newBuilder(uri).build();
+            HttpResponse<String> response = client.send(request,
+                    HttpResponse.BodyHandlers.ofString());
             System.out.println(response.statusCode() + " " + response.body());
         } finally {
             server.stop(0);
@@ -81,15 +86,19 @@ import java.nio.file.Path;
 public class StaticSite {
     public static void main(String[] args) throws Exception {
         Path root = Files.createTempDirectory("site");
-        Files.writeString(root.resolve("index.html"), "<h1>A Hike from Java 7</h1>");
+        Files.writeString(root.resolve("index.html"),
+                "<h1>A Hike from Java 7</h1>");
 
-        var server = SimpleFileServer.createFileServer(                          // Java 18
-                new InetSocketAddress("127.0.0.1", 0), root.toAbsolutePath(), OutputLevel.NONE);
+        var server = SimpleFileServer.createFileServer(  // Java 18
+                new InetSocketAddress("127.0.0.1", 0),
+                root.toAbsolutePath(), OutputLevel.NONE);
         server.start();
         try {
-            var uri = URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/index.html");
-            var response = HttpClient.newHttpClient()
-                    .send(HttpRequest.newBuilder(uri).build(), HttpResponse.BodyHandlers.ofString());
+            int port = server.getAddress().getPort();
+            var uri = URI.create("http://127.0.0.1:" + port + "/index.html");
+            var response = HttpClient.newHttpClient().send(
+                    HttpRequest.newBuilder(uri).build(),
+                    HttpResponse.BodyHandlers.ofString());
             System.out.println(response.statusCode() + " " + response.body());
         } finally {
             server.stop(0);

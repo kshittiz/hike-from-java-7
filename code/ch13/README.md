@@ -18,7 +18,7 @@ Expected output:
 
 ```text
 CatchOrder.java:11: error: exception FileNotFoundException has already been caught
-        } catch (FileNotFoundException e) {             // ...makes this unreachable
+        } catch (FileNotFoundException e) {   // ...makes this unreachable
           ^
 1 error
 ```

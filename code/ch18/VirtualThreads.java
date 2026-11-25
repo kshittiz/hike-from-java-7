@@ -6,15 +6,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class VirtualThreads {
     public static void main(String[] args) {
         AtomicInteger done = new AtomicInteger();
-        try (ExecutorService exec = Executors.newVirtualThreadPerTaskExecutor()) {   // Java 21
+        // Java 21
+        try (ExecutorService exec =
+                     Executors.newVirtualThreadPerTaskExecutor()) {
             for (int i = 0; i < 10_000; i++) {
                 exec.submit(() -> {
-                    Thread.sleep(Duration.ofMillis(50));     // blocking is cheap on a virtual thread
+                    // blocking is cheap on a virtual thread
+                    Thread.sleep(Duration.ofMillis(50));
                     done.incrementAndGet();
                     return null;
                 });
             }
-        }                                                    // close() waits for every task
+        }  // close() waits for every task
         System.out.println(done.get() + " tasks finished");
 
         Thread vt = Thread.ofVirtual().unstarted(() -> {});

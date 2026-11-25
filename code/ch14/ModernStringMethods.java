@@ -1,8 +1,11 @@
 public class ModernStringMethods {
     public static void main(String[] args) {
-        String padded = "\u2003 Java \u2003";             // em spaces: Unicode whitespace
-        System.out.println("trim()  length " + padded.trim().length());    // trim removes only chars <= ' '
-        System.out.println("strip() length " + padded.strip().length());   // Java 11: Unicode-aware
+        // em spaces: Unicode whitespace
+        String padded = "\u2003 Java \u2003";
+        // trim removes only chars <= ' '
+        System.out.println("trim()  length " + padded.trim().length());
+        // Java 11: Unicode-aware
+        System.out.println("strip() length " + padded.strip().length());
         System.out.println("   ".isBlank());                // Java 11
         System.out.println("ab".repeat(3));                 // Java 11
         System.out.println("one\ntwo\nthree".lines().count());   // Java 11

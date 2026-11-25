@@ -49,13 +49,13 @@ public class ConstructorChain {
         Vehicle() { System.out.println("1. Vehicle()"); }
     }
     static class Car extends Vehicle {
-        Car(String model) {                       // compiler inserts super() here
+        Car(String model) {  // compiler inserts super() here
             System.out.println("2. Car(" + model + ")");
         }
     }
     static class SportsCar extends Car {
         SportsCar() {
-            super("GT");                          // explicit call to a parent constructor
+            super("GT");  // explicit call to a parent constructor
             System.out.println("3. SportsCar()");
         }
     }
@@ -94,15 +94,19 @@ public class HidingVsOverriding {
         String name() { return "parent method"; }
     }
     static class Child extends Parent {
-        String name = "child field";                         // hides Parent.name
-        @Override String name() { return "child method"; }   // overrides Parent.name()
-        String both() { return name + " / " + super.name + " / " + super.name(); }
+        // hides Parent.name
+        String name = "child field";
+        // overrides Parent.name()
+        @Override String name() { return "child method"; }
+        String both() {
+            return name + " / " + super.name + " / " + super.name();
+        }
     }
 
     public static void main(String[] args) {
         Parent p = new Child();
-        System.out.println(p.name);         // fields: chosen by the reference type
-        System.out.println(p.name());       // methods: chosen by the object
+        System.out.println(p.name);    // fields: chosen by the reference type
+        System.out.println(p.name());  // methods: chosen by the object
         System.out.println(new Child().both());
     }
 }
@@ -130,14 +134,14 @@ An override must keep the same signature, may return a subtype (covariant return
 public class WeakerAccess {
     static class Parent { public void greet() { } }
     static class Child extends Parent {
-        @Override void greet() { }          // package-private is weaker than public
+        @Override void greet() { }  // package-private is weaker than public
     }
 }
 ```
 
 ```text
 WeakerAccess.java:4: error: greet() in Child cannot override greet() in Parent
-        @Override void greet() { }          // package-private is weaker than public
+        @Override void greet() { }  // package-private is weaker than public
                        ^
   attempting to assign weaker access privileges; was public
 1 error
@@ -171,14 +175,18 @@ public class SealedShapes {
     sealed interface Shape permits Circle, Square, Polygon { }    // Java 17
     record Circle(double radius) implements Shape { }
     record Square(double side) implements Shape { }
-    non-sealed static class Polygon implements Shape { }          // reopened for extension
+    // reopened for extension
+    non-sealed static class Polygon implements Shape { }
     static class Hexagon extends Polygon { }
 
     static String name(Shape s) {
-        return switch (s) {                                        // no default: the compiler
-            case Circle c  -> "circle r=" + c.radius();            // knows every Shape subtype
+        // no default: the compiler
+        return switch (s) {
+            // knows every Shape subtype
+            case Circle c  -> "circle r=" + c.radius();
             case Square sq -> "square side=" + sq.side();
-            case Polygon p -> "polygon (" + p.getClass().getSimpleName() + ")";
+            case Polygon p ->
+                    "polygon (" + p.getClass().getSimpleName() + ")";
         };
     }
 
@@ -207,13 +215,14 @@ Anything else is rejected:
 public class NotPermitted {
     sealed interface Shape permits Circle { }
     record Circle(double r) implements Shape { }
-    record Triangle(double base) implements Shape { }     // not in the permits list
+    // not in the permits list
+    record Triangle(double base) implements Shape { }
 }
 ```
 
 ```text
-NotPermitted.java:4: error: class is not allowed to extend sealed class: Shape (as it is not listed in its 'permits' clause)
-    record Triangle(double base) implements Shape { }     // not in the permits list
+NotPermitted.java:5: error: class is not allowed to extend sealed class: Shape (as it is not listed in its 'permits' clause)
+    record Triangle(double base) implements Shape { }
     ^
 1 error
 ```
@@ -229,19 +238,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Composition {
-    // Inheritance would say "a Playlist IS-A ArrayList" and expose add/remove/clear to everyone.
-    // Composition says "a Playlist HAS-A list" and exposes only what makes sense.
+    // Inheritance would say "a Playlist IS-A ArrayList" and expose
+    // add/remove/clear to everyone. Composition says "a Playlist HAS-A
+    // list" and exposes only what makes sense.
     static class Playlist {
         private final List<String> songs = new ArrayList<>();
         void add(String song) { if (!songs.contains(song)) songs.add(song); }
         int size() { return songs.size(); }
-        List<String> songs() { return List.copyOf(songs); }      // Java 10: read-only copy
+        // Java 10: read-only copy
+        List<String> songs() { return List.copyOf(songs); }
     }
 
     public static void main(String[] args) {
         Playlist p = new Playlist();
         p.add("Duke's Theme");
-        p.add("Duke's Theme");      // duplicate ignored: the Playlist enforces its own rule
+        // duplicate ignored: the Playlist enforces its own rule
+        p.add("Duke's Theme");
         p.add("Coffee Break");
         System.out.println(p.size() + " " + p.songs());
     }

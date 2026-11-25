@@ -30,7 +30,8 @@ public class Precedence {
         int r = i++ + ++i;        // 5 (then i = 6) + 7 (i becomes 7 first)
         System.out.println("r = " + r + ", i = " + i);
 
-        int x = 10 * 20 + -30 * 2 / 4 % 3;   // * / % bind tighter than +, left to right
+        // * / % bind tighter than +, left to right
+        int x = 10 * 20 + -30 * 2 / 4 % 3;
         System.out.println("x = " + x);
 
         int a, b, c;
@@ -84,11 +85,13 @@ The lambda arrow (Java 8) is the only new row since Java 7, and like the method-
 public class DivMod {
     public static void main(String[] args) {
         System.out.println(" 7 / 2  = " + (7 / 2));
-        System.out.println("-7 / 2  = " + (-7 / 2));       // truncates toward zero
+        System.out.println("-7 / 2  = " + (-7 / 2));  // truncates toward zero
         System.out.println(" 7 % 3  = " + (7 % 3));
-        System.out.println("-7 % 3  = " + (-7 % 3));       // sign follows the dividend
+        // sign follows the dividend
+        System.out.println("-7 % 3  = " + (-7 % 3));
         System.out.println(" 7 % -3 = " + (7 % -3));
-        System.out.println("floorMod(-7, 3) = " + Math.floorMod(-7, 3));   // Java 8
+        // Java 8
+        System.out.println("floorMod(-7, 3) = " + Math.floorMod(-7, 3));
         System.out.println("isOdd(-3) with % 2 == 1 ? " + (-3 % 2 == 1));
     }
 }
@@ -154,11 +157,15 @@ safe: false
 public class Shifts {
     public static void main(String[] args) {
         System.out.println("  8 << 2   = " + (8 << 2));
-        System.out.println("-16 >> 2   = " + (-16 >> 2));     // keeps the sign
-        System.out.println("-16 >>> 28 = " + (-16 >>> 28));   // fills with zeros
-        System.out.println("  1 << 33  = " + (1 << 33));      // int shifts use only 5 bits: 33 % 32 = 1
+        // keeps the sign
+        System.out.println("-16 >> 2   = " + (-16 >> 2));
+        // fills with zeros
+        System.out.println("-16 >>> 28 = " + (-16 >>> 28));
+        // int shifts use only 5 bits: 33 % 32 = 1
+        System.out.println("  1 << 33  = " + (1 << 33));
         System.out.println("  1L << 33 = " + (1L << 33));
-        System.out.println("6 & 3 = " + (6 & 3) + ", 6 | 3 = " + (6 | 3) + ", 6 ^ 3 = " + (6 ^ 3) + ", ~6 = " + (~6));
+        System.out.println("6 & 3 = " + (6 & 3) + ", 6 | 3 = " + (6 | 3)
+                + ", 6 ^ 3 = " + (6 ^ 3) + ", ~6 = " + (~6));
     }
 }
 ```
@@ -184,11 +191,13 @@ public class Shifts {
 ```java
 public class TernaryTrap {
     public static void main(String[] args) {
-        System.out.println(true ? 1 : 2.0);                 // both sides promoted to double
-        Object o = true ? Integer.valueOf(1) : "one";      // no common numeric type: stays Integer
+        System.out.println(true ? 1 : 2.0);  // both sides promoted to double
+        // no common numeric type: stays Integer
+        Object o = true ? Integer.valueOf(1) : "one";
         System.out.println(o);
         char grade = 'A';
-        System.out.println(false ? 1 : grade);             // constant int that fits in char: stays char
+        // constant int that fits in char: stays char
+        System.out.println(false ? 1 : grade);
     }
 }
 ```
@@ -213,7 +222,8 @@ public class Labeled {
         for (int r = 0; r < grid.length; r++) {
             for (int c = 0; c < grid[r].length; c++) {
                 if (grid[r][c] < 0) {
-                    System.out.println("first negative at [" + r + "][" + c + "]");
+                    System.out.println("first negative at ["
+                            + r + "][" + c + "]");
                     break search;      // leaves both loops
                 }
             }
@@ -294,11 +304,13 @@ Java 7 let you `switch` on a [`String`](https://docs.oracle.com/en/java/javase/2
 ```java
 public class SwitchExpression {
     static int daysIn(String month, boolean leap) {
-        return switch (month) {                       // Java 14: switch is an expression
-            case "APR", "JUN", "SEP", "NOV" -> 30;    // several labels, no fall-through
+        // Java 14: switch is an expression
+        return switch (month) {
+            // several labels, no fall-through
+            case "APR", "JUN", "SEP", "NOV" -> 30;
             case "FEB" -> {
                 int d = leap ? 29 : 28;
-                yield d;                              // yield returns a value from a block
+                yield d;  // yield returns a value from a block
             }
             default -> 31;
         };
@@ -335,16 +347,19 @@ public class PatternSwitch {
     static String describe(Object value) {
         return switch (value) {                                   // Java 21
             case null                  -> "nothing";
-            case Integer i when i < 0  -> "a negative int " + i;  // guard with 'when'
+            // guard with 'when'
+            case Integer i when i < 0  -> "a negative int " + i;
             case Integer i             -> "an int " + i;
             case String s              -> "a string of length " + s.length();
             case int[] arr             -> "an int array of " + arr.length;
-            default                    -> "something else: " + value.getClass().getSimpleName();
+            default                    -> "something else: "
+                    + value.getClass().getSimpleName();
         };
     }
 
     public static void main(String[] args) {
-        Object[] samples = { 42, -7, "Java", new int[] {1, 2, 3}, 3.14, null };
+        Object[] samples =
+                { 42, -7, "Java", new int[] {1, 2, 3}, 3.14, null };
         for (Object o : samples) {
             System.out.println(describe(o));
         }

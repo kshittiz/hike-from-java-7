@@ -27,16 +27,20 @@ import java.util.TimeZone;
 
 public class OldDateTraps {
     public static void main(String[] args) {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));      // the old API silently uses a global default
-        Calendar cal = new GregorianCalendar(2013, 7, 1);       // month 7 is AUGUST: months start at 0
+        // the old API silently uses a global default
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        // month 7 is AUGUST: months start at 0
+        Calendar cal = new GregorianCalendar(2013, 7, 1);
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        System.out.println("asked for 2013-7-1, got " + fmt.format(cal.getTime()));
+        System.out.println("asked for 2013-7-1, got "
+                + fmt.format(cal.getTime()));
 
         Date date = cal.getTime();
         Date copy = date;
-        copy.setTime(0);                                       // Date is mutable: shared objects change
+        copy.setTime(0);  // Date is mutable: shared objects change
         System.out.println("original changed too: " + (date.getTime() == 0));
-        System.out.println("year field of new Date(0): " + new Date(0).getYear() + " (years since 1900)");
+        System.out.println("year field of new Date(0): "
+                + new Date(0).getYear() + " (years since 1900)");
     }
 }
 ```
@@ -81,19 +85,24 @@ import java.time.temporal.TemporalAdjusters;
 
 public class JavaTimeBasics {
     public static void main(String[] args) {
-        LocalDate start  = LocalDate.of(2013, Month.JULY, 1);           // months are 1-based, or use the enum
+        // months are 1-based, or use the enum
+        LocalDate start = LocalDate.of(2013, Month.JULY, 1);
         LocalDate book = LocalDate.of(2026, 11, 21);
         System.out.println(start + " was a " + start.getDayOfWeek());
-        System.out.println("plus one month: " + start.plusMonths(1));   // returns a new object
+        // returns a new object
+        System.out.println("plus one month: " + start.plusMonths(1));
         System.out.println("start unchanged: " + start);
 
         Period gap = Period.between(start, book);
-        System.out.println("gap: " + gap + " = " + gap.getYears() + " years, " + gap.getMonths() + " months, " + gap.getDays() + " days");
+        System.out.println("gap: " + gap + " = " + gap.getYears() + " years, "
+                + gap.getMonths() + " months, " + gap.getDays() + " days");
         System.out.println("days: " + ChronoUnit.DAYS.between(start, book));
 
-        System.out.println("2024 leap? " + LocalDate.of(2024, 1, 1).isLeapYear());
+        System.out.println("2024 leap? "
+                + LocalDate.of(2024, 1, 1).isLeapYear());
+        LocalDate release = LocalDate.of(2026, 9, 15);
         System.out.println("next Monday after release day: "
-                + LocalDate.of(2026, 9, 15).with(TemporalAdjusters.next(DayOfWeek.MONDAY)));
+                + release.with(TemporalAdjusters.next(DayOfWeek.MONDAY)));
     }
 }
 ```
@@ -127,15 +136,22 @@ import java.time.ZonedDateTime;
 public class ZonesAndDst {
     public static void main(String[] args) {
         ZoneId seattle = ZoneId.of("America/Los_Angeles");
-        ZonedDateTime beforeJump = ZonedDateTime.of(LocalDateTime.of(2026, 3, 8, 1, 30), seattle);
-        ZonedDateTime oneHourLater = beforeJump.plusHours(1);          // clocks jump from 2:00 to 3:00
+        ZonedDateTime beforeJump = ZonedDateTime.of(
+                LocalDateTime.of(2026, 3, 8, 1, 30), seattle);
+        // clocks jump from 2:00 to 3:00
+        ZonedDateTime oneHourLater = beforeJump.plusHours(1);
         System.out.println(beforeJump);
         System.out.println(oneHourLater);
-        System.out.println("elapsed: " + Duration.between(beforeJump, oneHourLater));
+        System.out.println("elapsed: "
+                + Duration.between(beforeJump, oneHourLater));
 
-        Instant release = Instant.parse("2026-09-15T17:00:00Z");      // a point on the timeline, in UTC
-        System.out.println("in Kolkata: " + release.atZone(ZoneId.of("Asia/Kolkata")).toLocalDateTime());
-        System.out.println("in Seattle: " + release.atZone(seattle).toLocalDateTime());
+        // a point on the timeline, in UTC
+        Instant release = Instant.parse("2026-09-15T17:00:00Z");
+        ZoneId kolkata = ZoneId.of("Asia/Kolkata");
+        System.out.println("in Kolkata: "
+                + release.atZone(kolkata).toLocalDateTime());
+        System.out.println("in Seattle: "
+                + release.atZone(seattle).toLocalDateTime());
     }
 }
 ```
@@ -167,7 +183,9 @@ import java.util.Locale;
 
 public class Formatting {
     public static void main(String[] args) {
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd MMM uuuu", Locale.US);   // immutable, thread-safe
+        // immutable, thread-safe
+        DateTimeFormatter f =
+                DateTimeFormatter.ofPattern("dd MMM uuuu", Locale.US);
         LocalDate d = LocalDate.of(2013, 7, 1);
         System.out.println(d.format(f));
         System.out.println(LocalDate.parse("21 Nov 2026", f));

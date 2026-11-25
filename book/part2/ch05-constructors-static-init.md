@@ -41,14 +41,15 @@ public class Chaining {
     final int age;
 
     Chaining() {
-        this("unknown");                  // must be the first statement (before Java 25)
+        this("unknown");  // must be the first statement (before Java 25)
         System.out.println("  no-arg constructor");
     }
     Chaining(String name) {
         this(name, 0);
         System.out.println("  one-arg constructor");
     }
-    Chaining(String name, int age) {      // the one constructor that does the real work
+    // the one constructor that does the real work
+    Chaining(String name, int age) {
         this.name = name;
         this.age = age;
         System.out.println("  two-arg constructor");
@@ -85,13 +86,14 @@ Each constructor delegates to a more complete one, so the real initialization li
 public class InitOrder {
     static int created;
 
-    static {                                   // runs once, when the class is initialized
+    static {  // runs once, when the class is initialized
         System.out.println("1. static block");
     }
 
-    {                                          // runs for every object, before the constructor body
+    {  // runs for every object, before the constructor body
         created++;
-        System.out.println("2. instance initializer (object #" + created + ")");
+        System.out.println("2. instance initializer (object #"
+                + created + ")");
     }
 
     InitOrder() {
@@ -145,7 +147,8 @@ public class StaticRules {
     StaticRules() { id = ++instances; }
 
     static String describe() {
-        // return "id " + id;      // would not compile: no 'this' in a static method
+        // would not compile: no 'this' in a static method
+        // return "id " + id;
         return instances + " instances so far";
     }
 
@@ -198,7 +201,7 @@ In Java 6, running a class with only a static block printed the block's output, 
 ```java
 class NoMain {
     static {
-        System.out.println("static work");     // Java 6: printed, then an error
+        System.out.println("static work");  // Java 6: printed, then an error
     }
 }
 ```
@@ -226,7 +229,8 @@ public class ValidateBeforeSuper7 {
 
     static class Savings extends Account {
         Savings(String id) {
-            super(normalize(id));                 // before Java 25: work hides in a static helper
+            // before Java 25: work hides in a static helper
+            super(normalize(id));
         }
         private static String normalize(String id) {
             if (id.isBlank()) throw new IllegalArgumentException("empty id");
@@ -262,9 +266,12 @@ public class ValidateBeforeSuper25 {
 
     static class Savings extends Account {
         Savings(String id) {
-            if (id.isBlank()) throw new IllegalArgumentException("empty id");   // Java 25:
-            String clean = id.strip().toUpperCase();                            // statements
-            super(clean);                                                       // before super()
+            // Java 25:
+            if (id.isBlank()) throw new IllegalArgumentException("empty id");
+            // statements
+            String clean = id.strip().toUpperCase();
+            // before super()
+            super(clean);
         }
     }
 

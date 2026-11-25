@@ -6,17 +6,22 @@ public class UnnamedPatterns {
 
     static String corners(Shape s) {
         return switch (s) {
-            case Circle _             -> "no corners";        // Java 22: _ for an unused binding
-            case Square _, Rect _     -> "four corners";      // several patterns, one case
+            // Java 22: _ for an unused binding
+            case Circle _             -> "no corners";
+            // several patterns, one case
+            case Square _, Rect _     -> "four corners";
         };
     }
 
     static boolean isWide(Shape s) {
-        return s instanceof Rect(var w, _) && w > 10;         // ignore the height component
+        // ignore the height component
+        return s instanceof Rect(var w, _) && w > 10;
     }
 
     public static void main(String[] args) {
-        System.out.println(corners(new Circle(1)) + ", " + corners(new Rect(2, 3)));
-        System.out.println(isWide(new Rect(12, 1)) + " " + isWide(new Square(20)));
+        System.out.println(corners(new Circle(1)) + ", "
+                + corners(new Rect(2, 3)));
+        System.out.println(isWide(new Rect(12, 1)) + " "
+                + isWide(new Square(20)));
     }
 }

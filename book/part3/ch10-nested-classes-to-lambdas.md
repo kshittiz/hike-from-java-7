@@ -16,6 +16,14 @@
 
 ## Four kinds of nested class
 
+> [!NOTE]
+> **Picture it: a hiking club**
+>
+> - A **static nested** class is the club's **rulebook**. It belongs with the club, but you can read it without any particular trip.
+> - An **inner** class is a trip's **sign-up sheet**. Every sheet belongs to one specific trip and can read that trip's date and leader.
+> - A **local** class is a **note** written at one stop of one trip. It exists only there.
+> - An **anonymous** class is a **volunteer** who helps once and never gives a name.
+
 **Example:** [`code/ch10/NestedKinds.java`](../../code/ch10/NestedKinds.java) · [how to run it](../../code/ch10/README.md#nestedkindsjava) · Java 8+
 
 ```java
@@ -31,11 +39,15 @@ public class NestedKinds {
     }
 
     Runnable makeTasks(String label) {
-        class Local implements Runnable {           // visible only inside this method
-            public void run() { System.out.println("local class: " + label); }
+        class Local implements Runnable {  // visible only inside this method
+            public void run() {
+                System.out.println("local class: " + label);
+            }
         }
         Runnable anonymous = new Runnable() {       // no name; one instance
-            public void run() { System.out.println("anonymous class: " + label); }
+            public void run() {
+                System.out.println("anonymous class: " + label);
+            }
         };
         new Local().run();
         return anonymous;
@@ -44,10 +56,12 @@ public class NestedKinds {
     public static void main(String[] args) {
         System.out.println(new StaticNested().hi());
         NestedKinds outer = new NestedKinds();
-        NestedKinds.Inner inner = outer.new Inner();   // note the outer.new syntax
+        // note the outer.new syntax
+        NestedKinds.Inner inner = outer.new Inner();
         System.out.println(inner.hi());
         outer.makeTasks("hello").run();
-        Runnable lambda = () -> System.out.println("lambda: no class file of its own");
+        Runnable lambda =
+                () -> System.out.println("lambda: no class file of its own");
         lambda.run();
     }
 }
@@ -92,6 +106,11 @@ An inner class object keeps a reference to the outer object it was created from 
 Local and anonymous classes, and lambdas, can use local variables from the enclosing method. They capture a **copy** of the value, so the variable must not change afterwards, or the copy and the variable would disagree.
 
 > [!NOTE]
+> **Picture it: a photo of the whiteboard**
+>
+> A lambda doesn't watch a local variable live. It takes a **photo** of the value when it's created. If the method could keep rewriting the whiteboard afterwards, the photo and the board would disagree, and nobody could tell which one the code meant. So Java doesn't allow the rewrite: the variable must stay unchanged.
+
+> [!NOTE]
 > **The classic rule**
 >
 > *"Rule → Local Inner Class can access local variables of the method only if they are `final`."*
@@ -105,7 +124,7 @@ public class NotEffectivelyFinal {
     public static void main(String[] args) {
         int count = 0;
         Runnable r = () -> System.out.println(count);
-        count++;                              // reassigned: no longer effectively final
+        count++;  // reassigned: no longer effectively final
     }
 }
 ```
@@ -135,7 +154,8 @@ public class SortingJourney {
 
     public static void main(String[] args) {
         List<Dev> devs = new ArrayList<>(Arrays.asList(
-                new Dev("Asha", 9), new Dev("Ravi", 3), new Dev("Mia", 9), new Dev("Leo", 5)));
+                new Dev("Asha", 9), new Dev("Ravi", 3),
+                new Dev("Mia", 9), new Dev("Leo", 5)));
 
         // Java 7: an anonymous Comparator
         Collections.sort(devs, new Comparator<Dev>() {
@@ -150,7 +170,8 @@ public class SortingJourney {
         System.out.println("lambda  " + devs);
 
         // Java 8: comparator combinators and method references
-        devs.sort(Comparator.comparingInt(Dev::years).reversed().thenComparing(Dev::name));
+        devs.sort(Comparator.comparingInt(Dev::years).reversed()
+                .thenComparing(Dev::name));
         System.out.println("combin. " + devs);
     }
 }
@@ -172,15 +193,26 @@ A lambda can stand in wherever a **[functional interface](https://docs.oracle.co
 
 ### Lambdas are not just shorter anonymous classes
 
+> [!NOTE]
+> **Picture it: hiring a helper vs leaving a note**
+>
+> An anonymous class is like **hiring a temporary helper**. They get their own name badge (a class file) and their own desk (fields), and when they say "I", they mean themselves (`this`).
+>
+> A lambda is like **leaving a note** with instructions. The note doesn't speak for itself, so "I" in the note still means you, the object that wrote it.
+
 **Example:** [`code/ch10/ThisMeaning.java`](../../code/ch10/ThisMeaning.java) · [how to run it](../../code/ch10/README.md#thismeaningjava) · Java 8+
 
 ```java
 public class ThisMeaning {
     void show() {
         Runnable anon = new Runnable() {
-            public void run() { System.out.println("anonymous this: " + this.getClass().getName()); }
+            public void run() {
+                System.out.println("anonymous this: "
+                        + this.getClass().getName());
+            }
         };
-        Runnable lambda = () -> System.out.println("lambda this:    " + this.getClass().getName());
+        Runnable lambda = () -> System.out.println("lambda this:    "
+                + this.getClass().getName());
         anon.run();
         lambda.run();
     }
@@ -215,8 +247,8 @@ Records (Java 16, [JEP 395](https://openjdk.org/jeps/395)) brought a quiet relax
 
 ```java
 public class InnerWithMain {
-    class Inner {                                        // an inner (non-static) class
-        static int created = 0;                          // static members allowed since Java 16
+    class Inner {                // an inner (non-static) class
+        static int created = 0;  // static members allowed since Java 16
         public static void main(String[] args) {
             System.out.println("main inside an inner class");
         }

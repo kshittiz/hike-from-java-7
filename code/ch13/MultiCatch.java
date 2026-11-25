@@ -3,8 +3,10 @@ public class MultiCatch {
         try {
             if (kind.equals("int")) return Integer.parseInt(text);
             return Class.forName(text);
-        } catch (NumberFormatException | ClassNotFoundException e) {   // Java 7: one handler
-            return "could not parse '" + text + "' (" + e.getClass().getSimpleName() + ")";
+        // Java 7: one handler
+        } catch (NumberFormatException | ClassNotFoundException e) {
+            return "could not parse '" + text + "' ("
+                    + e.getClass().getSimpleName() + ")";
         }
     }
 

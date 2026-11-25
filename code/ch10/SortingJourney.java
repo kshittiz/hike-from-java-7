@@ -9,7 +9,8 @@ public class SortingJourney {
 
     public static void main(String[] args) {
         List<Dev> devs = new ArrayList<>(Arrays.asList(
-                new Dev("Asha", 9), new Dev("Ravi", 3), new Dev("Mia", 9), new Dev("Leo", 5)));
+                new Dev("Asha", 9), new Dev("Ravi", 3),
+                new Dev("Mia", 9), new Dev("Leo", 5)));
 
         // Java 7: an anonymous Comparator
         Collections.sort(devs, new Comparator<Dev>() {
@@ -24,7 +25,8 @@ public class SortingJourney {
         System.out.println("lambda  " + devs);
 
         // Java 8: comparator combinators and method references
-        devs.sort(Comparator.comparingInt(Dev::years).reversed().thenComparing(Dev::name));
+        devs.sort(Comparator.comparingInt(Dev::years).reversed()
+                .thenComparing(Dev::name));
         System.out.println("combin. " + devs);
     }
 }

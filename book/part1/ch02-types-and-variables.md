@@ -68,11 +68,16 @@ The wrapper classes know each type's limits, so we can ask Java directly:
 ```java
 public class Ranges {
     public static void main(String[] args) {
-        System.out.println("byte   " + Byte.MIN_VALUE + " .. " + Byte.MAX_VALUE);
-        System.out.println("short  " + Short.MIN_VALUE + " .. " + Short.MAX_VALUE);
-        System.out.println("int    " + Integer.MIN_VALUE + " .. " + Integer.MAX_VALUE);
-        System.out.println("long   " + Long.MIN_VALUE + " .. " + Long.MAX_VALUE);
-        System.out.println("char   " + (int) Character.MIN_VALUE + " .. " + (int) Character.MAX_VALUE);
+        System.out.println("byte   " + Byte.MIN_VALUE
+                + " .. " + Byte.MAX_VALUE);
+        System.out.println("short  " + Short.MIN_VALUE
+                + " .. " + Short.MAX_VALUE);
+        System.out.println("int    " + Integer.MIN_VALUE
+                + " .. " + Integer.MAX_VALUE);
+        System.out.println("long   " + Long.MIN_VALUE
+                + " .. " + Long.MAX_VALUE);
+        System.out.println("char   " + (int) Character.MIN_VALUE
+                + " .. " + (int) Character.MAX_VALUE);
         System.out.println("float  max " + Float.MAX_VALUE);
         System.out.println("double max " + Double.MAX_VALUE);
     }
@@ -123,7 +128,8 @@ public class Literals {
         int octal   = 017;             // a leading zero means octal!
         long million = 1_000_000L;     // Java 7 underscores, L for long
         double rate = 6.022_140_76e23;
-        System.out.println(binary + " " + hex + " " + octal + " " + million + " " + rate);
+        System.out.println(binary + " " + hex + " " + octal + " "
+                + million + " " + rate);
     }
 }
 ```
@@ -164,7 +170,8 @@ public class CharMath {
         String grin   = "😀";       // grinning face, a surrogate pair
         System.out.println("coffee length = " + coffee.length());
         System.out.println("grin length   = " + grin.length());
-        System.out.println("grin code points = " + grin.codePointCount(0, grin.length()));
+        System.out.println("grin code points = "
+                + grin.codePointCount(0, grin.length()));
     }
 }
 ```
@@ -228,17 +235,21 @@ double d = i;       // automatic
 public class Narrowing {
     public static void main(String[] args) {
         int big = Integer.MAX_VALUE;
-        System.out.println("MAX_VALUE + 1  = " + (big + 1));          // silent wrap-around
-        System.out.println("(byte) 130     = " + (byte) 130);         // keeps only the low 8 bits
-        System.out.println("(int) 3.99     = " + (int) 3.99);         // truncates, never rounds
+        // silent wrap-around
+        System.out.println("MAX_VALUE + 1  = " + (big + 1));
+        // keeps only the low 8 bits
+        System.out.println("(byte) 130     = " + (byte) 130);
+        // truncates, never rounds
+        System.out.println("(int) 3.99     = " + (int) 3.99);
         System.out.println("(int) -3.99    = " + (int) -3.99);
-        System.out.println("(int) 1e20     = " + (int) 1e20);         // clamps for double -> int
+        // clamps for double -> int
+        System.out.println("(int) 1e20     = " + (int) 1e20);
         System.out.println("Math.addExact  = " + safeAdd(big, 1));
     }
 
     static String safeAdd(int a, int b) {
         try {
-            return String.valueOf(Math.addExact(a, b));               // Java 8+
+            return String.valueOf(Math.addExact(a, b));  // Java 8+
         } catch (ArithmeticException e) {
             return "ArithmeticException: " + e.getMessage();
         }
@@ -313,9 +324,12 @@ public class PromotionFixed {
     public static void main(String[] args) {
         byte a = 10;
         byte b = 20;
-        int sum = a + b;            // fix 1: accept the int
-        byte cast = (byte) (a + b); // fix 2: narrow it yourself
-        a += b;                     // fix 3: compound assignment casts for you
+        // fix 1: accept the int
+        int sum = a + b;
+        // fix 2: narrow it yourself
+        byte cast = (byte) (a + b);
+        // fix 3: compound assignment casts for you
+        a += b;
         System.out.println(sum + " " + cast + " " + a);
     }
 }
@@ -390,7 +404,8 @@ public class Defaults {
 
     public static void main(String[] args) {
         Defaults d = new Defaults();
-        System.out.println(d.count + " " + d.ready + " " + d.name + " " + d.ratio);
+        System.out.println(d.count + " " + d.ready + " "
+                + d.name + " " + d.ratio);
     }
 }
 ```
@@ -467,10 +482,11 @@ Java has no `unsigned int` type, and still doesn't in Java 27. That's awkward wh
 public class Unsigned {
     public static void main(String[] args) {
         int allOnes = -1;   // bit pattern 0xFFFFFFFF
-        System.out.println(Integer.toUnsignedString(allOnes));          // Java 8
+        System.out.println(Integer.toUnsignedString(allOnes));  // Java 8
         System.out.println(Integer.toUnsignedLong(allOnes));
         System.out.println(Integer.divideUnsigned(allOnes, 2));
-        System.out.println(Byte.toUnsignedInt((byte) 0xFF));            // reading raw bytes
+        // reading raw bytes
+        System.out.println(Byte.toUnsignedInt((byte) 0xFF));
         System.out.println(Integer.compareUnsigned(-1, 1) > 0);
     }
 }
@@ -502,7 +518,8 @@ import java.util.Map;
 
 public class VarDemo {
     public static void main(String[] args) {
-        // Java 7: the type is written twice (the diamond <> saved us a little)
+        // Java 7: the type is written twice
+        // (the diamond <> saved us a little)
         Map<String, List<Integer>> scores7 = new HashMap<>();
 
         // Java 10: the compiler infers the type from the right-hand side
@@ -588,7 +605,7 @@ public class Unnamed {
 
         try {
             Integer.parseInt("forty-two");
-        } catch (NumberFormatException _) {        // we never read the exception
+        } catch (NumberFormatException _) {  // we never read the exception
             System.out.println("not a number");
         }
     }

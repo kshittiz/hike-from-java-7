@@ -10,6 +10,7 @@ public class CharMath {
         String grin   = "😀";       // grinning face, a surrogate pair
         System.out.println("coffee length = " + coffee.length());
         System.out.println("grin length   = " + grin.length());
-        System.out.println("grin code points = " + grin.codePointCount(0, grin.length()));
+        System.out.println("grin code points = "
+                + grin.codePointCount(0, grin.length()));
     }
 }

@@ -10,7 +10,7 @@ public class Unnamed {
 
         try {
             Integer.parseInt("forty-two");
-        } catch (NumberFormatException _) {        // we never read the exception
+        } catch (NumberFormatException _) {  // we never read the exception
             System.out.println("not a number");
         }
     }

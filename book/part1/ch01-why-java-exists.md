@@ -251,7 +251,8 @@ import java.io.InputStream;
 public class ClassVersion {
     public static void main(String[] args) throws IOException {
         // The first 8 bytes of every .class file: magic number, minor, major.
-        try (InputStream in = ClassVersion.class.getResourceAsStream("Probe.class");
+        try (InputStream in =
+                     ClassVersion.class.getResourceAsStream("Probe.class");
              DataInputStream data = new DataInputStream(in)) {
             int magic = data.readInt();
             int minor = data.readUnsignedShort();
@@ -328,8 +329,10 @@ No `.class` file is produced, so there's nothing to run.
 ```java
 public class RunTimeError {
     public static void main(String[] args) {
-        int zero = args.length;          // 0, because we pass no arguments
-        System.out.println(10 / zero);   // the compiler cannot know this will fail
+        // 0, because we pass no arguments
+        int zero = args.length;
+        // the compiler cannot know this will fail
+        System.out.println(10 / zero);
     }
 }
 ```
@@ -351,7 +354,8 @@ There are several classic interview questions about `main`, marked **IQ** in thi
 ```java
 public class MainOverload {
     public static void main(String[] args) {
-        System.out.println("JVM called main(String[]) with " + args.length + " args");
+        System.out.println("JVM called main(String[]) with "
+                + args.length + " args");
         main(42);               // an ordinary call: main is just a method
     }
 
@@ -453,8 +457,12 @@ Now that several `main` shapes are legal, the launcher needs a rule. Java 25 pic
 
 ```java
 class OrderB {
-    static void main()              { System.out.println("static main()"); }
-    void main(String[] args)        { System.out.println("instance main(String[])"); }
+    static void main() {
+        System.out.println("static main()");
+    }
+    void main(String[] args) {
+        System.out.println("instance main(String[])");
+    }
 }
 ```
 

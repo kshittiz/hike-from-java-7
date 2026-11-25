@@ -6,9 +6,9 @@ public class CatchOrder {
     public static void main(String[] args) {
         try {
             new FileReader("missing.txt").close();
-        } catch (IOException e) {                       // the parent first...
+        } catch (IOException e) {             // the parent first...
             System.out.println("I/O problem");
-        } catch (FileNotFoundException e) {             // ...makes this unreachable
+        } catch (FileNotFoundException e) {   // ...makes this unreachable
             System.out.println("no such file");
         }
     }

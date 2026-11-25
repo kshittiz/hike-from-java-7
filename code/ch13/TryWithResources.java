@@ -8,7 +8,9 @@ public class TryWithResources {
         }
         @Override public void close() {
             System.out.println("close " + name);
-            if (failOnClose) throw new IllegalStateException("close failed: " + name);
+            if (failOnClose) {
+                throw new IllegalStateException("close failed: " + name);
+            }
         }
     }
 
@@ -25,7 +27,7 @@ public class TryWithResources {
         }
 
         Resource shared = new Resource("shared", false);
-        try (shared) {                                             // Java 9: an effectively final variable
+        try (shared) {  // Java 9: an effectively final variable
             System.out.println("using shared");
         }
     }

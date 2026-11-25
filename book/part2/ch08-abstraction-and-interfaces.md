@@ -22,9 +22,13 @@
 public class AbstractShape {
     static abstract class Shape {
         private final String name;
-        Shape(String name) { this.name = name; }      // abstract classes can have constructors
-        abstract double area();                       // no body: subclasses must provide it
-        String describe() { return name + " with area " + String.format("%.2f", area()); }
+        // abstract classes can have constructors
+        Shape(String name) { this.name = name; }
+        // no body: subclasses must provide it
+        abstract double area();
+        String describe() {
+            return name + " with area " + String.format("%.2f", area());
+        }
     }
     static class Circle extends Shape {
         final double r;
@@ -33,7 +37,8 @@ public class AbstractShape {
     }
 
     public static void main(String[] args) {
-        Shape s = new Circle(1);          // reference of the abstract type, object of a concrete one
+        // reference of the abstract type, object of a concrete one
+        Shape s = new Circle(1);
         System.out.println(s.describe());
     }
 }
@@ -135,14 +140,19 @@ import java.util.List;
 
 public class InterfaceEvolution {
     interface Greeter {
-        String name();                                         // abstract: implementers must provide
+        String name();  // abstract: implementers must provide
 
-        default String greet() { return decorate("Hello, " + name()); }   // Java 8: default method
-        default String shout() { return decorate(("Hello, " + name() + "!").toUpperCase()); }
+        // Java 8: default method
+        default String greet() { return decorate("Hello, " + name()); }
+        default String shout() {
+            return decorate(("Hello, " + name() + "!").toUpperCase());
+        }
 
-        static Greeter of(String name) { return () -> name; }  // Java 8: static method
+        // Java 8: static method
+        static Greeter of(String name) { return () -> name; }
 
-        private String decorate(String s) { return "<< " + s + " >>"; }   // Java 9: private method
+        // Java 9: private method
+        private String decorate(String s) { return "<< " + s + " >>"; }
     }
 
     public static void main(String[] args) {
@@ -150,8 +160,9 @@ public class InterfaceEvolution {
         System.out.println(g.greet());
         System.out.println(g.shout());
 
-        List<String> names = new java.util.ArrayList<>(List.of("b", "c", "a"));
-        names.sort(null);                 // List.sort: a default method added in Java 8
+        List<String> names =
+                new java.util.ArrayList<>(List.of("b", "c", "a"));
+        names.sort(null);  // List.sort: a default method added in Java 8
         System.out.println(names);
     }
 }
@@ -179,7 +190,7 @@ public class DiamondDefault {
     interface Swimmer { default String move() { return "swim"; } }
 
     static class Duck implements Walker, Swimmer {
-        @Override public String move() {                       // required: the defaults conflict
+        @Override public String move() {  // required: the defaults conflict
             return Walker.super.move() + " and " + Swimmer.super.move();
         }
     }
@@ -211,20 +222,24 @@ import java.util.function.Predicate;
 
 public class FunctionalInterfaces {
     @FunctionalInterface
-    interface Discount {                         // exactly one abstract method
+    interface Discount {  // exactly one abstract method
         double apply(double price);
     }
 
     public static void main(String[] args) {
         Discount java7Style = new Discount() {   // Java 7: anonymous class
-            @Override public double apply(double price) { return price * 0.9; }
+            @Override public double apply(double price) {
+                return price * 0.9;
+            }
         };
         Discount java8Style = price -> price * 0.9;     // Java 8: lambda
 
-        System.out.println(java7Style.apply(200) + " " + java8Style.apply(200));
+        System.out.println(java7Style.apply(200) + " "
+                + java8Style.apply(200));
 
         Predicate<String> longWord = w -> w.length() > 4;
-        System.out.println(longWord.and(w -> w.startsWith("j")).test("javadoc"));
+        System.out.println(
+                longWord.and(w -> w.startsWith("j")).test("javadoc"));
     }
 }
 ```

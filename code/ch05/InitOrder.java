@@ -1,13 +1,14 @@
 public class InitOrder {
     static int created;
 
-    static {                                   // runs once, when the class is initialized
+    static {  // runs once, when the class is initialized
         System.out.println("1. static block");
     }
 
-    {                                          // runs for every object, before the constructor body
+    {  // runs for every object, before the constructor body
         created++;
-        System.out.println("2. instance initializer (object #" + created + ")");
+        System.out.println("2. instance initializer (object #"
+                + created + ")");
     }
 
     InitOrder() {

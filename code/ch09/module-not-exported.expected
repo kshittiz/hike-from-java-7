@@ -1,5 +1,5 @@
-sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
-import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:4: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;
                       ^
   (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error

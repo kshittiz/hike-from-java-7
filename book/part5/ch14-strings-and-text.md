@@ -22,7 +22,7 @@
 public class Immutable {
     public static void main(String[] args) {
         String s = "hike";
-        s.concat(" 27");                   // returns a new String, which we discard
+        s.concat(" 27");  // returns a new String, which we discard
         s.toUpperCase();
         System.out.println(s);               // unchanged
 
@@ -53,12 +53,16 @@ When you build text piece by piece, use the mutable `StringBuilder`. Its older s
 ```java
 public class StringPool {
     public static void main(String[] args) {
-        String a = "java";                    // literal: from the string pool
-        String b = "java";                    // same pooled object
-        String c = new String("java");        // a new object on the heap, every time
-        String d = "ja" + "va";               // compile-time constant: folded to "java"
+        // literal: from the string pool
+        String a = "java";
+        // same pooled object
+        String b = "java";
+        // a new object on the heap, every time
+        String c = new String("java");
+        // compile-time constant: folded to "java"
+        String d = "ja" + "va";
         String part = "ja";
-        String e = part + "va";               // computed at run time: a new object
+        String e = part + "va";  // computed at run time: a new object
 
         System.out.println("a == b          " + (a == b));
         System.out.println("a == c          " + (a == c));
@@ -119,9 +123,12 @@ flowchart LR
 ```java
 public class ConcatOperator {
     public static void main(String[] args) {
-        System.out.println(1 + 2 + "3");      // left to right: 3 + "3"
-        System.out.println("1" + 2 + 3);      // "12" + 3
-        System.out.println('a' + 'b' + "c");  // char + char is an int: 195 + "c"
+        // left to right: 3 + "3"
+        System.out.println(1 + 2 + "3");
+        // "12" + 3
+        System.out.println("1" + 2 + 3);
+        // char + char is an int: 195 + "c"
+        System.out.println('a' + 'b' + "c");
         System.out.println("a" + 'b' + 'c');
         String nothing = null;
         System.out.println("value: " + nothing);
@@ -162,13 +169,20 @@ public class SplitVsTokenizer {
     public static void main(String[] args) {
         String line = "java,  seven ,,twenty-seven";
 
-        StringTokenizer st = new StringTokenizer(line, ", ");     // legacy, but still works
+        // legacy, but still works
+        StringTokenizer st = new StringTokenizer(line, ", ");
         StringBuilder tokens = new StringBuilder();
-        while (st.hasMoreTokens()) tokens.append(tokens.length() == 0 ? "" : "|").append(st.nextToken());
+        while (st.hasMoreTokens()) {
+            tokens.append(tokens.length() == 0 ? "" : "|");
+            tokens.append(st.nextToken());
+        }
         System.out.println("StringTokenizer: " + tokens);
 
-        System.out.println("split(\",\"):    " + String.join("|", line.split(",")));            // keeps empties
-        System.out.println("split regex:     " + String.join("|", line.split("\\s*,+\\s*")));
+        // keeps empties
+        System.out.println("split(\",\"):    "
+                + String.join("|", line.split(",")));
+        System.out.println("split regex:     "
+                + String.join("|", line.split("\\s*,+\\s*")));
     }
 }
 ```
@@ -188,9 +202,12 @@ Java 7-era code often used [`StringTokenizer`](https://docs.oracle.com/en/java/j
 ```java
 public class ModernStringMethods {
     public static void main(String[] args) {
-        String padded = "\u2003 Java \u2003";             // em spaces: Unicode whitespace
-        System.out.println("trim()  length " + padded.trim().length());    // trim removes only chars <= ' '
-        System.out.println("strip() length " + padded.strip().length());   // Java 11: Unicode-aware
+        // em spaces: Unicode whitespace
+        String padded = "\u2003 Java \u2003";
+        // trim removes only chars <= ' '
+        System.out.println("trim()  length " + padded.trim().length());
+        // Java 11: Unicode-aware
+        System.out.println("strip() length " + padded.strip().length());
         System.out.println("   ".isBlank());                // Java 11
         System.out.println("ab".repeat(3));                 // Java 11
         System.out.println("one\ntwo\nthree".lines().count());   // Java 11
@@ -233,20 +250,22 @@ public class TextBlocks {
                        "  \"chapters\": 20\n" +
                        "}";
 
+        // Java 15: text block
         String java15 = """
                 {
                   "title": "A Hike from Java 7",
                   "chapters": 20
-                }""";                                        // Java 15: text block
+                }""";
 
         System.out.println(java15);
         System.out.println("same text: " + java7.equals(java15));
 
+        // \ at a line end joins it to the next line (Java 15)
         String sql = """
                 SELECT name
                   FROM releases
                  WHERE lts = true \
-                ORDER BY year""";                             // \ joins lines (Java 15)
+                ORDER BY year""";
         System.out.println(sql);
     }
 }

@@ -5,9 +5,12 @@ public class ValidateBeforeSuper25 {
 
     static class Savings extends Account {
         Savings(String id) {
-            if (id.isBlank()) throw new IllegalArgumentException("empty id");   // Java 25:
-            String clean = id.strip().toUpperCase();                            // statements
-            super(clean);                                                       // before super()
+            // Java 25:
+            if (id.isBlank()) throw new IllegalArgumentException("empty id");
+            // statements
+            String clean = id.strip().toUpperCase();
+            // before super()
+            super(clean);
         }
     }
 

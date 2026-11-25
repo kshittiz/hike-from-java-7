@@ -32,13 +32,19 @@ Wrappers are immutable and `final`, and they carry useful static helpers:
 ```java
 public class Parsing {
     public static void main(String[] args) {
-        int a = Integer.parseInt("27");             // String -> primitive
-        Integer b = Integer.valueOf("27");          // String -> wrapper (may be cached)
-        int bin = Integer.parseInt("11011", 2);     // with a radix
+        // String -> primitive
+        int a = Integer.parseInt("27");
+        // String -> wrapper (may be cached)
+        Integer b = Integer.valueOf("27");
+        // with a radix
+        int bin = Integer.parseInt("11011", 2);
         System.out.println(a + b + bin);
-        System.out.println(Integer.toBinaryString(27) + " " + Integer.toHexString(255) + " " + Integer.MAX_VALUE);
-        System.out.println(Integer.compare(7, 27) + " " + Integer.sum(7, 20) + " " + Character.isDigit('7'));
-        System.out.println(Double.parseDouble("2.7e1") + " " + Boolean.parseBoolean("TRUE"));
+        System.out.println(Integer.toBinaryString(27) + " "
+                + Integer.toHexString(255) + " " + Integer.MAX_VALUE);
+        System.out.println(Integer.compare(7, 27) + " "
+                + Integer.sum(7, 20) + " " + Character.isDigit('7'));
+        System.out.println(Double.parseDouble("2.7e1") + " "
+                + Boolean.parseBoolean("TRUE"));
     }
 }
 ```
@@ -76,10 +82,13 @@ public class IntegerCache {
     public static void main(String[] args) {
         Integer a = 127, b = 127;          // autoboxing calls Integer.valueOf
         Integer c = 128, d = 128;
-        System.out.println("127 == 127 : " + (a == b));      // cached object
-        System.out.println("128 == 128 : " + (c == d));      // two different objects
+        // cached object
+        System.out.println("127 == 127 : " + (a == b));
+        // two different objects
+        System.out.println("128 == 128 : " + (c == d));
         System.out.println("128 equals : " + c.equals(d));
-        System.out.println("unboxed    : " + (c.intValue() == d));   // mixed: unboxes, compares values
+        // mixed: unboxes, compares values
+        System.out.println("unboxed    : " + (c.intValue() == d));
     }
 }
 ```
@@ -113,7 +122,8 @@ public class UnboxingNull {
         Map<String, Integer> stock = new HashMap<>();
         stock.put("coffee", 12);
         try {
-            int tea = stock.get("tea");        // get returns null; unboxing it throws
+            // get returns null; unboxing it throws
+            int tea = stock.get("tea");
             System.out.println(tea);
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
@@ -142,12 +152,14 @@ import java.util.Map;
 public class WrapperEquality {
     public static void main(String[] args) {
         Long big = 1L;
-        System.out.println("Long(1).equals(1)  : " + big.equals(1));     // 1 boxes to Integer
+        // 1 boxes to Integer
+        System.out.println("Long(1).equals(1)  : " + big.equals(1));
         System.out.println("Long(1).equals(1L) : " + big.equals(1L));
 
         Map<Long, String> byId = new HashMap<>();
         byId.put(42L, "Asha");
-        System.out.println("get(42)  : " + byId.get(42));                  // Integer key: not found
+        // Integer key: not found
+        System.out.println("get(42)  : " + byId.get(42));
         System.out.println("get(42L) : " + byId.get(42L));
     }
 }

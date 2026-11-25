@@ -1,10 +1,12 @@
 public class SwitchExpression {
     static int daysIn(String month, boolean leap) {
-        return switch (month) {                       // Java 14: switch is an expression
-            case "APR", "JUN", "SEP", "NOV" -> 30;    // several labels, no fall-through
+        // Java 14: switch is an expression
+        return switch (month) {
+            // several labels, no fall-through
+            case "APR", "JUN", "SEP", "NOV" -> 30;
             case "FEB" -> {
                 int d = leap ? 29 : 28;
-                yield d;                              // yield returns a value from a block
+                yield d;  // yield returns a value from a block
             }
             default -> 31;
         };

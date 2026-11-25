@@ -22,9 +22,12 @@
 public class PassByValue {
     static class Box { int value; }
 
-    static void swap(int a, int b) { int t = a; a = b; b = t; }            // swaps copies
-    static void replace(Box box)   { box = new Box(); box.value = 99; }    // repoints the copy
-    static void mutate(Box box)    { box.value = 42; }                     // changes the shared object
+    // swaps copies
+    static void swap(int a, int b) { int t = a; a = b; b = t; }
+    // repoints the copy
+    static void replace(Box box)   { box = new Box(); box.value = 99; }
+    // changes the shared object
+    static void mutate(Box box)    { box.value = 42; }
 
     public static void main(String[] args) {
         int x = 1, y = 2;
@@ -103,7 +106,8 @@ public class Varargs {
         System.out.println(sum(1, 2));        // fixed-arity wins when it fits
         System.out.println(sum(1, 2, 3));
         System.out.println(sum());            // zero arguments is fine
-        System.out.println(String.join(", ", "varargs", "in", "the", "JDK"));   // Java 8
+        // Java 8
+        System.out.println(String.join(", ", "varargs", "in", "the", "JDK"));
     }
 }
 ```
@@ -139,18 +143,23 @@ public class Binding {
         static String kind()      { return "animal"; }
     }
     static class Dog extends Animal {
-        @Override String speak()  { return "Woof"; }      // overrides
-        static String kind()      { return "dog"; }       // hides; does not override
+        // overrides
+        @Override String speak()  { return "Woof"; }
+        // hides; does not override
+        static String kind()      { return "dog"; }
     }
 
     static String describe(Animal a) { return "describe(Animal)"; }
     static String describe(Dog d)    { return "describe(Dog)"; }
 
     public static void main(String[] args) {
-        Animal a = new Dog();                 // static type Animal, runtime type Dog
-        System.out.println(a.speak());        // dynamic binding: chosen at run time -> Dog
+        // static type Animal, runtime type Dog
+        Animal a = new Dog();
+        // dynamic binding: chosen at run time -> Dog
+        System.out.println(a.speak());
         System.out.println(Animal.kind() + " / " + Dog.kind());
-        System.out.println(describe(a));      // overloads: chosen at compile time -> Animal
+        // overloads: chosen at compile time -> Animal
+        System.out.println(describe(a));
     }
 }
 ```
@@ -197,11 +206,15 @@ import java.util.function.Supplier;
 
 public class MethodRefs {
     public static void main(String[] args) {
-        Function<String, Integer> parse   = Integer::parseInt;      // static method
-        Function<String, String>  upper   = String::toUpperCase;    // instance method of the argument
+        // static method
+        Function<String, Integer> parse   = Integer::parseInt;
+        // instance method of the argument
+        Function<String, String>  upper   = String::toUpperCase;
         String prefix = "Java ";
-        Function<String, String>  addTo   = prefix::concat;         // instance method of a fixed object
-        Supplier<StringBuilder>   fresh   = StringBuilder::new;     // constructor
+        // instance method of a fixed object
+        Function<String, String>  addTo   = prefix::concat;
+        // constructor
+        Supplier<StringBuilder>   fresh   = StringBuilder::new;
         BiFunction<Integer, Integer, Integer> max = Math::max;
 
         System.out.println(parse.apply("27") + 1);

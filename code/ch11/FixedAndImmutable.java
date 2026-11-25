@@ -13,9 +13,12 @@ public class FixedAndImmutable {
     }
 
     public static void main(String[] args) {
-        List<String> asList = Arrays.asList("a", "b");          // Java 1.2: fixed-size view of an array
-        List<String> listOf = List.of("a", "b");                // Java 9: truly unmodifiable
-        List<String> growable = new ArrayList<>(listOf);        // diamond <>: Java 7
+        // Java 1.2: fixed-size view of an array
+        List<String> asList = Arrays.asList("a", "b");
+        // Java 9: truly unmodifiable
+        List<String> listOf = List.of("a", "b");
+        // diamond <>: Java 7
+        List<String> growable = new ArrayList<>(listOf);
 
         attempt("Arrays.asList set", () -> asList.set(0, "z"));
         attempt("Arrays.asList add", () -> asList.add("c"));

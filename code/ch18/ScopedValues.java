@@ -1,5 +1,6 @@
 public class ScopedValues {
-    static final ScopedValue<String> USER = ScopedValue.newInstance();   // Java 25 (preview in 21-24)
+    // Java 25 (preview in 21-24)
+    static final ScopedValue<String> USER = ScopedValue.newInstance();
 
     static void audit(String action) {
         String who = USER.isBound() ? USER.get() : "anonymous";
@@ -11,6 +12,6 @@ public class ScopedValues {
             audit("opened chapter 18");
             audit("ran the samples");
         });
-        audit("left");                                    // outside the scope: not bound
+        audit("left");  // outside the scope: not bound
     }
 }

@@ -66,9 +66,9 @@ public class References {
         Point p = new Point();     // one object on the heap
         Point q = p;               // a second reference to the SAME object
         q.x = 10;
-        System.out.println("p.x = " + p.x);         // 10: one object, two names
+        System.out.println("p.x = " + p.x);  // 10: one object, two names
 
-        q = new Point();           // q now refers to a new object; p is unaffected
+        q = new Point();  // q now refers to a new object; p is unaffected
         q.x = 99;
         System.out.println("p.x = " + p.x + ", q.x = " + q.x);
         System.out.println("p == q ? " + (p == q));
@@ -97,10 +97,12 @@ p == q ? false
 public class PrintReference {
     public static void main(String[] args) {
         Point p = new Point();
-        String text = p.toString();                          // what println(p) prints
+        String text = p.toString();  // what println(p) prints
         String expected = "Point@" + Integer.toHexString(p.hashCode());
-        System.out.println("looks like Point@<hex>: " + text.startsWith("Point@"));
-        System.out.println("hex is the hash code:   " + text.equals(expected));
+        System.out.println("looks like Point@<hex>: "
+                + text.startsWith("Point@"));
+        System.out.println("hex is the hash code:   "
+                + text.equals(expected));
     }
 }
 ```
@@ -136,14 +138,16 @@ public class Shadowing {
     int width = 1;
 
     void resize(int width) {
-        width = width * 2;            // changes the PARAMETER (data shadowing)
-        System.out.println("parameter = " + width + ", field = " + this.width);
+        width = width * 2;  // changes the PARAMETER (data shadowing)
+        System.out.println("parameter = " + width
+                + ", field = " + this.width);
         this.width = width;           // 'this' reaches the field
         System.out.println("field now = " + this.width);
     }
 
     public static void main(String[] args) {
-        new Shadowing().resize(5);    // an anonymous object: used once, never named
+        // an anonymous object: used once, never named
+        new Shadowing().resize(5);
     }
 }
 ```
@@ -186,12 +190,15 @@ public class Money7 {                  // the Java 7 way: write it all by hand
         return cents == m.cents && currency.equals(m.currency);
     }
     @Override public int hashCode() { return Objects.hash(currency, cents); }
-    @Override public String toString() { return "Money7[currency=" + currency + ", cents=" + cents + "]"; }
+    @Override public String toString() {
+        return "Money7[currency=" + currency + ", cents=" + cents + "]";
+    }
 
     public static void main(String[] args) {
         Money7 a = new Money7("USD", 1250);
         Money7 b = new Money7("USD", 1250);
-        System.out.println(a + "  ==: " + (a == b) + "  equals: " + a.equals(b));
+        System.out.println(a + "  ==: " + (a == b)
+                + "  equals: " + a.equals(b));
     }
 }
 ```
@@ -213,8 +220,10 @@ public class MoneyRecord {
     public static void main(String[] args) {
         Money a = new Money("USD", 1250);
         Money b = new Money("USD", 1250);
-        System.out.println(a + "  ==: " + (a == b) + "  equals: " + a.equals(b));
-        System.out.println("same hashCode: " + (a.hashCode() == b.hashCode()));
+        System.out.println(a + "  ==: " + (a == b)
+                + "  equals: " + a.equals(b));
+        System.out.println("same hashCode: "
+                + (a.hashCode() == b.hashCode()));
         System.out.println("accessor: " + a.cents());
     }
 }

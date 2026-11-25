@@ -3,7 +3,7 @@ public class DiamondDefault {
     interface Swimmer { default String move() { return "swim"; } }
 
     static class Duck implements Walker, Swimmer {
-        @Override public String move() {                       // required: the defaults conflict
+        @Override public String move() {  // required: the defaults conflict
             return Walker.super.move() + " and " + Swimmer.super.move();
         }
     }

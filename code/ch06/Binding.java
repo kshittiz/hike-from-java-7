@@ -4,17 +4,22 @@ public class Binding {
         static String kind()      { return "animal"; }
     }
     static class Dog extends Animal {
-        @Override String speak()  { return "Woof"; }      // overrides
-        static String kind()      { return "dog"; }       // hides; does not override
+        // overrides
+        @Override String speak()  { return "Woof"; }
+        // hides; does not override
+        static String kind()      { return "dog"; }
     }
 
     static String describe(Animal a) { return "describe(Animal)"; }
     static String describe(Dog d)    { return "describe(Dog)"; }
 
     public static void main(String[] args) {
-        Animal a = new Dog();                 // static type Animal, runtime type Dog
-        System.out.println(a.speak());        // dynamic binding: chosen at run time -> Dog
+        // static type Animal, runtime type Dog
+        Animal a = new Dog();
+        // dynamic binding: chosen at run time -> Dog
+        System.out.println(a.speak());
         System.out.println(Animal.kind() + " / " + Dog.kind());
-        System.out.println(describe(a));      // overloads: chosen at compile time -> Animal
+        // overloads: chosen at compile time -> Animal
+        System.out.println(describe(a));
     }
 }

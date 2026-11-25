@@ -3,14 +3,15 @@ public class Chaining {
     final int age;
 
     Chaining() {
-        this("unknown");                  // must be the first statement (before Java 25)
+        this("unknown");  // must be the first statement (before Java 25)
         System.out.println("  no-arg constructor");
     }
     Chaining(String name) {
         this(name, 0);
         System.out.println("  one-arg constructor");
     }
-    Chaining(String name, int age) {      // the one constructor that does the real work
+    // the one constructor that does the real work
+    Chaining(String name, int age) {
         this.name = name;
         this.age = age;
         System.out.println("  two-arg constructor");

@@ -4,11 +4,15 @@ import java.util.function.Supplier;
 
 public class MethodRefs {
     public static void main(String[] args) {
-        Function<String, Integer> parse   = Integer::parseInt;      // static method
-        Function<String, String>  upper   = String::toUpperCase;    // instance method of the argument
+        // static method
+        Function<String, Integer> parse   = Integer::parseInt;
+        // instance method of the argument
+        Function<String, String>  upper   = String::toUpperCase;
         String prefix = "Java ";
-        Function<String, String>  addTo   = prefix::concat;         // instance method of a fixed object
-        Supplier<StringBuilder>   fresh   = StringBuilder::new;     // constructor
+        // instance method of a fixed object
+        Function<String, String>  addTo   = prefix::concat;
+        // constructor
+        Supplier<StringBuilder>   fresh   = StringBuilder::new;
         BiFunction<Integer, Integer, Integer> max = Math::max;
 
         System.out.println(parse.apply("27") + 1);

@@ -2,14 +2,18 @@ public class SealedShapes {
     sealed interface Shape permits Circle, Square, Polygon { }    // Java 17
     record Circle(double radius) implements Shape { }
     record Square(double side) implements Shape { }
-    non-sealed static class Polygon implements Shape { }          // reopened for extension
+    // reopened for extension
+    non-sealed static class Polygon implements Shape { }
     static class Hexagon extends Polygon { }
 
     static String name(Shape s) {
-        return switch (s) {                                        // no default: the compiler
-            case Circle c  -> "circle r=" + c.radius();            // knows every Shape subtype
+        // no default: the compiler
+        return switch (s) {
+            // knows every Shape subtype
+            case Circle c  -> "circle r=" + c.radius();
             case Square sq -> "square side=" + sq.side();
-            case Polygon p -> "polygon (" + p.getClass().getSimpleName() + ")";
+            case Polygon p ->
+                    "polygon (" + p.getClass().getSimpleName() + ")";
         };
     }
 

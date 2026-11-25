@@ -88,15 +88,17 @@ package sale;
 import shop.Product;
 
 public class Discounted extends Product {
-    double halfPrice() { return price / 2; }               // OK: through inheritance, on this object
+    // OK: through inheritance, on this object
+    double halfPrice() { return price / 2; }
 
-    double peek(Product other) { return other.price; }     // not OK: through another Product reference
+    // not OK: through another Product reference
+    double peek(Product other) { return other.price; }
 }
 ```
 
 ```text
-protectedaccess/sale/Discounted.java:8: error: price has protected access in Product
-    double peek(Product other) { return other.price; }     // not OK: through another Product reference
+protectedaccess/sale/Discounted.java:10: error: price has protected access in Product
+    double peek(Product other) { return other.price; }
                                              ^
 1 error
 ```
@@ -139,7 +141,7 @@ flowchart LR
 
 ```java
 module com.trail.greet {
-    exports com.trail.greet;            // only this package is visible to other modules
+    exports com.trail.greet;  // only this package is visible to other modules
 }
 ```
 
@@ -161,8 +163,8 @@ running in module: com.trail.app
 `-p` is the **module path**, the modular replacement for the classpath, and `-m module/class` names what to run. Now try to use the internal package from another module:
 
 ```text
-sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
-import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:4: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;
                       ^
   (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
@@ -197,15 +199,16 @@ Java 25 added **module import declarations** ([JEP 511](https://openjdk.org/jeps
 **Example:** [`code/ch09/ModuleImport.java`](../../code/ch09/ModuleImport.java) · [how to run it](../../code/ch09/README.md#moduleimportjava) · Java 25+
 
 ```java
-import module java.base;              // Java 25: every exported package of java.base
+import module java.base;  // Java 25: every exported package of java.base
 
 public class ModuleImport {
     public static void main(String[] args) {
-        List<String> versions = List.of("7", "17", "27");                      // java.util
+        List<String> versions = List.of("7", "17", "27");  // java.util
         Map<String, Integer> lengths = new TreeMap<>();
         for (String v : versions) lengths.put(v, v.length());
         System.out.println(lengths);
-        System.out.println(Path.of("book", "chapter09.md").getFileName());     // java.nio.file
+        // java.nio.file
+        System.out.println(Path.of("book", "chapter09.md").getFileName());
     }
 }
 ```

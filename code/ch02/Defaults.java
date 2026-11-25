@@ -6,6 +6,7 @@ public class Defaults {
 
     public static void main(String[] args) {
         Defaults d = new Defaults();
-        System.out.println(d.count + " " + d.ready + " " + d.name + " " + d.ratio);
+        System.out.println(d.count + " " + d.ready + " "
+                + d.name + " " + d.ratio);
     }
 }

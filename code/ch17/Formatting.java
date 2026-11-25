@@ -5,7 +5,9 @@ import java.util.Locale;
 
 public class Formatting {
     public static void main(String[] args) {
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd MMM uuuu", Locale.US);   // immutable, thread-safe
+        // immutable, thread-safe
+        DateTimeFormatter f =
+                DateTimeFormatter.ofPattern("dd MMM uuuu", Locale.US);
         LocalDate d = LocalDate.of(2013, 7, 1);
         System.out.println(d.format(f));
         System.out.println(LocalDate.parse("21 Nov 2026", f));

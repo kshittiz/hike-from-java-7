@@ -4,7 +4,8 @@ public class Precedence {
         int r = i++ + ++i;        // 5 (then i = 6) + 7 (i becomes 7 first)
         System.out.println("r = " + r + ", i = " + i);
 
-        int x = 10 * 20 + -30 * 2 / 4 % 3;   // * / % bind tighter than +, left to right
+        // * / % bind tighter than +, left to right
+        int x = 10 * 20 + -30 * 2 / 4 % 3;
         System.out.println("x = " + x);
 
         int a, b, c;

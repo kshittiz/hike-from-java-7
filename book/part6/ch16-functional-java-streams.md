@@ -28,7 +28,8 @@ public class LoopVsStream {
 
     static final List<Dev> DEVS = List.of(
             new Dev("Asha", "platform", 9), new Dev("Ravi", "mobile", 3),
-            new Dev("Mia", "platform", 6), new Dev("Leo", "web", 5), new Dev("Zoe", "platform", 2));
+            new Dev("Mia", "platform", 6), new Dev("Leo", "web", 5),
+            new Dev("Zoe", "platform", 2));
 
     public static void main(String[] args) {
         // Java 7: say how
@@ -44,7 +45,7 @@ public class LoopVsStream {
                 .filter(d -> d.years() >= 5)
                 .map(d -> d.name().toUpperCase())
                 .sorted()
-                .toList();                              // Java 16 (collect(Collectors.toList()) in 8)
+                .toList();  // Java 16 (collect(Collectors.toList()) in 8)
         System.out.println(seniors);
 
         int totalYears = DEVS.stream().mapToInt(Dev::years).sum();
@@ -61,6 +62,11 @@ total years: 25
 
 The Java 7 version tells the computer **how**: make a list, loop, test, add, sort. The stream version says **what**: the names of developers with five or more years, uppercased and sorted. Each step is one line, and the order of steps reads like the requirement.
 
+> [!NOTE]
+> **Picture it: directions vs an address**
+>
+> A loop is like giving a taxi driver **turn-by-turn directions**: left here, right at the light, stop at the third house. A stream is like giving the **address**: you say where you want to end up, and the stream library works out the turns.
+
 ```mermaid
 flowchart LR
     S["Source<br/>DEVS.stream()"] --> F["filter<br/>years ≥ 5"]
@@ -76,6 +82,11 @@ flowchart LR
 
 ## Laziness
 
+> [!NOTE]
+> **Picture it: finding a book**
+>
+> Asked for the first book about hiking, a good librarian walks along the shelf and stops at the first match. She doesn't take every book down, stamp them all, and only then start looking. A stream works the same way.
+
 **Example:** [`code/ch16/Laziness.java`](../../code/ch16/Laziness.java) · [how to run it](../../code/ch16/README.md#lazinessjava) · Java 8+
 
 ```java
@@ -83,11 +94,13 @@ import java.util.List;
 
 public class Laziness {
     public static void main(String[] args) {
-        String first = List.of("seven", "eleven", "seventeen", "twenty-one", "twenty-seven").stream()
+        List<String> words = List.of(
+                "seven", "eleven", "seventeen", "twenty-one", "twenty-seven");
+        String first = words.stream()
                 .peek(s -> System.out.println("  looking at " + s))
                 .filter(s -> s.startsWith("twenty"))
                 .map(String::toUpperCase)
-                .findFirst()                           // short-circuits: stops at the first match
+                .findFirst()  // short-circuits: stops at the first match
                 .orElse("none");
         System.out.println("found " + first);
     }
@@ -124,21 +137,27 @@ public class Grouping {
 
     public static void main(String[] args) {
         List<Release> releases = List.of(
-                new Release(8, 2014, true), new Release(11, 2018, true), new Release(17, 2021, true),
-                new Release(21, 2023, true), new Release(22, 2024, false), new Release(23, 2024, false),
-                new Release(25, 2025, true), new Release(26, 2026, false), new Release(27, 2026, false));
+                new Release(8, 2014, true), new Release(11, 2018, true),
+                new Release(17, 2021, true), new Release(21, 2023, true),
+                new Release(22, 2024, false), new Release(23, 2024, false),
+                new Release(25, 2025, true), new Release(26, 2026, false),
+                new Release(27, 2026, false));
 
         Map<Integer, Long> perYear = releases.stream()
-                .collect(Collectors.groupingBy(Release::year, TreeMap::new, Collectors.counting()));
+                .collect(Collectors.groupingBy(Release::year, TreeMap::new,
+                        Collectors.counting()));
         System.out.println(perYear);
 
         Map<Boolean, List<Integer>> byLts = releases.stream()
                 .collect(Collectors.partitioningBy(Release::lts,
-                         Collectors.mapping(Release::version, Collectors.toList())));
-        System.out.println("LTS " + byLts.get(true) + "  non-LTS " + byLts.get(false));
+                        Collectors.mapping(Release::version,
+                                Collectors.toList())));
+        System.out.println("LTS " + byLts.get(true)
+                + "  non-LTS " + byLts.get(false));
 
         String joined = releases.stream().filter(Release::lts)
-                .map(r -> "Java " + r.version()).collect(Collectors.joining(", ", "[", "]"));
+                .map(r -> "Java " + r.version())
+                .collect(Collectors.joining(", ", "[", "]"));
         System.out.println(joined);
     }
 }
@@ -154,6 +173,11 @@ In Java 7, "count releases per year" meant a `Map`, a loop, and the "get, check 
 
 ## `Optional`
 
+> [!NOTE]
+> **Picture it: a parcel that may be empty**
+>
+> Returning `null` is like handing over a parcel that **might be empty, with nothing on it to say so**. Open it carelessly and the program crashes. An `Optional` is a parcel **labelled "may be empty"**, with instructions printed on it: "if it's empty, use this instead" (`orElse`), "if it's full, do this" (`ifPresent`).
+
 **Example:** [`code/ch16/OptionalDemo.java`](../../code/ch16/OptionalDemo.java) · [how to run it](../../code/ch16/README.md#optionaldemojava) · Java 11+
 
 ```java
@@ -161,18 +185,22 @@ import java.util.Map;
 import java.util.Optional;
 
 public class OptionalDemo {
-    static final Map<String, String> EMAILS = Map.of("asha", "asha@example.com");
+    static final Map<String, String> EMAILS =
+            Map.of("asha", "asha@example.com");
 
-    static Optional<String> email(String user) {           // Java 8: "maybe a value"
+    static Optional<String> email(String user) {  // Java 8: "maybe a value"
         return Optional.ofNullable(EMAILS.get(user));
     }
 
     public static void main(String[] args) {
-        System.out.println(email("asha").map(String::toUpperCase).orElse("no email"));
-        System.out.println(email("ravi").map(String::toUpperCase).orElse("no email"));
-        System.out.println(email("ravi").isEmpty());                         // Java 11
+        System.out.println(
+                email("asha").map(String::toUpperCase).orElse("no email"));
+        System.out.println(
+                email("ravi").map(String::toUpperCase).orElse("no email"));
+        System.out.println(email("ravi").isEmpty());  // Java 11
         email("asha").ifPresentOrElse(e -> System.out.println("send to " + e),
-                                      () -> System.out.println("skip"));      // Java 9
+                                      // Java 9
+                                      () -> System.out.println("skip"));
     }
 }
 ```
@@ -203,19 +231,31 @@ import java.util.stream.Stream;
 public class NewerStreamOps {
     public static void main(String[] args) {
         List<Integer> sorted = List.of(2, 4, 6, 7, 8, 10);
-        System.out.println(sorted.stream().takeWhile(n -> n % 2 == 0).toList());   // Java 9
-        System.out.println(sorted.stream().dropWhile(n -> n % 2 == 0).toList());   // Java 9
+        // Java 9
+        System.out.println(
+                sorted.stream().takeWhile(n -> n % 2 == 0).toList());
+        // Java 9
+        System.out.println(
+                sorted.stream().dropWhile(n -> n % 2 == 0).toList());
 
-        System.out.println(Stream.iterate(7, v -> v <= 27, v -> v + 10).toList()); // Java 9
+        // Java 9
+        System.out.println(
+                Stream.iterate(7, v -> v <= 27, v -> v + 10).toList());
 
-        double avg = Stream.of(7, 17, 27).collect(Collectors.teeing(               // Java 12
-                Collectors.summingInt(n -> n), Collectors.counting(), (sum, count) -> (double) sum / count));
+        // Java 12
+        double avg = Stream.of(7, 17, 27).collect(Collectors.teeing(
+                Collectors.summingInt(n -> n),
+                Collectors.counting(),
+                (sum, count) -> (double) sum / count));
         System.out.println(avg);
 
-        List<String> words = Stream.of("java", "seven").<String>mapMulti((w, sink) -> {  // Java 16
-            sink.accept(w);
-            sink.accept(w.toUpperCase());
-        }).toList();
+        // Java 16
+        List<String> words = Stream.of("java", "seven")
+                .<String>mapMulti((w, sink) -> {
+                    sink.accept(w);
+                    sink.accept(w.toUpperCase());
+                })
+                .toList();
         System.out.println(words);
     }
 }

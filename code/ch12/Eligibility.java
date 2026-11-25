@@ -5,17 +5,20 @@ public class Eligibility {
 
     public static void main(String[] args) throws InterruptedException {
         Object data = new Object();
-        WeakReference<Object> watch = new WeakReference<>(data);   // does not keep the object alive
-        data = null;                                              // last strong reference gone
+        // does not keep the object alive
+        WeakReference<Object> watch = new WeakReference<>(data);
+        data = null;  // last strong reference gone
 
         Node a = new Node(), b = new Node();
-        a.next = b; b.next = a;                                   // an island: a <-> b
+        a.next = b; b.next = a;  // an island: a <-> b
         WeakReference<Node> island = new WeakReference<>(a);
-        a = null; b = null;                                       // nothing outside points in
+        a = null; b = null;  // nothing outside points in
 
-        System.gc();                                              // a request, not a command
+        System.gc();  // a request, not a command
         Thread.sleep(100);
-        System.out.println("plain object collected: " + (watch.get() == null));
-        System.out.println("island collected:       " + (island.get() == null));
+        System.out.println("plain object collected: "
+                + (watch.get() == null));
+        System.out.println("island collected:       "
+                + (island.get() == null));
     }
 }

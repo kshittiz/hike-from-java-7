@@ -5,7 +5,8 @@ public class ValidateBeforeSuper7 {
 
     static class Savings extends Account {
         Savings(String id) {
-            super(normalize(id));                 // before Java 25: work hides in a static helper
+            // before Java 25: work hides in a static helper
+            super(normalize(id));
         }
         private static String normalize(String id) {
             if (id.isBlank()) throw new IllegalArgumentException("empty id");

@@ -53,7 +53,7 @@ Expected output:
 
 ```text
 FinalizeDemo.java:3: warning: [removal] finalize() in Object has been deprecated and marked for removal
-    protected void finalize() {                   // deprecated (Java 9), for removal (Java 18)
+    protected void finalize() {  // deprecated (Java 9), for removal (Java 18)
                    ^
 1 warning
 ```

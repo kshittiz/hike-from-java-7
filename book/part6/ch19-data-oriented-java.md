@@ -28,6 +28,11 @@ flowchart LR
     S["switch (payment)<br/>case Card(…) → …<br/>case Upi(…) → …<br/>case Cash(…) → …"] -. "compiler checks every case" .-> P
 ```
 
+> [!NOTE]
+> **Picture it: a counter with three ways to pay**
+>
+> A trail office accepts exactly three ways to pay: card, UPI or cash. Its manual has one page per task (refunds, receipts, daily totals), and every page covers all three. If the office starts accepting a fourth method, every page must be updated. A sealed interface is the list of accepted payments, and an exhaustive `switch` is the compiler checking that every page covers every one.
+
 ## Records, in more depth
 
 Chapter 4 introduced records. They can do more than hold fields:
@@ -37,16 +42,23 @@ Chapter 4 introduced records. They can do more than hold fields:
 ```java
 public class RecordRules {
     record Range(int low, int high) {
-        Range {                                            // compact constructor: validate and normalize
-            if (low > high) throw new IllegalArgumentException(low + " > " + high);
+        Range {  // compact constructor: validate and normalize
+            if (low > high) {
+                throw new IllegalArgumentException(low + " > " + high);
+            }
         }
-        Range(int single) { this(single, single); }        // extra constructors must delegate
-        int length() { return high - low; }                // ordinary methods are fine
-        static Range of(int a, int b) { return new Range(Math.min(a, b), Math.max(a, b)); }
+        // extra constructors must delegate
+        Range(int single) { this(single, single); }
+        // ordinary methods are fine
+        int length() { return high - low; }
+        static Range of(int a, int b) {
+            return new Range(Math.min(a, b), Math.max(a, b));
+        }
     }
 
     public static void main(String[] args) {
-        System.out.println(new Range(7, 27) + " length " + new Range(7, 27).length());
+        Range r = new Range(7, 27);
+        System.out.println(r + " length " + r.length());
         System.out.println(new Range(5));
         System.out.println(Range.of(27, 7));
         try {
@@ -82,17 +94,20 @@ public class Payments {
     record Cash(long cents) implements Payment { }
 
     static String receipt(Payment p) {
-        return switch (p) {                                          // exhaustive: no default
-            case Card(String last4, long cents) when cents > 100_000 -> "card *" + last4 + " (needs approval)";
-            case Card(String last4, long cents)                      -> "card *" + last4 + " " + cents;
-            case Upi(String vpa, long cents)                         -> "upi " + vpa + " " + cents;
-            case Cash(long cents)                                    -> "cash " + cents;
+        return switch (p) {  // exhaustive: no default
+            case Card(String last4, long cents) when cents > 100_000 ->
+                    "card *" + last4 + " (needs approval)";
+            case Card(String last4, long cents) ->
+                    "card *" + last4 + " " + cents;
+            case Upi(String vpa, long cents) -> "upi " + vpa + " " + cents;
+            case Cash(long cents) -> "cash " + cents;
         };
     }
 
     public static void main(String[] args) {
-        Payment[] payments = { new Card("4242", 2_500), new Card("1881", 250_000),
-                               new Upi("asha@bank", 900), new Cash(100) };
+        Payment[] payments = {
+                new Card("4242", 2_500), new Card("1881", 250_000),
+                new Upi("asha@bank", 900), new Cash(100) };
         for (Payment p : payments) System.out.println(receipt(p));
     }
 }
@@ -104,6 +119,11 @@ card *1881 (needs approval)
 upi asha@bank 900
 cash 100
 ```
+
+> [!NOTE]
+> **Picture it: unpacking a parcel**
+>
+> Without patterns, you checked the label on a parcel (`instanceof`), opened it (a cast), and took each item out by hand (one accessor call per component). A record pattern does all three in one move: "if this is a `Card`, put its digits *here* and its amount *there*.
 
 `case Card(String last4, long cents)` is a **[record pattern](https://docs.oracle.com/javase/specs/jls/se25/html/jls-14.html#jls-14.30.1)** ([JEP 440](https://openjdk.org/jeps/440)): it tests the type and extracts the components in one step. Guards (`when`) refine a case. And because `Payment` is sealed, the `switch` needs no `default`. If you add `record Wallet(...) implements Payment`, this method stops compiling until you handle it. Compare that with Java 7, where a new subclass silently fell into an `else` branch.
 
@@ -117,18 +137,23 @@ public class NestedPatterns {
     record Line(Point from, Point to) { }
 
     static String describe(Object o) {
-        if (o instanceof Line(Point(var x1, var y1), Point(var x2, var y2)) && x1 == x2) {   // Java 21
-            return "vertical line at x=" + x1 + " from y=" + y1 + " to y=" + y2;
+        // Java 21
+        if (o instanceof Line(Point(var x1, var y1), Point(var x2, var y2))
+                && x1 == x2) {
+            return "vertical line at x=" + x1
+                    + " from y=" + y1 + " to y=" + y2;
         }
-        if (o instanceof Line line) {                                                           // Java 16
+        if (o instanceof Line line) {  // Java 16
             return "line " + line.from() + " -> " + line.to();
         }
         return "not a line";
     }
 
     public static void main(String[] args) {
-        System.out.println(describe(new Line(new Point(3, 0), new Point(3, 9))));
-        System.out.println(describe(new Line(new Point(0, 0), new Point(4, 4))));
+        System.out.println(
+                describe(new Line(new Point(3, 0), new Point(3, 9))));
+        System.out.println(
+                describe(new Line(new Point(0, 0), new Point(4, 4))));
         System.out.println(describe("7 to 27"));
     }
 }
@@ -155,18 +180,23 @@ public class UnnamedPatterns {
 
     static String corners(Shape s) {
         return switch (s) {
-            case Circle _             -> "no corners";        // Java 22: _ for an unused binding
-            case Square _, Rect _     -> "four corners";      // several patterns, one case
+            // Java 22: _ for an unused binding
+            case Circle _             -> "no corners";
+            // several patterns, one case
+            case Square _, Rect _     -> "four corners";
         };
     }
 
     static boolean isWide(Shape s) {
-        return s instanceof Rect(var w, _) && w > 10;         // ignore the height component
+        // ignore the height component
+        return s instanceof Rect(var w, _) && w > 10;
     }
 
     public static void main(String[] args) {
-        System.out.println(corners(new Circle(1)) + ", " + corners(new Rect(2, 3)));
-        System.out.println(isWide(new Rect(12, 1)) + " " + isWide(new Square(20)));
+        System.out.println(corners(new Circle(1)) + ", "
+                + corners(new Rect(2, 3)));
+        System.out.println(isWide(new Rect(12, 1)) + " "
+                + isWide(new Square(20)));
     }
 }
 ```

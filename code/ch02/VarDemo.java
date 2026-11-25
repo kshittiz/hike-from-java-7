@@ -5,7 +5,8 @@ import java.util.Map;
 
 public class VarDemo {
     public static void main(String[] args) {
-        // Java 7: the type is written twice (the diamond <> saved us a little)
+        // Java 7: the type is written twice
+        // (the diamond <> saved us a little)
         Map<String, List<Integer>> scores7 = new HashMap<>();
 
         // Java 10: the compiler infers the type from the right-hand side

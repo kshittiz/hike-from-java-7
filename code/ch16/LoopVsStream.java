@@ -7,7 +7,8 @@ public class LoopVsStream {
 
     static final List<Dev> DEVS = List.of(
             new Dev("Asha", "platform", 9), new Dev("Ravi", "mobile", 3),
-            new Dev("Mia", "platform", 6), new Dev("Leo", "web", 5), new Dev("Zoe", "platform", 2));
+            new Dev("Mia", "platform", 6), new Dev("Leo", "web", 5),
+            new Dev("Zoe", "platform", 2));
 
     public static void main(String[] args) {
         // Java 7: say how
@@ -23,7 +24,7 @@ public class LoopVsStream {
                 .filter(d -> d.years() >= 5)
                 .map(d -> d.name().toUpperCase())
                 .sorted()
-                .toList();                              // Java 16 (collect(Collectors.toList()) in 8)
+                .toList();  // Java 16 (collect(Collectors.toList()) in 8)
         System.out.println(seniors);
 
         int totalYears = DEVS.stream().mapToInt(Dev::years).sum();

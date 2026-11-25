@@ -5,7 +5,8 @@ public class StaticRules {
     StaticRules() { id = ++instances; }
 
     static String describe() {
-        // return "id " + id;      // would not compile: no 'this' in a static method
+        // would not compile: no 'this' in a static method
+        // return "id " + id;
         return instances + " instances so far";
     }
 

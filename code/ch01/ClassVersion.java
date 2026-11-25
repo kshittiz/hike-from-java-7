@@ -5,7 +5,8 @@ import java.io.InputStream;
 public class ClassVersion {
     public static void main(String[] args) throws IOException {
         // The first 8 bytes of every .class file: magic number, minor, major.
-        try (InputStream in = ClassVersion.class.getResourceAsStream("Probe.class");
+        try (InputStream in =
+                     ClassVersion.class.getResourceAsStream("Probe.class");
              DataInputStream data = new DataInputStream(in)) {
             int magic = data.readInt();
             int minor = data.readUnsignedShort();

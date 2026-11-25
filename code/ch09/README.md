@@ -35,8 +35,8 @@ javac -p mods -d sneakyout $(find sneaky -name "*.java")
 Expected output:
 
 ```text
-sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
-import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:4: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;
                       ^
   (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
@@ -69,8 +69,8 @@ javac -p mods -d sneakyout $(find sneaky -name "*.java")
 Expected output:
 
 ```text
-sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
-import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:4: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;
                       ^
   (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
@@ -103,8 +103,8 @@ javac -p mods -d sneakyout $(find sneaky -name "*.java")
 Expected output:
 
 ```text
-sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
-import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:4: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;
                       ^
   (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
@@ -137,8 +137,8 @@ javac -p mods -d sneakyout $(find sneaky -name "*.java")
 Expected output:
 
 ```text
-sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
-import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:4: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;
                       ^
   (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
@@ -171,8 +171,8 @@ javac -p mods -d sneakyout $(find sneaky -name "*.java")
 Expected output:
 
 ```text
-sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
-import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:4: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;
                       ^
   (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
@@ -238,8 +238,8 @@ javac -d out protectedaccess/shop/Product.java protectedaccess/sale/Discounted.j
 Expected output:
 
 ```text
-protectedaccess/sale/Discounted.java:8: error: price has protected access in Product
-    double peek(Product other) { return other.price; }     // not OK: through another Product reference
+protectedaccess/sale/Discounted.java:10: error: price has protected access in Product
+    double peek(Product other) { return other.price; }
                                              ^
 1 error
 ```
@@ -257,8 +257,8 @@ javac -d out protectedaccess/shop/Product.java protectedaccess/sale/Discounted.j
 Expected output:
 
 ```text
-protectedaccess/sale/Discounted.java:8: error: price has protected access in Product
-    double peek(Product other) { return other.price; }     // not OK: through another Product reference
+protectedaccess/sale/Discounted.java:10: error: price has protected access in Product
+    double peek(Product other) { return other.price; }
                                              ^
 1 error
 ```
@@ -277,8 +277,8 @@ javac -p mods -d sneakyout $(find sneaky -name "*.java")
 Expected output:
 
 ```text
-sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
-import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:4: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;
                       ^
   (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error
@@ -298,8 +298,8 @@ javac -p mods -d sneakyout $(find sneaky -name "*.java")
 Expected output:
 
 ```text
-sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:3: error: package com.trail.greet.internal is not visible
-import com.trail.greet.internal.Formatter;     // a public class in a package that is not exported
+sneaky/com.trail.sneaky/com/trail/sneaky/Sneaky.java:4: error: package com.trail.greet.internal is not visible
+import com.trail.greet.internal.Formatter;
                       ^
   (package com.trail.greet.internal is declared in module com.trail.greet, which does not export it)
 1 error

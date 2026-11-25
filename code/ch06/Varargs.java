@@ -10,6 +10,7 @@ public class Varargs {
         System.out.println(sum(1, 2));        // fixed-arity wins when it fits
         System.out.println(sum(1, 2, 3));
         System.out.println(sum());            // zero arguments is fine
-        System.out.println(String.join(", ", "varargs", "in", "the", "JDK"));   // Java 8
+        // Java 8
+        System.out.println(String.join(", ", "varargs", "in", "the", "JDK"));
     }
 }

@@ -1,11 +1,15 @@
 public class Checked {
-    static class InsufficientFunds extends Exception {                 // checked: extends Exception
-        InsufficientFunds(long shortBy) { super("short by " + shortBy + " cents"); }
+    // checked: extends Exception
+    static class InsufficientFunds extends Exception {
+        InsufficientFunds(long shortBy) {
+            super("short by " + shortBy + " cents");
+        }
     }
 
     static long balance = 5_000;
 
-    static void withdraw(long cents) throws InsufficientFunds {          // must be declared
+    // must be declared
+    static void withdraw(long cents) throws InsufficientFunds {
         if (cents > balance) throw new InsufficientFunds(cents - balance);
         balance -= cents;
     }
@@ -15,11 +19,12 @@ public class Checked {
             withdraw(2_000);
             withdraw(4_000);
         } catch (InsufficientFunds e) {
-            System.out.println("declined: " + e.getMessage() + ", balance " + balance);
+            System.out.println("declined: " + e.getMessage()
+                    + ", balance " + balance);
         }
         int[] data = new int[2];
         try {
-            data[5] = 1;                                                  // unchecked: no declaration
+            data[5] = 1;  // unchecked: no declaration
         } catch (RuntimeException e) {
             System.out.println("unchecked: " + e.getClass().getSimpleName());
         }

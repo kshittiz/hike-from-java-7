@@ -1,4 +1,4 @@
-NotPermitted.java:4: error: class is not allowed to extend sealed class: Shape (as it is not listed in its 'permits' clause)
-    record Triangle(double base) implements Shape { }     // not in the permits list
+NotPermitted.java:5: error: class is not allowed to extend sealed class: Shape (as it is not listed in its 'permits' clause)
+    record Triangle(double base) implements Shape { }
     ^
 1 error

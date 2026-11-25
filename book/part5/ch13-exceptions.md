@@ -38,13 +38,17 @@ flowchart TD
 
 ```java
 public class Checked {
-    static class InsufficientFunds extends Exception {                 // checked: extends Exception
-        InsufficientFunds(long shortBy) { super("short by " + shortBy + " cents"); }
+    // checked: extends Exception
+    static class InsufficientFunds extends Exception {
+        InsufficientFunds(long shortBy) {
+            super("short by " + shortBy + " cents");
+        }
     }
 
     static long balance = 5_000;
 
-    static void withdraw(long cents) throws InsufficientFunds {          // must be declared
+    // must be declared
+    static void withdraw(long cents) throws InsufficientFunds {
         if (cents > balance) throw new InsufficientFunds(cents - balance);
         balance -= cents;
     }
@@ -54,11 +58,12 @@ public class Checked {
             withdraw(2_000);
             withdraw(4_000);
         } catch (InsufficientFunds e) {
-            System.out.println("declined: " + e.getMessage() + ", balance " + balance);
+            System.out.println("declined: " + e.getMessage()
+                    + ", balance " + balance);
         }
         int[] data = new int[2];
         try {
-            data[5] = 1;                                                  // unchecked: no declaration
+            data[5] = 1;  // unchecked: no declaration
         } catch (RuntimeException e) {
             System.out.println("unchecked: " + e.getClass().getSimpleName());
         }
@@ -86,9 +91,9 @@ public class CatchOrder {
     public static void main(String[] args) {
         try {
             new FileReader("missing.txt").close();
-        } catch (IOException e) {                       // the parent first...
+        } catch (IOException e) {             // the parent first...
             System.out.println("I/O problem");
-        } catch (FileNotFoundException e) {             // ...makes this unreachable
+        } catch (FileNotFoundException e) {   // ...makes this unreachable
             System.out.println("no such file");
         }
     }
@@ -97,7 +102,7 @@ public class CatchOrder {
 
 ```text
 CatchOrder.java:11: error: exception FileNotFoundException has already been caught
-        } catch (FileNotFoundException e) {             // ...makes this unreachable
+        } catch (FileNotFoundException e) {   // ...makes this unreachable
           ^
 1 error
 ```
@@ -208,7 +213,9 @@ public class TryWithResources {
         }
         @Override public void close() {
             System.out.println("close " + name);
-            if (failOnClose) throw new IllegalStateException("close failed: " + name);
+            if (failOnClose) {
+                throw new IllegalStateException("close failed: " + name);
+            }
         }
     }
 
@@ -225,7 +232,7 @@ public class TryWithResources {
         }
 
         Resource shared = new Resource("shared", false);
-        try (shared) {                                             // Java 9: an effectively final variable
+        try (shared) {  // Java 9: an effectively final variable
             System.out.println("using shared");
         }
     }
@@ -267,8 +274,10 @@ public class MultiCatch {
         try {
             if (kind.equals("int")) return Integer.parseInt(text);
             return Class.forName(text);
-        } catch (NumberFormatException | ClassNotFoundException e) {   // Java 7: one handler
-            return "could not parse '" + text + "' (" + e.getClass().getSimpleName() + ")";
+        // Java 7: one handler
+        } catch (NumberFormatException | ClassNotFoundException e) {
+            return "could not parse '" + text + "' ("
+                    + e.getClass().getSimpleName() + ")";
         }
     }
 
@@ -304,7 +313,8 @@ public class HelpfulNpe {
         try {
             System.out.println(order.customer.address.city.length());
         } catch (NullPointerException e) {
-            System.out.println(e.getMessage());          // Java 14+: says exactly what was null
+            // Java 14+: says exactly what was null
+            System.out.println(e.getMessage());
         }
     }
 }

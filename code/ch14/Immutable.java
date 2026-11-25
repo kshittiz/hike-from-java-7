@@ -1,7 +1,7 @@
 public class Immutable {
     public static void main(String[] args) {
         String s = "hike";
-        s.concat(" 27");                   // returns a new String, which we discard
+        s.concat(" 27");  // returns a new String, which we discard
         s.toUpperCase();
         System.out.println(s);               // unchanged
 

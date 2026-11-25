@@ -9,7 +9,8 @@ public class HelpfulNpe {
         try {
             System.out.println(order.customer.address.city.length());
         } catch (NullPointerException e) {
-            System.out.println(e.getMessage());          // Java 14+: says exactly what was null
+            // Java 14+: says exactly what was null
+            System.out.println(e.getMessage());
         }
     }
 }

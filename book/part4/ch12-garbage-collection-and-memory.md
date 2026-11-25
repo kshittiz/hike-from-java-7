@@ -18,6 +18,11 @@
 
 Java doesn't count references. Instead, the collector starts from **GC roots** and marks everything it can reach. Anything unmarked is garbage.
 
+> [!NOTE]
+> **Picture it: climbers on ropes**
+>
+> Think of the GC roots as **base camp**. Every climber roped to base camp, directly or through other climbers, is safe. A climber who unclips is left behind, and so are two climbers roped only to each other: they hold on to one another, but nothing connects them to camp. The collector follows the ropes out from camp and treats everyone it can't reach as garbage.
+
 ```mermaid
 flowchart LR
     R1["GC roots<br/>stack variables,<br/>static fields,<br/>live threads"] --> A["Order"]
@@ -47,18 +52,21 @@ public class Eligibility {
 
     public static void main(String[] args) throws InterruptedException {
         Object data = new Object();
-        WeakReference<Object> watch = new WeakReference<>(data);   // does not keep the object alive
-        data = null;                                              // last strong reference gone
+        // does not keep the object alive
+        WeakReference<Object> watch = new WeakReference<>(data);
+        data = null;  // last strong reference gone
 
         Node a = new Node(), b = new Node();
-        a.next = b; b.next = a;                                   // an island: a <-> b
+        a.next = b; b.next = a;  // an island: a <-> b
         WeakReference<Node> island = new WeakReference<>(a);
-        a = null; b = null;                                       // nothing outside points in
+        a = null; b = null;  // nothing outside points in
 
-        System.gc();                                              // a request, not a command
+        System.gc();  // a request, not a command
         Thread.sleep(100);
-        System.out.println("plain object collected: " + (watch.get() == null));
-        System.out.println("island collected:       " + (island.get() == null));
+        System.out.println("plain object collected: "
+                + (watch.get() == null));
+        System.out.println("island collected:       "
+                + (island.get() == null));
     }
 }
 ```
@@ -102,7 +110,7 @@ Java has been removing it in stages:
 ```java
 public class FinalizeDemo {
     @Override
-    protected void finalize() {                   // deprecated (Java 9), for removal (Java 18)
+    protected void finalize() {  // deprecated (Java 9), for removal (Java 18)
         System.out.println("finalizing");
     }
 }
@@ -110,12 +118,17 @@ public class FinalizeDemo {
 
 ```text
 FinalizeDemo.java:3: warning: [removal] finalize() in Object has been deprecated and marked for removal
-    protected void finalize() {                   // deprecated (Java 9), for removal (Java 18)
+    protected void finalize() {  // deprecated (Java 9), for removal (Java 18)
                    ^
 1 warning
 ```
 
 ### What to use instead
+
+> [!NOTE]
+> **Picture it: a rented kayak**
+>
+> `try`-with-resources is **returning the kayak yourself** the moment you're done. A `Cleaner` is the rental shop's rule to **fetch any kayak left on the beach**, some time after nobody is using it. `finalize()` was like hoping someone might notice the kayak one day, or never, with no promise about when.
 
 **Example:** [`code/ch12/CleanerDemo.java`](../../code/ch12/CleanerDemo.java) · [how to run it](../../code/ch12/README.md#cleanerdemojava) · Java 9+
 
@@ -123,19 +136,23 @@ FinalizeDemo.java:3: warning: [removal] finalize() in Object has been deprecated
 import java.lang.ref.Cleaner;
 
 public class CleanerDemo {
-    private static final Cleaner CLEANER = Cleaner.create();          // Java 9
+    private static final Cleaner CLEANER = Cleaner.create();  // Java 9
 
     static class TempFile implements AutoCloseable {
         private final Cleaner.Cleanable cleanable;
         TempFile(String name) {
-            // The cleanup action must not refer to 'this', or the object could never be collected.
-            cleanable = CLEANER.register(this, () -> System.out.println("deleted " + name));
+            // The cleanup action must not refer to 'this',
+            // or the object could never be collected.
+            cleanable = CLEANER.register(this,
+                    () -> System.out.println("deleted " + name));
         }
-        @Override public void close() { cleanable.clean(); }            // runs at most once
+        // runs at most once
+        @Override public void close() { cleanable.clean(); }
     }
 
     public static void main(String[] args) {
-        try (TempFile f = new TempFile("report.tmp")) {                  // deterministic: close()
+        // deterministic: close()
+        try (TempFile f = new TempFile("report.tmp")) {
             System.out.println("using the file");
         }
         System.out.println("done");
@@ -155,6 +172,13 @@ done
 ## The garbage collectors, Java 7 → 27
 
 Most objects die young, so HotSpot's collectors divide the [heap](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.3) into a **young generation**, collected often and cheaply, and an **old generation** for survivors. What changed over the years is *how* they collect, and how long the application pauses while they do.
+
+> [!NOTE]
+> **Picture it: a busy café**
+>
+> Most cups in a café are used once and washed within minutes; only a few, like the staff's mugs, stay out all day. So the café washes the **counter tray** (the young generation) often and quickly, and the **back shelf** (the old generation) rarely.
+>
+> The simplest collectors **close the café** while they wash: a *stop-the-world* pause. G1 closes it for short, planned breaks. ZGC and Shenandoah do almost all the washing while customers keep ordering.
 
 ```mermaid
 timeline

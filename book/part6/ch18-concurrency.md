@@ -16,6 +16,11 @@
 
 ## The problem: shared, mutable state
 
+> [!NOTE]
+> **Picture it: two rangers, one tally board**
+>
+> Two rangers count hikers at the same gate using one whiteboard. Both glance at it and see 41. Both add one in their heads and write 42. Two hikers went through, but the count went up by one. The same thing happens to a counter shared by two threads.
+
 **Example:** [`code/ch18/SafeCounting.java`](../../code/ch18/SafeCounting.java) · [how to run it](../../code/ch18/README.md#safecountingjava) · any Java
 
 ```java
@@ -24,7 +29,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SafeCounting {
-    static int unsafe = 0;                                   // shown only to explain the race
+    static int unsafe = 0;  // shown only to explain the race
     static int locked = 0;
     static final Object LOCK = new Object();
     static final AtomicInteger atomic = new AtomicInteger(); // Java 5
@@ -34,18 +39,22 @@ public class SafeCounting {
         for (int t = 0; t < 4; t++) {
             Thread th = new Thread(() -> {
                 for (int i = 0; i < 100_000; i++) {
-                    unsafe++;                                  // read, add, write: not atomic
-                    synchronized (LOCK) { locked++; }          // one thread at a time
-                    atomic.incrementAndGet();                  // a single atomic CPU operation
+                    // read, add, write: not atomic
+                    unsafe++;
+                    // one thread at a time
+                    synchronized (LOCK) { locked++; }
+                    // a single atomic CPU operation
+                    atomic.incrementAndGet();
                 }
             });
             threads.add(th);
             th.start();
         }
-        for (Thread th : threads) th.join();                   // wait for all four
+        for (Thread th : threads) th.join();  // wait for all four
         System.out.println("synchronized: " + locked);
         System.out.println("atomic:       " + atomic.get());
-        System.out.println("unsafe <= 400000: " + (unsafe <= 400_000));   // usually less: lost updates
+        // usually less: lost updates
+        System.out.println("unsafe <= 400000: " + (unsafe <= 400_000));
     }
 }
 ```
@@ -66,6 +75,11 @@ unsafe <= 400000: true
 
 Creating a `new Thread` for every task is expensive and unbounded. Java 5's `java.util.concurrent` ([JSR 166](https://jcp.org/en/jsr/detail?id=166), led by Doug Lea) separated *what to run* from *which thread runs it*:
 
+> [!NOTE]
+> **Picture it: a kitchen with a ticket rail**
+>
+> A restaurant doesn't hire a new cook for every order. Orders go on a **ticket rail**, and a fixed team of cooks takes the next ticket whenever one of them is free. An `ExecutorService` is that kitchen: you `submit` tasks (tickets), a pool of threads (the cooks) runs them, and a `Future` is the receipt you trade in for the dish.
+
 **Example:** [`code/ch18/ExecutorsDemo.java`](../../code/ch18/ExecutorsDemo.java) · [how to run it](../../code/ch18/README.md#executorsdemojava) · Java 8+
 
 ```java
@@ -78,12 +92,12 @@ import java.util.concurrent.Future;
 
 public class ExecutorsDemo {
     public static void main(String[] args) throws Exception {
-        ExecutorService pool = Executors.newFixedThreadPool(4);        // Java 5
+        ExecutorService pool = Executors.newFixedThreadPool(4);  // Java 5
         try {
             List<Callable<Integer>> jobs = new ArrayList<>();
             for (int chapter = 1; chapter <= 20; chapter++) {
                 final int c = chapter;
-                jobs.add(() -> c * 10);                                // pretend: pages in chapter c
+                jobs.add(() -> c * 10);  // pretend: pages in chapter c
             }
             int total = 0;
             for (Future<Integer> f : pool.invokeAll(jobs)) total += f.get();
@@ -111,17 +125,22 @@ A `Future` can only be waited on. `CompletableFuture` can be **composed**:
 import java.util.concurrent.CompletableFuture;
 
 public class CompletableDemo {
-    static int fetchPrice()    { return 4500; }   // pretend these call remote services
+    // pretend these call remote services
+    static int fetchPrice()    { return 4500; }
     static double fetchTaxRate() { return 0.10; }
 
     public static void main(String[] args) {
-        CompletableFuture<Integer> price = CompletableFuture.supplyAsync(CompletableDemo::fetchPrice);   // Java 8
-        CompletableFuture<Double>  tax   = CompletableFuture.supplyAsync(CompletableDemo::fetchTaxRate);
+        // Java 8
+        CompletableFuture<Integer> price =
+                CompletableFuture.supplyAsync(CompletableDemo::fetchPrice);
+        CompletableFuture<Double> tax =
+                CompletableFuture.supplyAsync(CompletableDemo::fetchTaxRate);
 
-        String total = price.thenCombine(tax, (p, r) -> p + Math.round(p * r))
-                            .thenApply(cents -> String.format("$%d.%02d", cents / 100, cents % 100))
-                            .exceptionally(e -> "unavailable")
-                            .join();
+        String total = price
+                .thenCombine(tax, (p, r) -> p + Math.round(p * r))
+                .thenApply(c -> String.format("$%d.%02d", c / 100, c % 100))
+                .exceptionally(e -> "unavailable")
+                .join();
         System.out.println(total);
     }
 }
@@ -138,6 +157,13 @@ Two calls run concurrently, `thenCombine` merges their results, `thenApply` form
 A classic Java thread is a **platform thread**: a thin wrapper around an operating-system thread, which costs about a megabyte of stack and takes real time to create. Servers that gave each request its own thread ran out of threads long before they ran out of CPU, because most threads were just waiting for a database or an HTTP call. The workarounds were thread pools and asynchronous, callback-style code.
 
 **Virtual threads** ([JEP 444](https://openjdk.org/jeps/444), Project Loom) are threads managed by the JVM. When one blocks on I/O, the JVM parks it and runs another virtual thread on the same underlying *carrier* thread.
+
+> [!NOTE]
+> **Picture it: waiters and the kitchen**
+>
+> A platform thread is a waiter who takes an order and then **stands at the table until the kitchen is done**. With 200 waiters you can serve 200 tables, however idle those waiters are.
+>
+> With virtual threads, the order becomes a **ticket** (the virtual thread), and the waiter (a carrier thread) **hands it in and moves on**. While the dish cooks, the waiter serves other tables. When the food is ready, whichever waiter is free picks the ticket up again. A few waiters can now look after thousands of tables, as long as most of the time is spent waiting for the kitchen.
 
 ```mermaid
 flowchart TB
@@ -165,15 +191,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class VirtualThreads {
     public static void main(String[] args) {
         AtomicInteger done = new AtomicInteger();
-        try (ExecutorService exec = Executors.newVirtualThreadPerTaskExecutor()) {   // Java 21
+        // Java 21
+        try (ExecutorService exec =
+                     Executors.newVirtualThreadPerTaskExecutor()) {
             for (int i = 0; i < 10_000; i++) {
                 exec.submit(() -> {
-                    Thread.sleep(Duration.ofMillis(50));     // blocking is cheap on a virtual thread
+                    // blocking is cheap on a virtual thread
+                    Thread.sleep(Duration.ofMillis(50));
                     done.incrementAndGet();
                     return null;
                 });
             }
-        }                                                    // close() waits for every task
+        }  // close() waits for every task
         System.out.println(done.get() + " tasks finished");
 
         Thread vt = Thread.ofVirtual().unstarted(() -> {});
@@ -198,11 +227,17 @@ Ten thousand tasks, each sleeping for 50 ms, finish in roughly the time of one, 
 
 `ThreadLocal` has long been the way to pass context, such as the current user or a request ID, without adding a parameter to every method. But thread-locals are mutable, can leak if not removed, and are costly to copy into millions of virtual threads. **Scoped values** ([JEP 506](https://openjdk.org/jeps/506)), final in Java 25, bind a value for the duration of a call:
 
+> [!NOTE]
+> **Picture it: a visitor badge**
+>
+> A `ThreadLocal` is like a sticky note left on a desk that many people take turns at (a pooled thread). Anyone can change it, and if you forget to remove it, the next person finds it. A scoped value is a **visitor badge**: handed out at the entrance, read-only, valid only inside the building, and collected automatically on the way out.
+
 **Example:** [`code/ch18/ScopedValues.java`](../../code/ch18/ScopedValues.java) · [how to run it](../../code/ch18/README.md#scopedvaluesjava) · Java 21 only, Java 25+
 
 ```java
 public class ScopedValues {
-    static final ScopedValue<String> USER = ScopedValue.newInstance();   // Java 25 (preview in 21-24)
+    // Java 25 (preview in 21-24)
+    static final ScopedValue<String> USER = ScopedValue.newInstance();
 
     static void audit(String action) {
         String who = USER.isBound() ? USER.get() : "anonymous";
@@ -214,7 +249,7 @@ public class ScopedValues {
             audit("opened chapter 18");
             audit("ran the samples");
         });
-        audit("left");                                    // outside the scope: not bound
+        audit("left");  // outside the scope: not bound
     }
 }
 ```
@@ -229,15 +264,21 @@ The binding is immutable, visible to everything called inside `run`, and automat
 
 ## Structured concurrency (preview)
 
-The last piece of Project Loom treats a group of concurrent subtasks like a block of code: they start together, finish together, and if one fails, the others are cancelled. It has been in preview since Java 21 and is in its **seventh preview in Java 27** ([JEP 533](https://openjdk.org/jeps/533)), so the API may still change. Its shape as of the Java 25 preview looks like this:
+> [!NOTE]
+> **Picture it: a group hike**
+>
+> A group leaves the trailhead together, and the leader doesn't call the hike finished until everyone is back. If one hiker is hurt, the leader turns the whole group around.
+
+The last piece of Project Loom works the same way. It treats a group of concurrent subtasks like a block of code: they start together, finish together, and if one fails, the others are cancelled. It has been in preview since Java 21 and is in its **seventh preview in Java 27** ([JEP 533](https://openjdk.org/jeps/533)), so the API may still change. Its shape as of the Java 25 preview looks like this:
 
 ```java
-// Preview API: needs --enable-preview, and details may change before it is final.
+// Preview API: needs --enable-preview,
+// and details may change before it is final.
 Response handle(String id) throws InterruptedException {
     try (var scope = StructuredTaskScope.open()) {
         Subtask<User> user   = scope.fork(() -> findUser(id));
         Subtask<Order> order = scope.fork(() -> fetchOrder(id));
-        scope.join();                         // waits for both; fails fast if either fails
+        scope.join();   // waits for both; fails fast if either fails
         return new Response(user.get(), order.get());
     }
 }

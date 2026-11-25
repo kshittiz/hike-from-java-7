@@ -6,7 +6,8 @@ public class UnboxingNull {
         Map<String, Integer> stock = new HashMap<>();
         stock.put("coffee", 12);
         try {
-            int tea = stock.get("tea");        // get returns null; unboxing it throws
+            // get returns null; unboxing it throws
+            int tea = stock.get("tea");
             System.out.println(tea);
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());

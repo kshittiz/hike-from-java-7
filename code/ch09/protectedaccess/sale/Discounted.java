@@ -3,7 +3,9 @@ package sale;
 import shop.Product;
 
 public class Discounted extends Product {
-    double halfPrice() { return price / 2; }               // OK: through inheritance, on this object
+    // OK: through inheritance, on this object
+    double halfPrice() { return price / 2; }
 
-    double peek(Product other) { return other.price; }     // not OK: through another Product reference
+    // not OK: through another Product reference
+    double peek(Product other) { return other.price; }
 }

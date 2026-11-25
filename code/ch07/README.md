@@ -69,8 +69,8 @@ javac -d out NotPermitted.java
 Expected output:
 
 ```text
-NotPermitted.java:4: error: class is not allowed to extend sealed class: Shape (as it is not listed in its 'permits' clause)
-    record Triangle(double base) implements Shape { }     // not in the permits list
+NotPermitted.java:5: error: class is not allowed to extend sealed class: Shape (as it is not listed in its 'permits' clause)
+    record Triangle(double base) implements Shape { }
     ^
 1 error
 ```
@@ -107,7 +107,7 @@ Expected output:
 
 ```text
 WeakerAccess.java:4: error: greet() in Child cannot override greet() in Parent
-        @Override void greet() { }          // package-private is weaker than public
+        @Override void greet() { }  // package-private is weaker than public
                        ^
   attempting to assign weaker access privileges; was public
 1 error

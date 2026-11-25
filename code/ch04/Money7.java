@@ -18,11 +18,14 @@ public class Money7 {                  // the Java 7 way: write it all by hand
         return cents == m.cents && currency.equals(m.currency);
     }
     @Override public int hashCode() { return Objects.hash(currency, cents); }
-    @Override public String toString() { return "Money7[currency=" + currency + ", cents=" + cents + "]"; }
+    @Override public String toString() {
+        return "Money7[currency=" + currency + ", cents=" + cents + "]";
+    }
 
     public static void main(String[] args) {
         Money7 a = new Money7("USD", 1250);
         Money7 b = new Money7("USD", 1250);
-        System.out.println(a + "  ==: " + (a == b) + "  equals: " + a.equals(b));
+        System.out.println(a + "  ==: " + (a == b)
+                + "  equals: " + a.equals(b));
     }
 }

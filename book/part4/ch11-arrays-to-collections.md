@@ -23,21 +23,26 @@ import java.util.Arrays;
 
 public class ArrayBasics {
     public static void main(String[] args) {
-        int[] scores = new int[3];                         // fixed size, filled with defaults
+        int[] scores = new int[3];  // fixed size, filled with defaults
         String[] names = new String[2];
-        System.out.println(Arrays.toString(scores) + " " + Arrays.toString(names));
+        System.out.println(Arrays.toString(scores) + " "
+                + Arrays.toString(names));
 
-        int[] primes = {2, 3, 5, 7};                       // array initializer
-        System.out.println("length = " + primes.length);   // a field, not a method
+        // array initializer
+        int[] primes = {2, 3, 5, 7};
+        // a field, not a method
+        System.out.println("length = " + primes.length);
 
-        int[][] triangle = new int[3][];                   // an array of arrays; rows can differ
+        // an array of arrays; rows can differ
+        int[][] triangle = new int[3][];
         for (int r = 0; r < triangle.length; r++) {
             triangle[r] = new int[r + 1];
             Arrays.fill(triangle[r], r + 1);
         }
         System.out.println(Arrays.deepToString(triangle));
 
-        System.out.println(sum(new int[] {10, 20, 30}));   // an anonymous array
+        // an anonymous array
+        System.out.println(sum(new int[] {10, 20, 30}));
 
         try {
             System.out.println(primes[4]);
@@ -92,14 +97,15 @@ A few array facts that still trip people up:
 ```java
 public class ArrayCovariance {
     public static void main(String[] args) {
-        Object[] things = new String[2];       // compiles: String[] is an Object[]
+        Object[] things = new String[2];  // compiles: String[] is an Object[]
         things[0] = "fine";
         try {
-            things[1] = 42;                    // compiles too, but fails at run time
+            things[1] = 42;  // compiles too, but fails at run time
         } catch (ArrayStoreException e) {
             System.out.println("ArrayStoreException: " + e.getMessage());
         }
-        // List<Object> list = new ArrayList<String>();   // generics reject this at compile time
+        // generics reject this at compile time:
+        // List<Object> list = new ArrayList<String>();
     }
 }
 ```
@@ -140,17 +146,24 @@ import java.util.Map;
 
 public class GenericsDiamond {
     public static void main(String[] args) {
-        Map<String, List<Integer>> java6 = new HashMap<String, List<Integer>>();   // Java 5/6
-        Map<String, List<Integer>> java7 = new HashMap<>();                         // Java 7: diamond
-        var java10 = new HashMap<String, List<Integer>>();                         // Java 10: var
+        // Java 5/6
+        Map<String, List<Integer>> java6 =
+                new HashMap<String, List<Integer>>();
+        // Java 7: diamond
+        Map<String, List<Integer>> java7 = new HashMap<>();
+        var java10 = new HashMap<String, List<Integer>>();  // Java 10: var
 
-        java7.computeIfAbsent("asha", k -> new ArrayList<>()).add(90);             // Java 8: Map defaults
+        // Java 8: Map defaults
+        java7.computeIfAbsent("asha", k -> new ArrayList<>()).add(90);
         java7.computeIfAbsent("asha", k -> new ArrayList<>()).add(85);
         java7.merge("count", List.of(1), (a, b) -> a);
-        System.out.println(java7.get("asha") + " " + java6.isEmpty() + " " + java10.isEmpty());
+        System.out.println(java7.get("asha") + " " + java6.isEmpty()
+                + " " + java10.isEmpty());
 
-        Map<String, Integer> lengths = Map.of("seven", 5, "twenty-seven", 12);     // Java 9
-        System.out.println(lengths.get("twenty-seven") + " " + lengths.getOrDefault("eight", 0));
+        // Java 9
+        Map<String, Integer> lengths = Map.of("seven", 5, "twenty-seven", 12);
+        System.out.println(lengths.get("twenty-seven") + " "
+                + lengths.getOrDefault("eight", 0));
     }
 }
 ```
@@ -185,9 +198,12 @@ public class FixedAndImmutable {
     }
 
     public static void main(String[] args) {
-        List<String> asList = Arrays.asList("a", "b");          // Java 1.2: fixed-size view of an array
-        List<String> listOf = List.of("a", "b");                // Java 9: truly unmodifiable
-        List<String> growable = new ArrayList<>(listOf);        // diamond <>: Java 7
+        // Java 1.2: fixed-size view of an array
+        List<String> asList = Arrays.asList("a", "b");
+        // Java 9: truly unmodifiable
+        List<String> listOf = List.of("a", "b");
+        // diamond <>: Java 7
+        List<String> growable = new ArrayList<>(listOf);
 
         attempt("Arrays.asList set", () -> asList.set(0, "z"));
         attempt("Arrays.asList add", () -> asList.add("c"));
@@ -239,20 +255,24 @@ public class Sequenced {
         List<Integer> releases = new ArrayList<>(List.of(17, 21, 25));
         releases.addFirst(11);                          // Java 21
         releases.addLast(27);
-        System.out.println(releases + " first=" + releases.getFirst() + " last=" + releases.getLast());
+        System.out.println(releases + " first=" + releases.getFirst()
+                + " last=" + releases.getLast());
         System.out.println("reversed view: " + releases.reversed());
 
-        var visited = new LinkedHashSet<>(List.of("Java 7", "Java 8", "Java 11"));
+        var visited =
+                new LinkedHashSet<>(List.of("Java 7", "Java 8", "Java 11"));
         System.out.println("last visited: " + visited.getLast());
 
         SequencedMap<String, Integer> lts = new LinkedHashMap<>();
         lts.put("Java 8", 2014);
         lts.put("Java 21", 2023);
         lts.put("Java 25", 2025);
-        System.out.println("oldest: " + lts.firstEntry() + ", newest: " + lts.lastEntry());
+        System.out.println("oldest: " + lts.firstEntry()
+                + ", newest: " + lts.lastEntry());
 
         // Java 7 equivalents, for comparison
-        System.out.println(releases.get(releases.size() - 1) + " " + new ArrayList<>(visited).get(visited.size() - 1));
+        System.out.println(releases.get(releases.size() - 1) + " "
+                + new ArrayList<>(visited).get(visited.size() - 1));
     }
 }
 ```
