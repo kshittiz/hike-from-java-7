@@ -11,8 +11,8 @@
 > - An **abstract class** can't be instantiated. It can have constructors, fields, concrete methods and abstract methods.
 > - An **interface** is a contract. Its fields are always `public static final` constants.
 > - **Java 8** added `default` and `static` methods to interfaces; **Java 9** added `private` ones. That's how `List.sort` and `Collection.stream` were added without breaking existing implementations.
-> - If two interfaces give a class the same default method, the class must override it and can pick one with `Walker.super.move()`.
-> - An interface with exactly one abstract method is a **functional interface**, and a lambda can implement it (**Java 8**).
+> - If two interfaces give a class the same [default method](https://docs.oracle.com/javase/specs/jls/se25/html/jls-9.html#jls-9.4), the class must override it and can pick one with `Walker.super.move()`.
+> - An interface with exactly one abstract method is a **[functional interface](https://docs.oracle.com/javase/specs/jls/se25/html/jls-9.html#jls-9.8)**, and a lambda can implement it (**Java 8**).
 
 ## Abstract classes
 
@@ -64,7 +64,7 @@ NewAbstract.java:4: error: Shape is abstract; cannot be instantiated
 ```
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Abstract class can not be instantiated. It is not mandatory to have an abstract method in an abstract class. A child class has to override all the abstract methods of the parent, otherwise it has to make itself abstract."*
 >
@@ -73,7 +73,7 @@ NewAbstract.java:4: error: Shape is abstract; cannot be instantiated
 ## Interfaces: the contract
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Defn → Interfaces are the contract between the programming language and the programmer. GOLDEN Rule → Interfaces are never made to represent an object."*
 
@@ -164,7 +164,7 @@ public class InterfaceEvolution {
 ```
 
 - **`default` methods (Java 8)** have a body that implementers inherit and may override. This is how `List.sort`, `Collection.stream` and `Iterable.forEach` were added.
-- **`static` methods (Java 8)** belong to the interface. Factories like `List.of` (Java 9) and `Comparator.comparing` live here.
+- **`static` methods (Java 8)** belong to the interface. Factories like [`List.of`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html) (Java 9) and `Comparator.comparing` live here.
 - **`private` methods (Java 9)** share code between default methods without exposing it.
 
 Interfaces still can't hold instance state, so the difference from abstract classes remains real.
@@ -238,7 +238,7 @@ true
 
 ## Sealed interfaces (Java 17)
 
-Interfaces can be `sealed` too, and that's often the better choice than a sealed class. Chapter 7 used a sealed `Shape` interface with record implementations, and Chapter 19 builds on this pattern: a sealed interface defines a closed set of alternatives, records hold each alternative's data, and an exhaustive `switch` handles them all.
+Interfaces can be `sealed` too, and that's often the better choice than a [sealed class](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.1.1.2). Chapter 7 used a sealed `Shape` interface with record implementations, and Chapter 19 builds on this pattern: a sealed interface defines a closed set of alternatives, records hold each alternative's data, and an exhaustive `switch` handles them all.
 
 ## Exercises
 

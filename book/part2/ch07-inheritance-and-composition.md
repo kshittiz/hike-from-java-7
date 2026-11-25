@@ -3,7 +3,7 @@
 > [!TIP]
 > You're reading the **complete edition**, the reference guide with every deep dive and runnable sample. For a focused read, see this chapter on the [website edition](https://hikefromjava7.com/part2/ch07-inheritance-and-composition/).
 
-> **In this chapter:** how one class builds on another, what is and isn't inherited, the rules for overriding, why "has-a" often beats "is-a", and how Java 17's sealed classes let you say exactly who may extend a type.
+> **In this chapter:** how one class builds on another, what is and isn't inherited, the rules for overriding, why "has-a" often beats "is-a", and how Java 17's [sealed classes](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.1.1.2) let you say exactly who may extend a type.
 
 > [!TIP]
 > **Key points**
@@ -29,7 +29,7 @@ What's inherited, and what isn't:
 | `static` members | Accessible through the subclass, but not overridden |
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → In Java, Object is the top-most class. Every class which has no parent extends Object."*
 
@@ -72,10 +72,10 @@ public class ConstructorChain {
 3. SportsCar()
 ```
 
-An object is built from the top down: `Object`, then `Vehicle`, then `Car`, then `SportsCar`. Each constructor's first act is to call its parent's.
+An object is built from the top down: [`Object`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html), then `Vehicle`, then `Car`, then `SportsCar`. Each constructor's first act is to call its parent's.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Every constructor of every child class has either this() or super() as its first line. If nothing is there, by default it goes to super()."*
 >
@@ -118,11 +118,11 @@ child field / parent field / parent method
 - A method with the same signature **overrides** the parent's. Which one runs depends on the **object**: `p.name()` runs `Child.name()`.
 - `super.name` and `super.name()` reach the parent's versions from inside the child.
 
-The notebook called the first **data hiding** and the second **function overriding**. Hiding fields is legal but confusing, and it's almost always a mistake. Keep fields `private` and the problem disappears.
+Older courses call the first **data hiding** and the second **function overriding**. Hiding fields is legal but confusing, and it's almost always a mistake. Keep fields `private` and the problem disappears.
 
 ### Overriding rules
 
-An override must keep the same signature, may return a subtype (covariant return), may not throw new or broader checked exceptions, and **may not reduce visibility**:
+An override must keep the same signature, may return a subtype (covariant return), may not throw new or broader [checked exceptions](https://docs.oracle.com/javase/specs/jls/se25/html/jls-11.html#jls-11.1.1), and **may not reduce visibility**:
 
 **Example:** [`code/ch07/WeakerAccess.java`](../../code/ch07/WeakerAccess.java) · [how to run it](../../code/ch07/README.md#weakeraccessjava) · any Java
 
@@ -149,16 +149,16 @@ The reason is substitutability: code holding a `Parent` reference may call `gree
 
 `final` means "can't change" in three places:
 
-- A **`final` class** can't be extended. `String` and all the wrapper classes are final.
+- A **`final` class** can't be extended. [`String`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html) and all the wrapper classes are final.
 - A **`final` method** can't be overridden.
 - A **`final` variable** can be assigned only once. A `final` field must be assigned by the end of every constructor; a `static final` field is a constant.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → When you make any local variable final, its value can't be changed. When you make any class final, it can't be inherited."*
 
-Java 8 added a softer cousin, **effectively final**: a local variable that's never reassigned can be used by lambdas and inner classes without the keyword (Chapter 10).
+Java 8 added a softer cousin, **[effectively final](https://docs.oracle.com/javase/specs/jls/se25/html/jls-4.html#jls-4.12.4)**: a local variable that's never reassigned can be used by lambdas and [inner classes](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.1.3) without the keyword (Chapter 10).
 
 ## Sealed classes: a middle ground (Java 17)
 
@@ -220,7 +220,7 @@ NotPermitted.java:4: error: class is not allowed to extend sealed class: Shape (
 
 ## Composition over inheritance
 
-The notebook distinguished **association**, **aggregation** and **composition**: an object that *uses* another, one that *has* another that can live on its own, and one that *owns* another that lives and dies with it. Modern Java style simplifies the advice: when a class just needs another class's abilities, hold an instance of it rather than extending it.
+Classic object-oriented design distinguishes **association**, **aggregation** and **composition**: an object that *uses* another, one that *has* another that can live on its own, and one that *owns* another that lives and dies with it. Modern Java style simplifies the advice: when a class just needs another class's abilities, hold an instance of it rather than extending it.
 
 **Example:** [`code/ch07/Composition.java`](../../code/ch07/Composition.java) · [how to run it](../../code/ch07/README.md#compositionjava) · Java 10+
 
@@ -252,7 +252,7 @@ public class Composition {
 2 [Duke's Theme, Coffee Break]
 ```
 
-Had `Playlist` extended `ArrayList`, every caller could `add` duplicates, `clear` it, or `set` any element, and `Playlist` could never enforce its own rules. Inheritance is right when the subclass truly *is* a specialized parent and every parent operation makes sense for it.
+Had `Playlist` extended [`ArrayList`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/ArrayList.html), every caller could `add` duplicates, `clear` it, or `set` any element, and `Playlist` could never enforce its own rules. Inheritance is right when the subclass truly *is* a specialized parent and every parent operation makes sense for it.
 
 ## Exercises
 

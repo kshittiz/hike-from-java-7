@@ -5,17 +5,17 @@ The key points of every chapter on one page. Follow any heading to read the full
 ## [1. Why Java Exists](part1/ch01-why-java-exists.md)
 
 - `javac` compiles `.java` into platform-neutral **bytecode** (`.class`). A platform-specific **JVM** runs it: load → verify → interpret → JIT-compile the hot parts.
-- Objects live on the **heap**, method calls on per-thread **stacks**. Class metadata moved from PermGen to **Metaspace** in **Java 8**.
-- **Java 11** dropped the separate JRE download; **Java 9**'s `jlink` builds trimmed runtimes instead.
-- Every class file records its Java version: *major − 44*. Mismatch → `UnsupportedClassVersionError`. Compile with `--release N`.
-- Running Java got lighter: `jshell` (**9**), `java Hello.java` (**11**), multi-file launch (**22**), and in **Java 25**, a whole program can be `void main() { IO.println("Hi"); }`.
+- Objects live on the **[heap](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.3)**, method calls on per-thread **stacks**. Class metadata moved from PermGen to **Metaspace** in **Java 8**.
+- **Java 11** dropped the separate JRE download; **Java 9**'s [`jlink`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jlink.html) builds trimmed runtimes instead.
+- Every [class file](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.1) records its Java version: *major − 44*. Mismatch → `UnsupportedClassVersionError`. Compile with `--release N`.
+- Running Java got lighter: [`jshell`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jshell.html) (**9**), `java Hello.java` (**11**), multi-file launch (**22**), and in **Java 25**, a whole program can be `void main() { IO.println("Hi"); }`.
 
 ## [2. Types, Variables and Conversions](part1/ch02-types-and-variables.md)
 
 - **Eight primitives** with fixed sizes on every platform: `byte` 8 bits, `short` 16, `char` 16 (unsigned), `int` 32, `long` 64, `float` 32, `double` 64, plus `boolean`. Everything else is a **reference**.
-- **Widening** (small → big) is automatic. **Narrowing** needs a cast and silently drops bits: `(byte) 130` is `-126`. Use `Math.addExact` (**Java 8**) when overflow must fail loudly.
+- **[Widening](https://docs.oracle.com/javase/specs/jls/se25/html/jls-5.html#jls-5.1.2)** (small → big) is automatic. **[Narrowing](https://docs.oracle.com/javase/specs/jls/se25/html/jls-5.html#jls-5.1.3)** needs a cast and silently drops bits: `(byte) 130` is `-126`. Use `Math.addExact` (**Java 8**) when overflow must fail loudly.
 - `byte + byte` is an `int`. Arithmetic on `byte`, `short` and `char` always happens in `int`.
-- Fields get default values, local variables don't. Use `BigDecimal` for money, never `double`.
+- Fields get default values, local variables don't. Use [`BigDecimal`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/math/BigDecimal.html) for money, never `double`.
 - `var` (**Java 10**) infers a local's type. `_` (**Java 22**) names a variable you never use. UTF-8 is the default charset since **Java 18**.
 
 ## [3. Operators and Control Flow](part1/ch03-operators-and-control-flow.md)
@@ -24,11 +24,11 @@ The key points of every chapter on one page. Follow any heading to read the full
 - Integer `/` **truncates toward zero** and `%` takes the **sign of the dividend**: `-7 % 3` is `-1`. Use `Math.floorMod` (**Java 8**) for a remainder that's never negative.
 - `&&` and `||` **short-circuit**; `&` and `|` always evaluate both sides. `>>` keeps the sign, `>>>` fills with zeros.
 - `switch` grew up: strings (**Java 7**), arrows and switch *expressions* with `yield` (**Java 14**), type patterns, guards and `case null` (**Java 21**).
-- No new arithmetic or logical operators arrived between Java 7 and 27; Java 8's `->` and `::` are syntax for lambdas and method references. `instanceof` gained patterns (**Java 16**), which removed most casts.
+- No new arithmetic or logical operators arrived between Java 7 and 27; Java 8's `->` and `::` are syntax for lambdas and [method references](https://docs.oracle.com/javase/specs/jls/se25/html/jls-15.html#jls-15.13). `instanceof` gained patterns (**Java 16**), which removed most casts.
 
 ## [4. Classes, Objects and References](part2/ch04-classes-objects-references.md)
 
-- A **class** is a blueprint; an **object** is an instance created at run time with `new`, always on the **heap**.
+- A **class** is a blueprint; an **object** is an instance created at run time with `new`, always on the **[heap](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.3)**.
 - A **reference variable** holds a reference to an object, not the object. Copying a reference shares the object.
 - Printing an object shows `ClassName@` plus its **hash code in hex**. That's not a memory address.
 - `==` compares references; `equals()` compares meaning, but only if the class overrides it.
@@ -64,8 +64,8 @@ The key points of every chapter on one page. Follow any heading to read the full
 - An **abstract class** can't be instantiated. It can have constructors, fields, concrete methods and abstract methods.
 - An **interface** is a contract. Its fields are always `public static final` constants.
 - **Java 8** added `default` and `static` methods to interfaces; **Java 9** added `private` ones. That's how `List.sort` and `Collection.stream` were added without breaking existing implementations.
-- If two interfaces give a class the same default method, the class must override it and can pick one with `Walker.super.move()`.
-- An interface with exactly one abstract method is a **functional interface**, and a lambda can implement it (**Java 8**).
+- If two interfaces give a class the same [default method](https://docs.oracle.com/javase/specs/jls/se25/html/jls-9.html#jls-9.4), the class must override it and can pick one with `Walker.super.move()`.
+- An interface with exactly one abstract method is a **[functional interface](https://docs.oracle.com/javase/specs/jls/se25/html/jls-9.html#jls-9.8)**, and a lambda can implement it (**Java 8**).
 
 ## [9. Packages, Access and Modules](part3/ch09-packages-access-modules.md)
 
@@ -79,24 +79,24 @@ The key points of every chapter on one page. Follow any heading to read the full
 
 - **Static nested** class: a class inside a class, with no tie to an outer object.
 - **Inner** class: tied to an outer object (`outer.new Inner()`), and sees its fields.
-- **Local** and **anonymous** classes live inside a method. Since **Java 8** they (and lambdas) can use local variables that are **effectively final**; before, those variables had to be declared `final`.
+- **Local** and **anonymous** classes live inside a method. Since **Java 8** they (and lambdas) can use local variables that are **[effectively final](https://docs.oracle.com/javase/specs/jls/se25/html/jls-4.html#jls-4.12.4)**; before, those variables had to be declared `final`.
 - **Lambdas** (**Java 8**) replace one-method anonymous classes. Inside a lambda, `this` means the *enclosing* object.
-- **Java 16** let inner classes declare static members, even `main`, and allowed local records, enums and interfaces.
+- **Java 16** let [inner classes](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.1.3) declare static members, even `main`, and allowed local records, [enums](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.9) and interfaces.
 
 ## [11. Arrays → Collections](part4/ch11-arrays-to-collections.md)
 
 - An **array** has a fixed length, set at creation. Elements get default values. `arr.length` is a field.
 - A 2-D array is an **array of arrays**; rows can have different lengths.
 - Arrays are **covariant**: a `String[]` is an `Object[]`, and storing the wrong type fails at run time with `ArrayStoreException`. Generic collections catch it at compile time.
-- `Arrays.asList` is fixed-size; `List.of` (**Java 9**) is unmodifiable and rejects `null`.
+- [`Arrays.asList`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Arrays.html) is fixed-size; [`List.of`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html) (**Java 9**) is unmodifiable and rejects `null`.
 - **Java 21** sequenced collections added `getFirst()`, `getLast()`, `addFirst()` and `reversed()` to lists, ordered sets and ordered maps.
 
 ## [12. Garbage Collection and Memory](part4/ch12-garbage-collection-and-memory.md)
 
 - An object becomes **eligible for collection** when no chain of references from a *GC root* (live stack variables, static fields, active threads) reaches it. Cycles don't keep objects alive.
 - `System.gc()` is only a **request**.
-- `finalize()` was deprecated in **Java 9** and marked for removal in **Java 18**. Use `try`-with-resources, and `Cleaner` (**Java 9**) as a safety net.
-- **Collectors:** Parallel was the server default in Java 7; **G1** became the default in **Java 9**; **ZGC** and **Shenandoah** became production-ready in **Java 15**; CMS was removed in **Java 14**.
+- `finalize()` was deprecated in **Java 9** and marked for removal in **Java 18**. Use `try`-with-resources, and [`Cleaner`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ref/Cleaner.html) (**Java 9**) as a safety net.
+- **Collectors:** Parallel was the server default in Java 7; **[G1](https://docs.oracle.com/en/java/javase/25/gctuning/garbage-first-g1-garbage-collector1.html)** became the default in **Java 9**; **[ZGC](https://docs.oracle.com/en/java/javase/25/gctuning/z-garbage-collector1.html)** and **Shenandoah** became production-ready in **Java 15**; CMS was removed in **Java 14**.
 - **Java 27** makes G1 the default everywhere and turns on **compact object headers** by default.
 
 ## [13. Exceptions](part5/ch13-exceptions.md)
@@ -104,14 +104,14 @@ The key points of every chapter on one page. Follow any heading to read the full
 - `Throwable` splits into `Error` (don't catch) and `Exception`. `RuntimeException` and its subclasses are **unchecked**; other exceptions are **checked** and must be caught or declared with `throws`.
 - Catch blocks are tried top to bottom, so put subclasses **before** their parents.
 - `finally` always runs, except when the JVM stops (`System.exit`, a crash). A `return` in `finally` overrides the `try`'s return.
-- **Java 7:** try-with-resources, multi-catch and suppressed exceptions. **Java 9:** try-with-resources on an existing effectively final variable.
-- **Java 14/15:** helpful `NullPointerException` messages name the exact `null` expression.
+- **Java 7:** [try-with-resources](https://docs.oracle.com/javase/specs/jls/se25/html/jls-14.html#jls-14.20.3), multi-catch and suppressed exceptions. **Java 9:** try-with-resources on an existing [effectively final](https://docs.oracle.com/javase/specs/jls/se25/html/jls-4.html#jls-4.12.4) variable.
+- **Java 14/15:** helpful [`NullPointerException`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html) messages name the exact `null` expression.
 
 ## [14. Strings and Text](part5/ch14-strings-and-text.md)
 
-- `String` is **immutable**: methods like `concat` and `toUpperCase` return a new string. Use `StringBuilder` (**Java 5**) to build text in loops.
+- `String` is **immutable**: methods like `concat` and `toUpperCase` return a new string. Use [`StringBuilder`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/StringBuilder.html) (**Java 5**) to build text in loops.
 - String **literals** are pooled and shared. `new String("x")` always creates a new object. Compare with `equals()`, never `==`.
-- **Java 7** moved the pool from PermGen to the heap. **Java 9** introduced compact strings and faster `+` concatenation.
+- **Java 7** moved the pool from PermGen to the [heap](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.3). **Java 9** introduced compact strings and faster `+` concatenation.
 - New methods: `String.join` (**8**), `isBlank`, `strip`, `repeat`, `lines` (**11**), `formatted` (**15**).
 - **Text blocks** (**Java 15**) are multi-line literals with `"""`. String templates were previewed in Java 21–22 and **withdrawn**.
 
@@ -119,8 +119,8 @@ The key points of every chapter on one page. Follow any heading to read the full
 
 - Each primitive has a **wrapper class**: `Integer`, `Long`, `Double`, `Character`, `Boolean`… Collections and generics need objects, so they hold wrappers.
 - **Autoboxing** (**Java 5**) converts between them automatically: `Integer i = 10;` calls `Integer.valueOf(10)`.
-- `Integer.valueOf` **caches** -128 to 127, so `==` happens to work for small values and fails for larger ones. Always compare wrappers with `equals`.
-- Unboxing `null` throws `NullPointerException`. `Long.valueOf(1).equals(1)` is `false`.
+- [`Integer.valueOf`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html) **caches** -128 to 127, so `==` happens to work for small values and fails for larger ones. Always compare wrappers with `equals`.
+- [Unboxing](https://docs.oracle.com/javase/specs/jls/se25/html/jls-5.html#jls-5.1.8) `null` throws [`NullPointerException`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html). `Long.valueOf(1).equals(1)` is `false`.
 - `new Integer(10)` was deprecated in **Java 9**, marked **for removal** in **Java 16**, and reprieved in **Java 25**: still deprecated, but no longer scheduled for removal. Use `Integer.valueOf` or autoboxing either way.
 
 ## [16. Functional Java: Streams](part6/ch16-functional-java-streams.md)
@@ -128,20 +128,20 @@ The key points of every chapter on one page. Follow any heading to read the full
 - A stream pipeline is **source → intermediate operations → one terminal operation**: `list.stream().filter(…).map(…).toList()` (**Java 8**; `toList()` **Java 16**).
 - Streams are **lazy**: nothing runs until the terminal operation, and elements flow through one at a time, so `findFirst` can stop early.
 - **Collectors** group, partition, count and join: `groupingBy`, `partitioningBy`, `joining`.
-- `Optional` (**Java 8**) represents "maybe a value." Use it for return types, not fields or parameters.
+- [`Optional`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Optional.html) (**Java 8**) represents "maybe a value." Use it for return types, not fields or parameters.
 - Later additions: `takeWhile`, `dropWhile`, bounded `iterate` (**9**), `teeing` (**12**), `mapMulti` (**16**), and **gatherers** (**24**) for custom intermediate operations.
 
 ## [17. Dates and Times](part6/ch17-dates-and-times.md)
 
-- Java 7's `Date` is mutable, `Calendar` months start at **0**, `Date.getYear()` counts from **1900**, and `SimpleDateFormat` isn't thread-safe.
-- **Java 8**'s `java.time` ([JSR 310](https://jcp.org/en/jsr/detail?id=310)) has immutable, thread-safe types: `LocalDate`, `LocalTime`, `LocalDateTime`, `ZonedDateTime`, `Instant`, `Duration`, `Period`.
+- Java 7's `Date` is mutable, `Calendar` months start at **0**, `Date.getYear()` counts from **1900**, and [`SimpleDateFormat`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/text/SimpleDateFormat.html) isn't thread-safe.
+- **Java 8**'s `java.time` ([JSR 310](https://jcp.org/en/jsr/detail?id=310)) has immutable, thread-safe types: [`LocalDate`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/LocalDate.html), `LocalTime`, [`LocalDateTime`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/LocalDateTime.html), [`ZonedDateTime`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/ZonedDateTime.html), [`Instant`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/Instant.html), [`Duration`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/Duration.html), [`Period`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/Period.html).
 - Pick by meaning: a birthday is a `LocalDate`, a meeting is a `ZonedDateTime`, a log timestamp is an `Instant`.
-- `ZonedDateTime` handles daylight saving time correctly. `DateTimeFormatter` is immutable and safe to share.
+- `ZonedDateTime` handles daylight saving time correctly. [`DateTimeFormatter`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/format/DateTimeFormatter.html) is immutable and safe to share.
 
 ## [18. Concurrency](part6/ch18-concurrency.md)
 
 - Two threads updating the same variable can **lose updates**. Fix it with `synchronized`, locks, or atomic classes such as `AtomicInteger` (**Java 5**).
-- Don't manage threads by hand: use an `ExecutorService` (**Java 5**). Combine async results with `CompletableFuture` (**Java 8**).
+- Don't manage threads by hand: use an [`ExecutorService`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ExecutorService.html) (**Java 5**). Combine async results with `CompletableFuture` (**Java 8**).
 - **Virtual threads** (**Java 21**) are cheap threads managed by the JVM. Millions can block on I/O at once. Use one per task: `Executors.newVirtualThreadPerTaskExecutor()`.
 - **Scoped values** (**Java 25**) share per-call context safely; they're a better `ThreadLocal`.
 - **Structured concurrency** treats related tasks as one unit. It's still a **preview** in Java 27.
@@ -157,8 +157,8 @@ The key points of every chapter on one page. Follow any heading to read the full
 ## [20. The Modern Toolchain](part6/ch20-modern-toolchain.md)
 
 - **HTTP Client** (**Java 11**) replaced `HttpURLConnection`; **Java 26** added HTTP/3.
-- **`jwebserver`** and `SimpleFileServer` (**Java 18**) serve static files for testing.
-- **`jdeps`** finds the modules your code needs; **`jlink`** (**Java 9**) builds a runtime with only those; **`jpackage`** (**Java 16**) makes native installers.
+- **[`jwebserver`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jwebserver.html)** and `SimpleFileServer` (**Java 18**) serve static files for testing.
+- **[`jdeps`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jdeps.html)** finds the modules your code needs; **`jlink`** (**Java 9**) builds a runtime with only those; **`jpackage`** (**Java 16**) makes native installers.
 - **JDK Flight Recorder** became free and open source in **Java 11**: low-overhead production profiling.
 - **Markdown doc comments** (`///`, **Java 23**), `@snippet` (**Java 18**), and ahead-of-time caches (**Java 24–25**) round out the toolbox.
 

@@ -3,13 +3,13 @@
 > [!TIP]
 > You're reading the **complete edition**, the reference guide with every deep dive and runnable sample. For a focused read, see this chapter on the [website edition](https://hikefromjava7.com/part6/ch18-concurrency/).
 
-> **In this chapter:** why shared data breaks under concurrency, the toolkit Java 5 introduced, Java 8's `CompletableFuture`, and the Java 21 change that made blocking code scale again: virtual threads. Then Java 25's scoped values, and where structured concurrency stands in Java 27.
+> **In this chapter:** why shared data breaks under concurrency, the toolkit Java 5 introduced, Java 8's [`CompletableFuture`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/CompletableFuture.html), and the Java 21 change that made blocking code scale again: virtual threads. Then Java 25's scoped values, and where structured concurrency stands in Java 27.
 
 > [!TIP]
 > **Key points**
 >
 > - Two threads updating the same variable can **lose updates**. Fix it with `synchronized`, locks, or atomic classes such as `AtomicInteger` (**Java 5**).
-> - Don't manage threads by hand: use an `ExecutorService` (**Java 5**). Combine async results with `CompletableFuture` (**Java 8**).
+> - Don't manage threads by hand: use an [`ExecutorService`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ExecutorService.html) (**Java 5**). Combine async results with `CompletableFuture` (**Java 8**).
 > - **Virtual threads** (**Java 21**) are cheap threads managed by the JVM. Millions can block on I/O at once. Use one per task: `Executors.newVirtualThreadPerTaskExecutor()`.
 > - **Scoped values** (**Java 25**) share per-call context safely; they're a better `ThreadLocal`.
 > - **Structured concurrency** treats related tasks as one unit. It's still a **preview** in Java 27.
@@ -60,7 +60,7 @@ unsafe <= 400000: true
 
 - **`synchronized`** lets one thread at a time into a block guarded by a lock object.
 - **Atomic classes** (`AtomicInteger`, `AtomicLong`, `LongAdder` from Java 8) use CPU instructions that read-modify-write in one indivisible step.
-- **Immutable objects** (records, `List.of`, `java.time`) can't be corrupted at all, which is why modern Java leans on them.
+- **Immutable objects** (records, [`List.of`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html), `java.time`) can't be corrupted at all, which is why modern Java leans on them.
 
 ## Java 5: executors instead of threads
 
@@ -99,7 +99,7 @@ public class ExecutorsDemo {
 total pages: 2100
 ```
 
-The package also brought `ConcurrentHashMap`, `CountDownLatch`, `Semaphore`, `BlockingQueue` and explicit `Lock`s, and Java 7 added the Fork/Join framework for divide-and-conquer work (it powers parallel streams).
+The package also brought [`ConcurrentHashMap`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html), `CountDownLatch`, `Semaphore`, `BlockingQueue` and explicit `Lock`s, and Java 7 added the Fork/Join framework for divide-and-conquer work (it powers parallel streams).
 
 ## Java 8: `CompletableFuture`
 
@@ -191,7 +191,7 @@ Ten thousand tasks, each sleeping for 50 ms, finish in roughly the time of one, 
 
 - Use **one virtual thread per task**, and don't pool them; they're cheap.
 - They help with **waiting** (I/O), not **computing**. CPU-heavy work still needs about as many threads as cores.
-- `ExecutorService` became `AutoCloseable` in Java 19, so try-with-resources waits for all tasks.
+- `ExecutorService` became [`AutoCloseable`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/AutoCloseable.html) in Java 19, so [try-with-resources](https://docs.oracle.com/javase/specs/jls/se25/html/jls-14.html#jls-14.20.3) waits for all tasks.
 - In Java 21, a virtual thread blocking inside `synchronized` could "pin" its carrier thread. **Java 24** fixed this ([JEP 491](https://openjdk.org/jeps/491)), so `synchronized` is fine again.
 
 ## Java 25: scoped values

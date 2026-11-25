@@ -8,7 +8,7 @@
 > [!TIP]
 > **Key points**
 >
-> - A **class** is a blueprint; an **object** is an instance created at run time with `new`, always on the **heap**.
+> - A **class** is a blueprint; an **object** is an instance created at run time with `new`, always on the **[heap](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.3)**.
 > - A **reference variable** holds a reference to an object, not the object. Copying a reference shares the object.
 > - Printing an object shows `ClassName@` plus its **hash code in hex**. That's not a memory address.
 > - `==` compares references; `equals()` compares meaning, but only if the class overrides it.
@@ -16,7 +16,7 @@
 
 ## Classes, objects and the three pillars
 
-Object-oriented programming models a program as objects that combine **state** (fields) and **behavior** (methods). The course notebook summed up the core ideas with the acronym **PIE**:
+Object-oriented programming models a program as objects that combine **state** (fields) and **behavior** (methods). The core ideas are often summed up with the acronym **PIE**:
 
 - **Polymorphism**: one interface, many implementations (Chapter 6).
 - **Inheritance**: a class built on another class (Chapter 7).
@@ -27,7 +27,7 @@ Abstraction, the fourth idea often listed with these, gets Chapter 8.
 A class is a compile-time description. Nothing exists in memory for it until the JVM loads it, and no object exists until you ask for one.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → In Java objects are made dynamically only. The `new` operator allocates memory only to the object."*
 >
@@ -52,7 +52,7 @@ flowchart LR
     OBJ -. "knows its class" .-> CLS
 ```
 
-- The **class** (its methods' code and its `static` fields) exists once, in the method area.
+- The **class** (its methods' code and its `static` fields) exists once, in the [method area](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.4).
 - Each **object** lives on the heap and holds its own copy of every instance field, plus a small header that, among other things, points to its class.
 - **Methods are not copied per object.** Every `Point` shares the same method code; when a method runs, it receives the object it's working on as a hidden `this` parameter.
 
@@ -85,7 +85,7 @@ p == q ? false
 `Point q = p` copies the **reference**, not the object. Both variables now lead to the same object, so a change made through `q` is visible through `p`. Assigning `q = new Point()` points `q` somewhere else and leaves `p` alone.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → The Reference ID of one object can be put into any number of Reference Variables."*
 
@@ -115,7 +115,7 @@ hex is the hash code:   true
 > [!WARNING]
 > **A common misconception**
 >
-> Many courses, including the 2013 notebook, call this a "reference ID" or address. It isn't. The JVM moves objects around during garbage collection, so a fixed address couldn't be printed meaningfully, and the default hash code is a number the JVM generates once and stores in the object header. Java deliberately gives you no way to see an object's address.
+> Many courses call this a "reference ID" or address. It isn't. The JVM moves objects around during garbage collection, so a fixed address couldn't be printed meaningfully, and the default hash code is a number the JVM generates once and stores in the object header. Java deliberately gives you no way to see an object's address.
 
 ## Pointers vs. references
 
@@ -125,7 +125,7 @@ C++ gives you pointers you can add to, cast to integers and point anywhere. Java
 - be `null`,
 - be copied and compared with `==`.
 
-No arithmetic, no casting to numbers, no pointing into the middle of an object. Combined with the bytecode verifier (Chapter 1) and automatic garbage collection (Chapter 12), this is what makes Java memory-safe.
+No arithmetic, no casting to numbers, no pointing into the middle of an object. Combined with the [bytecode verifier](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.10) (Chapter 1) and automatic garbage collection (Chapter 12), this is what makes Java memory-safe.
 
 ## `this` and data shadowing
 
@@ -153,7 +153,7 @@ parameter = 10, field = 1
 field now = 10
 ```
 
-When a parameter or local variable has the same name as a field, the local name wins inside the method. The notebook calls this **data shadowing**. `this.width` reaches past the local name to the field. That's why constructors so often read `this.width = width`.
+When a parameter or local variable has the same name as a field, the local name wins inside the method. This is often called **data shadowing**. `this.width` reaches past the local name to the field. That's why constructors so often read `this.width = width`.
 
 `main` above also creates an **anonymous object**: `new Shadowing().resize(5)` uses an object without ever storing its reference. After the call, nothing refers to it, so it's immediately eligible for garbage collection.
 
@@ -200,7 +200,7 @@ public class Money7 {                  // the Java 7 way: write it all by hand
 Money7[currency=USD, cents=1250]  ==: false  equals: true
 ```
 
-Java 7 added `java.util.Objects`, whose `requireNonNull`, `equals` and `hash` made this boilerplate safer. It was still about thirty lines for two fields, and every new field meant updating three methods by hand. Forgetting one was a classic bug: two "equal" objects that land in different `HashMap` buckets.
+Java 7 added `java.util.Objects`, whose `requireNonNull`, `equals` and `hash` made this boilerplate safer. It was still about thirty lines for two fields, and every new field meant updating three methods by hand. Forgetting one was a classic bug: two "equal" objects that land in different [`HashMap`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/HashMap.html) buckets.
 
 ### The modern way: records (Java 16)
 

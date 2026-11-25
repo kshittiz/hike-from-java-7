@@ -11,7 +11,7 @@
 > - A stream pipeline is **source → intermediate operations → one terminal operation**: `list.stream().filter(…).map(…).toList()` (**Java 8**; `toList()` **Java 16**).
 > - Streams are **lazy**: nothing runs until the terminal operation, and elements flow through one at a time, so `findFirst` can stop early.
 > - **Collectors** group, partition, count and join: `groupingBy`, `partitioningBy`, `joining`.
-> - `Optional` (**Java 8**) represents "maybe a value." Use it for return types, not fields or parameters.
+> - [`Optional`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Optional.html) (**Java 8**) represents "maybe a value." Use it for return types, not fields or parameters.
 > - Later additions: `takeWhile`, `dropWhile`, bounded `iterate` (**9**), `teeing` (**12**), `mapMulti` (**16**), and **gatherers** (**24**) for custom intermediate operations.
 
 ## From "how" to "what"
@@ -107,7 +107,7 @@ Elements don't pass through each stage as a batch. Each element travels down the
 > [!WARNING]
 > **Streams are not always better**
 >
-> Streams shine for transforming and summarizing data. They're a poor fit for code with complex control flow, side effects, or checked exceptions in the lambdas. `parallel()` is not a free speed-up either: it pays off only for large, CPU-bound, easily split workloads. A plain loop is still fine Java.
+> Streams shine for transforming and summarizing data. They're a poor fit for code with complex control flow, side effects, or [checked exceptions](https://docs.oracle.com/javase/specs/jls/se25/html/jls-11.html#jls-11.1.1) in the lambdas. `parallel()` is not a free speed-up either: it pays off only for large, CPU-bound, easily split workloads. A plain loop is still fine Java.
 
 ## Collectors
 
@@ -268,7 +268,7 @@ public class GathererDemo {
 [[1, 2], [2, 3], [3, 4]]
 ```
 
-`Gatherers` provides built-ins such as `windowFixed`, `windowSliding`, `fold`, `scan` and `mapConcurrent`, and you can write your own with `Gatherer.of(...)`.
+[`Gatherers`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Gatherers.html) provides built-ins such as `windowFixed`, `windowSliding`, `fold`, `scan` and `mapConcurrent`, and you can write your own with `Gatherer.of(...)`.
 
 ## The journey at a glance
 
@@ -286,7 +286,7 @@ timeline
 
 1. Using the `Grouping` data, find the average number of releases per year with `teeing`.
 2. Rewrite a loop from your own code as a stream. Was it clearer?
-3. Use `Files.lines(path)` in try-with-resources to count the non-blank lines in a source file.
+3. Use `Files.lines(path)` in [try-with-resources](https://docs.oracle.com/javase/specs/jls/se25/html/jls-14.html#jls-14.20.3) to count the non-blank lines in a source file.
 4. With `Gatherers.windowSliding(3)`, compute a three-point moving average over a list of daily numbers (needs Java 24).
 
 ## IQ corner
@@ -303,4 +303,4 @@ timeline
 - Collectors turn grouping, counting and joining into one expression. `Optional` models "maybe."
 - Java 9–16 filled gaps; Java 24's gatherers allow custom intermediate operations.
 
-**Next:** Chapter 17 replaces `Date` and `Calendar` with `java.time`.
+**Next:** Chapter 17 replaces `Date` and [`Calendar`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Calendar.html) with `java.time`.

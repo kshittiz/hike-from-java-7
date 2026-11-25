@@ -60,7 +60,7 @@ in try
 
 Source: [FinallyReturn.java](FinallyReturn.java)
 
-**The notebook IQ: a return in finally wins; finally cannot change an already-evaluated return value.** (any Java)
+**Classic IQ: a return in finally wins; finally cannot change an already-evaluated return value.** (any Java)
 
 ```bash
 javac -d out FinallyReturn.java && java -cp out FinallyReturn

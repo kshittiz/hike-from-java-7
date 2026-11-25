@@ -11,7 +11,7 @@
 > - An **array** has a fixed length, set at creation. Elements get default values. `arr.length` is a field.
 > - A 2-D array is an **array of arrays**; rows can have different lengths.
 > - Arrays are **covariant**: a `String[]` is an `Object[]`, and storing the wrong type fails at run time with `ArrayStoreException`. Generic collections catch it at compile time.
-> - `Arrays.asList` is fixed-size; `List.of` (**Java 9**) is unmodifiable and rejects `null`.
+> - [`Arrays.asList`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Arrays.html) is fixed-size; [`List.of`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html) (**Java 9**) is unmodifiable and rejects `null`.
 > - **Java 21** sequenced collections added `getFirst()`, `getLast()`, `addFirst()` and `reversed()` to lists, ordered sets and ordered maps.
 
 ## Arrays
@@ -62,17 +62,17 @@ length = 4
 Index 4 out of bounds for length 4
 ```
 
-An array is an object that holds a fixed number of values of one type, stored side by side. The notebook listed its two advantages: one name for many values, and fast access by index.
+An array is an object that holds a fixed number of values of one type, stored side by side. It has two classic advantages: one name for many values, and fast access by index.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Once an array's memory is allocated, either statically or dynamically, it can't be changed."*
 >
-> Correct: to "grow" an array you create a bigger one and copy (`Arrays.copyOf`). That's exactly what `ArrayList` does for you behind the scenes.
+> Correct: to "grow" an array you create a bigger one and copy (`Arrays.copyOf`). That's exactly what [`ArrayList`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/ArrayList.html) does for you behind the scenes.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Q) Why does array index start with 0?"*
 >
@@ -108,11 +108,11 @@ public class ArrayCovariance {
 ArrayStoreException: java.lang.Integer
 ```
 
-Because `String[]` is a subtype of `Object[]`, the compiler accepts storing an `Integer` through an `Object[]` reference. The JVM checks every array store at run time and throws. Generics, added in Java 5, deliberately made `List<String>` **not** a `List<Object>`, so the same mistake is a compile error. This is one of the main reasons to prefer collections over arrays for objects.
+Because `String[]` is a subtype of `Object[]`, the compiler accepts storing an [`Integer`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html) through an `Object[]` reference. The JVM checks every array store at run time and throws. Generics, added in Java 5, deliberately made `List<String>` **not** a `List<Object>`, so the same mistake is a compile error. This is one of the main reasons to prefer collections over arrays for objects.
 
 ## The collections framework
 
-Java 1.2's collections framework is still the foundation: `List` (ordered, indexed), `Set` (no duplicates), `Map` (key → value) and `Queue`/`Deque`, with implementations like `ArrayList`, `HashSet`, `HashMap` and `ArrayDeque`.
+Java 1.2's collections framework is still the foundation: `List` (ordered, indexed), `Set` (no duplicates), `Map` (key → value) and `Queue`/`Deque`, with implementations like `ArrayList`, `HashSet`, [`HashMap`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/HashMap.html) and `ArrayDeque`.
 
 ```mermaid
 flowchart TD
@@ -161,7 +161,7 @@ public class GenericsDiamond {
 ```
 
 - **Java 7: the diamond `<>`** infers type arguments on the right-hand side.
-- **Java 8: default methods on `Map`**, such as `computeIfAbsent`, `merge` and `getOrDefault`, replaced many "check, then put" blocks.
+- **Java 8: [default methods](https://docs.oracle.com/javase/specs/jls/se25/html/jls-9.html#jls-9.4) on `Map`**, such as `computeIfAbsent`, `merge` and `getOrDefault`, replaced many "check, then put" blocks.
 - **Java 9: `List.of`, `Set.of`, `Map.of`** create small unmodifiable collections in one call.
 - **Java 10: `var`** infers the whole declaration (Chapter 2).
 
@@ -278,7 +278,7 @@ oldest: Java 8=2014, newest: Java 25=2025
 
 ## IQ corner
 
-1. **`length` vs. `length()` vs. `size()`?** Arrays have a `length` field; `String` has `length()`; collections have `size()`.
+1. **`length` vs. `length()` vs. `size()`?** Arrays have a `length` field; [`String`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html) has `length()`; collections have `size()`.
 2. **Can you change an array's size?** No. Create a new array and copy.
 3. **Why do `List.of` collections reject `null`?** To avoid ambiguity (`get` returning `null`) and to catch bugs early.
 4. **What's an `ArrayStoreException`?** Storing a value of the wrong type into a covariant array, detected at run time.

@@ -19,7 +19,7 @@
 A package groups related classes and gives them a unique name. The rule of thumb is a reversed domain name, like `com.notes.util`. Two rules connect packages to the file system:
 
 - The `package` statement is the first statement in the file.
-- The compiled class file must live in a folder path that matches the package.
+- The compiled [class file](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.1) must live in a folder path that matches the package.
 
 **Example:** [`code/ch09/packages/com/notes/app/Main.java`](../../code/ch09/packages/com/notes/app/Main.java) · [how to run it](../../code/ch09/README.md#packagescomnotesappmainjava) · any Java
 
@@ -44,10 +44,10 @@ Hello, packages
 max = 27
 ```
 
-`-d out` tells `javac` to create `out/com/notes/app/Main.class` and so on, building the folders for you. `-cp out` (the **classpath**) tells the JVM where those folders start, and the class is named by its fully qualified name.
+`-d out` tells [`javac`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/javac.html) to create `out/com/notes/app/Main.class` and so on, building the folders for you. `-cp out` (the **classpath**) tells the JVM where those folders start, and the class is named by its fully qualified name.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Golden Rule → No class exists in Java without any package. A class made without a package is stored in the default package, which can not be used outside the package."*
 >
@@ -57,11 +57,11 @@ max = 27
 
 - `import com.notes.util.Greeter;` imports one type.
 - `import com.notes.util.*;` imports every type in that package, but **not** its sub-packages. `com.notes` and `com.notes.util` are unrelated as far as access goes; the dot only *looks* hierarchical.
-- `java.lang` is imported automatically, which is why `String` and `System` need no import.
+- `java.lang` is imported automatically, which is why [`String`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html) and `System` need no import.
 - `import static java.lang.Math.max;` (Java 5) imports static members, so you can write `max(7, 27)`.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Golden Rule → You can have only one public class in a single .java file, and the file name must be the same as the public class name."*
 >
@@ -102,7 +102,7 @@ protectedaccess/sale/Discounted.java:8: error: price has protected access in Pro
 ```
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Protected data members and member functions can only be used through inheritance in a class of another package, i.e., association is not allowed."*
 >
@@ -188,7 +188,7 @@ The main directives:
 > [!IMPORTANT]
 > **Do you have to use modules?**
 >
-> No. Code on the classpath runs in the **unnamed module** and works as before; most applications still do this. Modules pay off for libraries that want real encapsulation, and for building small runtimes with `jlink` (Chapter 20). A common middle step is adding an `Automatic-Module-Name` to a library JAR's manifest so modular users can depend on a stable name.
+> No. Code on the classpath runs in the **unnamed module** and works as before; most applications still do this. Modules pay off for libraries that want real encapsulation, and for building small runtimes with [`jlink`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jlink.html) (Chapter 20). A common middle step is adding an `Automatic-Module-Name` to a library JAR's manifest so modular users can depend on a stable name.
 
 ## One import for a whole module: Java 25
 

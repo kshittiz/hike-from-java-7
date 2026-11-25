@@ -3,14 +3,14 @@
 > [!TIP]
 > You're reading the **complete edition**, the reference guide with every deep dive and runnable sample. For a focused read, see this chapter on the [website edition](https://hikefromjava7.com/part5/ch14-strings-and-text/).
 
-> **In this chapter:** why `String` is immutable, how the string pool works and where it moved in Java 7, the `==` trap, and the steady stream of string improvements from `String.join` in Java 8 to text blocks in Java 15.
+> **In this chapter:** why [`String`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html) is immutable, how the string pool works and where it moved in Java 7, the `==` trap, and the steady stream of string improvements from `String.join` in Java 8 to [text blocks](https://docs.oracle.com/javase/specs/jls/se25/html/jls-3.html#jls-3.10.6) in Java 15.
 
 > [!TIP]
 > **Key points**
 >
-> - `String` is **immutable**: methods like `concat` and `toUpperCase` return a new string. Use `StringBuilder` (**Java 5**) to build text in loops.
+> - `String` is **immutable**: methods like `concat` and `toUpperCase` return a new string. Use [`StringBuilder`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/StringBuilder.html) (**Java 5**) to build text in loops.
 > - String **literals** are pooled and shared. `new String("x")` always creates a new object. Compare with `equals()`, never `==`.
-> - **Java 7** moved the pool from PermGen to the heap. **Java 9** introduced compact strings and faster `+` concatenation.
+> - **Java 7** moved the pool from PermGen to the [heap](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.3). **Java 9** introduced compact strings and faster `+` concatenation.
 > - New methods: `String.join` (**8**), `isBlank`, `strip`, `repeat`, `lines` (**11**), `formatted` (**15**).
 > - **Text blocks** (**Java 15**) are multi-line literals with `"""`. String templates were previewed in Java 21–22 and **withdrawn**.
 
@@ -42,7 +42,7 @@ NOTES 2013
 3102 seton ym
 ```
 
-Once created, a `String` never changes. Every "modifying" method returns a new string, so a call whose result you ignore does nothing. Immutability is why strings are safe to share between threads, safe as `HashMap` keys, and safe to pool.
+Once created, a `String` never changes. Every "modifying" method returns a new string, so a call whose result you ignore does nothing. Immutability is why strings are safe to share between threads, safe as [`HashMap`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/HashMap.html) keys, and safe to pool.
 
 When you build text piece by piece, use the mutable `StringBuilder`. Its older sibling `StringBuffer` (Java 1.0) does the same with synchronized methods, which you almost never need.
 
@@ -101,7 +101,7 @@ flowchart LR
 - `intern()` returns the pooled copy.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → `==` compares Reference ID, `equals()` compares data."*
 >
@@ -110,7 +110,7 @@ flowchart LR
 > [!WARNING]
 > **A common misconception**
 >
-> The notebook says the pool lives in the class (method) area and that *"Garbage Collection is never done on a String object kept in the String constant pool."* That described Java 6. **Java 7 moved interned strings to the main heap**, and pooled strings that nothing references anymore *can* be garbage collected. One reason for the move was that heavy `intern()` use used to crash applications with `OutOfMemoryError: PermGen space`.
+> Java 7-era courses taught that the pool lives in the class (method) area and that *"Garbage Collection is never done on a String object kept in the String constant pool."* That described Java 6. **Java 7 moved interned strings to the main heap**, and pooled strings that nothing references anymore *can* be garbage collected. One reason for the move was that heavy `intern()` use used to crash applications with `OutOfMemoryError: PermGen space`.
 
 ## Concatenation
 
@@ -140,14 +140,14 @@ value: null
 `+` is evaluated left to right, and it only means concatenation once a `String` is involved. `1 + 2 + "3"` adds first, then concatenates. Two `char`s add as numbers ('a' is 97, 'b' is 98). `null` concatenates as the text `"null"`.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Whenever we are doing String concatenation using the + operator, one operand must be a String."*
 
 > [!NOTE]
 > **What changed: faster `+` (Java 9)**
 >
-> Before Java 9, `javac` compiled `a + b + c` into a chain of `StringBuilder.append` calls. Java 9 ([JEP 280](https://openjdk.org/jeps/280)) compiles it to a single `invokedynamic` call, letting the JVM choose the best strategy at run time, which is often faster and allocates less. The old advice "never use `+`, always use `StringBuilder`" now applies only to loops, where each iteration would otherwise build a new string.
+> Before Java 9, [`javac`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/javac.html) compiled `a + b + c` into a chain of `StringBuilder.append` calls. Java 9 ([JEP 280](https://openjdk.org/jeps/280)) compiles it to a single `invokedynamic` call, letting the JVM choose the best strategy at run time, which is often faster and allocates less. The old advice "never use `+`, always use `StringBuilder`" now applies only to loops, where each iteration would otherwise build a new string.
 
 Java 9 also made strings smaller in memory with **compact strings** (Chapter 2): Latin-1 text uses one byte per character.
 
@@ -179,7 +179,7 @@ split(","):    java|  seven ||twenty-seven
 split regex:     java|seven|twenty-seven
 ```
 
-The notebook covered `StringTokenizer`, which still works but is a legacy class. `String.split` takes a regular expression, keeps empty fields between separators, and is the usual choice today. For heavy parsing, `Scanner` or `java.util.regex.Pattern` give more control.
+Java 7-era code often used [`StringTokenizer`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/StringTokenizer.html), which still works but is a legacy class. `String.split` takes a regular expression, keeps empty fields between separators, and is the usual choice today. For heavy parsing, `Scanner` or `java.util.regex.Pattern` give more control.
 
 ## Fifteen years of new string methods
 

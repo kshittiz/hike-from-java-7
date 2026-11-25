@@ -10,8 +10,8 @@
 >
 > - An object becomes **eligible for collection** when no chain of references from a *GC root* (live stack variables, static fields, active threads) reaches it. Cycles don't keep objects alive.
 > - `System.gc()` is only a **request**.
-> - `finalize()` was deprecated in **Java 9** and marked for removal in **Java 18**. Use `try`-with-resources, and `Cleaner` (**Java 9**) as a safety net.
-> - **Collectors:** Parallel was the server default in Java 7; **G1** became the default in **Java 9**; **ZGC** and **Shenandoah** became production-ready in **Java 15**; CMS was removed in **Java 14**.
+> - `finalize()` was deprecated in **Java 9** and marked for removal in **Java 18**. Use `try`-with-resources, and [`Cleaner`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ref/Cleaner.html) (**Java 9**) as a safety net.
+> - **Collectors:** Parallel was the server default in Java 7; **[G1](https://docs.oracle.com/en/java/javase/25/gctuning/garbage-first-g1-garbage-collector1.html)** became the default in **Java 9**; **[ZGC](https://docs.oracle.com/en/java/javase/25/gctuning/z-garbage-collector1.html)** and **Shenandoah** became production-ready in **Java 15**; CMS was removed in **Java 14**.
 > - **Java 27** makes G1 the default everywhere and turns on **compact object headers** by default.
 
 ## When is an object garbage?
@@ -31,7 +31,7 @@ flowchart LR
 The dashed pair is an **island of isolation**: the two objects point at each other, but nothing reachable points at them. A reference-counting collector would leak them; Java's tracing collectors don't.
 
 > [!NOTE]
-> **From the notebook, 30 August 2013**
+> **The classic rule**
 >
 > *"Which objects are available for Garbage Collection? (1) When a function ends… (2) when the reference is made null… (3) when the reference is reassigned… (4) island of isolation."*
 >
@@ -72,7 +72,7 @@ island collected:       true
 
 ## Reference strength
 
-The notebook listed Java's reference types. They're unchanged since Java 1.2:
+Java has four kinds of references. They're unchanged since Java 1.2:
 
 | Type | Collected when… | Used for |
 |---|---|---|
@@ -86,7 +86,7 @@ The notebook listed Java's reference types. They're unchanged since Java 1.2:
 `finalize()` was meant to run cleanup before an object is collected. In practice it was unpredictable (no guarantee it runs at all), slow (it delays collection), and dangerous (it can bring an object back to life).
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Can we call this finalize function explicitly? → Yes, we can call it explicitly and nothing will happen; it will run normally."*
 >
@@ -154,7 +154,7 @@ done
 
 ## The garbage collectors, Java 7 → 27
 
-Most objects die young, so HotSpot's collectors divide the heap into a **young generation**, collected often and cheaply, and an **old generation** for survivors. What changed over the years is *how* they collect, and how long the application pauses while they do.
+Most objects die young, so HotSpot's collectors divide the [heap](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.3) into a **young generation**, collected often and cheaply, and an **old generation** for survivors. What changed over the years is *how* they collect, and how long the application pauses while they do.
 
 ```mermaid
 timeline
@@ -223,4 +223,4 @@ jcmd <pid> JFR.start duration=60s filename=rec.jfr   # record a profile (Chapter
 - `finalize()` is on its way out; use `try`-with-resources plus `Cleaner`.
 - Collectors moved from Parallel/CMS (Java 7) to G1 (9), ZGC and Shenandoah (15), and G1 everywhere with compact headers (27).
 
-**Next:** Part V begins with exceptions: the hierarchy, `finally`'s surprises, and Java 7's try-with-resources.
+**Next:** Part V begins with exceptions: the hierarchy, `finally`'s surprises, and Java 7's [try-with-resources](https://docs.oracle.com/javase/specs/jls/se25/html/jls-14.html#jls-14.20.3).

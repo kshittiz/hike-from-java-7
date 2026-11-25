@@ -11,8 +11,8 @@
 > - `Throwable` splits into `Error` (don't catch) and `Exception`. `RuntimeException` and its subclasses are **unchecked**; other exceptions are **checked** and must be caught or declared with `throws`.
 > - Catch blocks are tried top to bottom, so put subclasses **before** their parents.
 > - `finally` always runs, except when the JVM stops (`System.exit`, a crash). A `return` in `finally` overrides the `try`'s return.
-> - **Java 7:** try-with-resources, multi-catch and suppressed exceptions. **Java 9:** try-with-resources on an existing effectively final variable.
-> - **Java 14/15:** helpful `NullPointerException` messages name the exact `null` expression.
+> - **Java 7:** [try-with-resources](https://docs.oracle.com/javase/specs/jls/se25/html/jls-14.html#jls-14.20.3), multi-catch and suppressed exceptions. **Java 9:** try-with-resources on an existing [effectively final](https://docs.oracle.com/javase/specs/jls/se25/html/jls-4.html#jls-4.12.4) variable.
+> - **Java 14/15:** helpful [`NullPointerException`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html) messages name the exact `null` expression.
 
 ## The hierarchy
 
@@ -28,7 +28,7 @@ flowchart TD
 - **Errors** mean the JVM itself is in trouble. Catching them is almost never useful.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Unchecked exceptions are automatically forwarded in the calling chain."*
 >
@@ -71,7 +71,7 @@ declined: short by 1000 cents, balance 3000
 unchecked: ArrayIndexOutOfBoundsException
 ```
 
-A custom checked exception extends `Exception`; an unchecked one extends `RuntimeException`. Modern style leans toward unchecked exceptions for most application errors, and checked exceptions for conditions callers can genuinely recover from.
+A custom [checked exception](https://docs.oracle.com/javase/specs/jls/se25/html/jls-11.html#jls-11.1.1) extends `Exception`; an unchecked one extends `RuntimeException`. Modern style leans toward unchecked exceptions for most application errors, and checked exceptions for conditions callers can genuinely recover from.
 
 ## Catch order
 
@@ -103,7 +103,7 @@ CatchOrder.java:11: error: exception FileNotFoundException has already been caug
 ```
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → You can make multiple catch blocks. At a time only one catch block will execute."*
 >
@@ -149,7 +149,7 @@ counter() = 1
 ```
 
 > [!NOTE]
-> **From the notebook, 2013**
+> **The classic rule**
 >
 > *"Q: What will be its value? try { return 20; } finally { return 60; } → Ans → 60. The rule of return breaks, because the finally block will execute."*
 
@@ -159,7 +159,7 @@ Two lessons, both still true:
 - When `try` returns a value, that value is **evaluated before** `finally` runs. Changing the variable in `finally` doesn't change what's returned.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"IQ) Is there any condition when the finally block does not execute?"*
 
@@ -182,10 +182,10 @@ public class FinallyExit {
 in try
 ```
 
-`System.exit` stops the JVM, so `finally` never gets its turn. A JVM crash, a killed process, or a daemon thread still running at shutdown are the other cases. (The notebook's follow-up, *"Why do we give 0 in exit()?"*: 0 is the conventional "success" exit status for the operating system; non-zero means failure.)
+`System.exit` stops the JVM, so `finally` never gets its turn. A JVM crash, a killed process, or a daemon thread still running at shutdown are the other cases. (A classic follow-up, *"Why do we give 0 in exit()?"*: 0 is the conventional "success" exit status for the operating system; non-zero means failure.)
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"IQ: What is the difference between final, finally and finalize?"*
 >
@@ -245,13 +245,13 @@ using shared
 close shared
 ```
 
-- Any `AutoCloseable` (a new Java 7 interface, extended by `Closeable`) can be declared in the parentheses.
+- Any [`AutoCloseable`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/AutoCloseable.html) (a new Java 7 interface, extended by `Closeable`) can be declared in the parentheses.
 - Resources close **automatically, in reverse order**, even when the body throws.
 - If closing also throws, the body's exception wins and the close failure is attached as a **suppressed** exception (`getSuppressed()`, also Java 7) instead of replacing it.
 - **Java 9** lets you name an existing effectively final variable: `try (shared) { … }`.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → In Java, two exceptions never occur at the same time."*
 >
@@ -343,4 +343,4 @@ In Java 7, this line produced a `NullPointerException` with **no message at all*
 - Java 7 brought try-with-resources, suppressed exceptions and multi-catch; Java 9 simplified try-with-resources.
 - Java 14/15's helpful NPE messages name the `null` exactly.
 
-**Next:** Chapter 14 covers strings: the pool, immutability, and fifteen years of new string features up to text blocks.
+**Next:** Chapter 14 covers strings: the pool, immutability, and fifteen years of new string features up to [text blocks](https://docs.oracle.com/javase/specs/jls/se25/html/jls-3.html#jls-3.10.6).

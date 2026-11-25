@@ -3,15 +3,15 @@
 > [!TIP]
 > You're reading the **complete edition**, the reference guide with every deep dive and runnable sample. For a focused read, see this chapter on the [website edition](https://hikefromjava7.com/part5/ch15-wrappers-and-boxing/).
 
-> **In this chapter:** why Java has both `int` and `Integer`, how autoboxing works, the integer cache behind one of Java's most famous puzzles, and the twisting story of the wrapper constructors you learned in Java 7: deprecated, marked for removal, then reprieved.
+> **In this chapter:** why Java has both `int` and [`Integer`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html), how [autoboxing](https://docs.oracle.com/javase/specs/jls/se25/html/jls-5.html#jls-5.1.7) works, the integer cache behind one of Java's most famous puzzles, and the twisting story of the wrapper constructors you learned in Java 7: deprecated, marked for removal, then reprieved.
 
 > [!TIP]
 > **Key points**
 >
 > - Each primitive has a **wrapper class**: `Integer`, `Long`, `Double`, `Character`, `Boolean`… Collections and generics need objects, so they hold wrappers.
 > - **Autoboxing** (**Java 5**) converts between them automatically: `Integer i = 10;` calls `Integer.valueOf(10)`.
-> - `Integer.valueOf` **caches** -128 to 127, so `==` happens to work for small values and fails for larger ones. Always compare wrappers with `equals`.
-> - Unboxing `null` throws `NullPointerException`. `Long.valueOf(1).equals(1)` is `false`.
+> - [`Integer.valueOf`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html) **caches** -128 to 127, so `==` happens to work for small values and fails for larger ones. Always compare wrappers with `equals`.
+> - [Unboxing](https://docs.oracle.com/javase/specs/jls/se25/html/jls-5.html#jls-5.1.8) `null` throws [`NullPointerException`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html). `Long.valueOf(1).equals(1)` is `false`.
 > - `new Integer(10)` was deprecated in **Java 9**, marked **for removal** in **Java 16**, and reprieved in **Java 25**: still deprecated, but no longer scheduled for removal. Use `Integer.valueOf` or autoboxing either way.
 
 ## Why wrappers exist
@@ -51,11 +51,11 @@ public class Parsing {
 ```
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"parseXxx() → used to convert a String to a primitive."*
 >
-> And `valueOf` converts to the wrapper. Java 8 added more helpers, such as `Integer.sum`, `max`, `min` and the unsigned methods from Chapter 2, so wrappers can serve as method references (`Integer::sum`).
+> And `valueOf` converts to the wrapper. Java 8 added more helpers, such as `Integer.sum`, `max`, `min` and the unsigned methods from Chapter 2, so wrappers can serve as [method references](https://docs.oracle.com/javase/specs/jls/se25/html/jls-15.html#jls-15.13) (`Integer::sum`).
 
 ## Autoboxing (Java 5)
 
@@ -92,7 +92,7 @@ unboxed    : true
 ```
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Java caches Integer objects in the range -128 to 127. Rule → Always use .equals() for comparing Wrapper objects, not ==."*
 >
@@ -189,7 +189,7 @@ warning: [deprecation] Integer(int) in Integer has been deprecated
 ```
 
 - **Java 9** deprecated `new Integer(...)`, `new Long(...)` and the other wrapper constructors: they always allocate, while `valueOf` can reuse cached objects.
-- **Java 16** marked them **for removal** ([JEP 390](https://openjdk.org/jeps/390)) and declared the wrappers *value-based classes*: code shouldn't depend on their identity. `javac` now warns if you `synchronize` on a wrapper object, which is a bug because the cache can share that object with unrelated code.
+- **Java 16** marked them **for removal** ([JEP 390](https://openjdk.org/jeps/390)) and declared the wrappers *value-based classes*: code shouldn't depend on their identity. [`javac`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/javac.html) now warns if you `synchronize` on a wrapper object, which is a bug because the cache can share that object with unrelated code.
 - **Java 25** took back the "for removal" ([JDK-8354335](https://bugs.openjdk.org/browse/JDK-8354335)). The constructors are still deprecated, but there's no longer a plan to delete them.
 
 Both decisions came from **Project Valhalla**, the long-running effort to let the JVM treat value-like objects without identity, so that a `List<Integer>` could someday be as compact as an `int[]`. The original plan expected that turning wrappers into value classes would break old code calling the constructors, so they had to go. Valhalla's design later changed so that this breakage no longer happens, and the removal was dropped. It's a good example of why "deprecated" and "deprecated for removal" mean different things. As of Java 27, Valhalla itself is still in progress.

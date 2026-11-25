@@ -10,9 +10,9 @@
 >
 > - **Static nested** class: a class inside a class, with no tie to an outer object.
 > - **Inner** class: tied to an outer object (`outer.new Inner()`), and sees its fields.
-> - **Local** and **anonymous** classes live inside a method. Since **Java 8** they (and lambdas) can use local variables that are **effectively final**; before, those variables had to be declared `final`.
+> - **Local** and **anonymous** classes live inside a method. Since **Java 8** they (and lambdas) can use local variables that are **[effectively final](https://docs.oracle.com/javase/specs/jls/se25/html/jls-4.html#jls-4.12.4)**; before, those variables had to be declared `final`.
 > - **Lambdas** (**Java 8**) replace one-method anonymous classes. Inside a lambda, `this` means the *enclosing* object.
-> - **Java 16** let inner classes declare static members, even `main`, and allowed local records, enums and interfaces.
+> - **Java 16** let [inner classes](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.1.3) declare static members, even `main`, and allowed local records, [enums](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.9) and interfaces.
 
 ## Four kinds of nested class
 
@@ -75,13 +75,13 @@ NestedKinds.class
 | Anonymous | inside an expression | If the method isn't static | One-off implementations; mostly replaced by lambdas |
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"IQ → Is a separate .class file created for a nested class?"*
 >
-> Yes, as the listing shows: `Outer$Inner.class` for member classes, `Outer$1.class` for the first anonymous class, `Outer$1Local.class` for a local class. The lambda produced **no** class file. The compiler turns it into a private method and the JVM builds its implementation at run time with `invokedynamic`.
+> Yes, as the listing shows: `Outer$Inner.class` for member classes, `Outer$1.class` for the first anonymous class, `Outer$1Local.class` for a local class. The lambda produced **no** [class file](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.1). The compiler turns it into a private method and the JVM builds its implementation at run time with `invokedynamic`.
 
-The notebook used "nested" for all of these and "inner" for the non-static kind. That matches the Java Language Specification: every inner class is nested, but static nested classes are not inner.
+The Java Language Specification calls all of these "nested" and only the non-static kind "inner": every inner class is nested, but static nested classes are not inner.
 
 ### Inner classes hold a hidden reference
 
@@ -92,7 +92,7 @@ An inner class object keeps a reference to the outer object it was created from 
 Local and anonymous classes, and lambdas, can use local variables from the enclosing method. They capture a **copy** of the value, so the variable must not change afterwards, or the copy and the variable would disagree.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Local Inner Class can access local variables of the method only if they are `final`."*
 >
@@ -168,7 +168,7 @@ flowchart LR
     B --> C["Method reference and<br/>combinators<br/>comparingInt(Dev::years)"]
 ```
 
-A lambda can stand in wherever a **functional interface** (one abstract method, Chapter 8) is expected. The compiler infers parameter types from context. Combinators like `Comparator.comparingInt(...).reversed().thenComparing(...)` then let you build behavior from small pieces.
+A lambda can stand in wherever a **[functional interface](https://docs.oracle.com/javase/specs/jls/se25/html/jls-9.html#jls-9.8)** (one abstract method, Chapter 8) is expected. The compiler infers parameter types from context. Combinators like `Comparator.comparingInt(...).reversed().thenComparing(...)` then let you build behavior from small pieces.
 
 ### Lambdas are not just shorter anonymous classes
 
@@ -207,7 +207,7 @@ Anonymous classes still have a place when you need state, several methods, or to
 Records (Java 16, [JEP 395](https://openjdk.org/jeps/395)) brought a quiet relaxation: inner classes may now declare **static members**, and records, enums and interfaces may be declared **locally** inside a method.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Q) Can we keep main in a non-static nested class?"* The 2013 answer was no: inner classes couldn't declare static methods.
 
@@ -244,7 +244,7 @@ Since Java 16 the answer is yes. Local records are the more useful change in pra
 1. Make `Inner` in `NestedKinds` static. What breaks, and why?
 2. Rewrite the anonymous `Runnable` in `NestedKinds` as a lambda and check which class file disappears.
 3. Write a method that declares a local `record Pair(String key, int count)` and returns a sorted list of pairs.
-4. Find a listener or callback in your own code written as an anonymous class and convert it to a lambda or method reference.
+4. Find a listener or callback in your own code written as an anonymous class and convert it to a lambda or [method reference](https://docs.oracle.com/javase/specs/jls/se25/html/jls-15.html#jls-15.13).
 
 ## IQ corner
 

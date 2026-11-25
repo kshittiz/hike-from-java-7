@@ -19,13 +19,13 @@
 
 A constructor looks like a method with the class's name and no return type. It runs exactly once per object, right after memory is allocated and fields are set to their defaults.
 
-The notebook distinguished two styles:
+Java 7-era courses distinguished two styles:
 
 - A **default** (no-argument) constructor gives every object the same starting values.
 - A **parameterized** constructor gives each object its own values.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → If there is no constructor in a class then the non-parameterized constructor is in-built. The compiler adds it at compilation."*
 >
@@ -71,7 +71,7 @@ unknown, 0
 Each constructor delegates to a more complete one, so the real initialization lives in one place. The output runs "backwards" because each `this(...)` call finishes before the rest of the calling constructor runs.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → During constructor chaining, always keep one constructor which does not call `this()`, otherwise recursion will occur."*
 >
@@ -166,7 +166,7 @@ a.id=1 b.id=2
 A `static` field exists once per class, no matter how many objects there are. A `static` method runs without an object, so it has no `this` and can't touch instance fields directly.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Always keep those properties of an object as static data members whose values are same for each object. Keep those behaviours as static functions which are not performing a task for a particular object."*
 >
@@ -174,7 +174,7 @@ A `static` field exists once per class, no matter how many objects there are. A 
 
 ### What is `System.out.println`, exactly?
 
-The notebook took this apart, and it's a perfect example of `static` at work:
+Taking it apart is a perfect example of `static` at work:
 
 - `System` is a class in `java.lang`, which every file imports automatically.
 - `out` is a `public static final` field of `System`, of type `PrintStream`. Being `static` is why you don't need a `System` object.
@@ -184,10 +184,10 @@ Java 25's `IO.println` (Chapter 1) wraps the same idea in a simpler name for beg
 
 ## Running code without `main`
 
-The notebook recorded a famous trick and the fact that Java 7 killed it:
+Here's a famous old trick, and the fact that Java 7 killed it:
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"IQ) Can we execute any code of a program without executing main()? → Yes, but after JDK 1.7, NO."*
 
@@ -287,7 +287,7 @@ rejected: empty id
 Same behavior, written the obvious way. The part before `super(...)` is called the constructor's **prologue**. It can also assign the class's own fields before calling `super(...)`, which closes a long-standing hole where a parent constructor could call an overridden method and see the child's fields still unset.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Whenever we are achieving constructor chaining using this() / this(args), then it must be the first statement."*
 >
@@ -297,7 +297,7 @@ Same behavior, written the obvious way. The part before `super(...)` is called t
 
 1. Add a second static block and a static field initializer between the two blocks in `InitOrder`. Predict the order, then run it.
 2. Give a parent class a constructor that calls an overridable method, and override it in a child that reads one of its own fields. What does it print? How does Java 25's prologue let you fix it?
-3. Make a class with a `private` constructor and a `static` factory method `of(...)`. Why do so many JDK APIs (`List.of`, `Integer.valueOf`) prefer factories over constructors?
+3. Make a class with a `private` constructor and a `static` factory method `of(...)`. Why do so many JDK APIs ([`List.of`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html), [`Integer.valueOf`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html)) prefer factories over constructors?
 4. Write a class that counts how many objects have been created, safely, from many threads. (Hint: Chapter 18's `AtomicInteger`.)
 
 ## IQ corner

@@ -12,7 +12,7 @@
 > - Integer `/` **truncates toward zero** and `%` takes the **sign of the dividend**: `-7 % 3` is `-1`. Use `Math.floorMod` (**Java 8**) for a remainder that's never negative.
 > - `&&` and `||` **short-circuit**; `&` and `|` always evaluate both sides. `>>` keeps the sign, `>>>` fills with zeros.
 > - `switch` grew up: strings (**Java 7**), arrows and switch *expressions* with `yield` (**Java 14**), type patterns, guards and `case null` (**Java 21**).
-> - No new arithmetic or logical operators arrived between Java 7 and 27; Java 8's `->` and `::` are syntax for lambdas and method references. `instanceof` gained patterns (**Java 16**), which removed most casts.
+> - No new arithmetic or logical operators arrived between Java 7 and 27; Java 8's `->` and `::` are syntax for lambdas and [method references](https://docs.oracle.com/javase/specs/jls/se25/html/jls-15.html#jls-15.13). `instanceof` gained patterns (**Java 16**), which removed most casts.
 
 ## How Java evaluates an expression
 
@@ -49,7 +49,7 @@ x = 200
 Walk through `i++ + ++i`: the left operand `i++` produces 5 and sets `i` to 6. The right operand `++i` sets `i` to 7 and produces 7. The sum is 12. It's well-defined, but write it this way in real code and your reviewers will rightly reject it.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Except the assignment, all binary operators have Left to Right associativity. Unary and ternary operators have Right to Left."*
 >
@@ -283,11 +283,11 @@ FEB 31   <- fall-through bug
 JAN 31
 ```
 
-Java 7 let you `switch` on a `String`, which the compiler implements with `hashCode()` and `equals()`. But it kept C's oldest trap: without `break`, control **falls through** into the next case. The missing `break` after `FEB` is a real bug that compiles without a warning, unless you turn on `-Xlint:fallthrough`.
+Java 7 let you `switch` on a [`String`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html), which the compiler implements with `hashCode()` and `equals()`. But it kept C's oldest trap: without `break`, control **falls through** into the next case. The missing `break` after `FEB` is a real bug that compiles without a warning, unless you turn on `-Xlint:fallthrough`.
 
 ### Java 14: switch expressions
 
-Switch expressions ([JEP 361](https://openjdk.org/jeps/361)) fixed three things at once:
+[Switch expressions](https://docs.oracle.com/javase/specs/jls/se25/html/jls-15.html#jls-15.28) ([JEP 361](https://openjdk.org/jeps/361)) fixed three things at once:
 
 **Example:** [`code/ch03/SwitchExpression.java`](../../code/ch03/SwitchExpression.java) · [how to run it](../../code/ch03/README.md#switchexpressionjava) · Java 14+
 
@@ -362,8 +362,8 @@ nothing
 ```
 
 - `case Integer i` tests the type and binds `i` in one step, so no cast is needed.
-- `when` adds a **guard**. Cases are tried top to bottom, so the guarded case must come before the general `Integer` case. The compiler rejects the opposite order as unreachable.
-- `case null` handles `null` explicitly. Without it, a `switch` on `null` still throws `NullPointerException`, as it always did.
+- `when` adds a **guard**. Cases are tried top to bottom, so the guarded case must come before the general [`Integer`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html) case. The compiler rejects the opposite order as unreachable.
+- `case null` handles `null` explicitly. Without it, a `switch` on `null` still throws [`NullPointerException`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html), as it always did.
 - With a **sealed** hierarchy (Chapter 19), the compiler can prove a `switch` covers every subtype, and you can drop `default` entirely.
 
 > [!IMPORTANT]

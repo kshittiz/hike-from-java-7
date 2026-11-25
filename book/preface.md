@@ -2,7 +2,7 @@
 
 Twenty releases separate Java 7 from Java 27. This book connects the Java many of us first learned with the Java we write today, one concept at a time.
 
-It began as the notes I wrote in a Java course in 2013; [About the Author](about.md) tells that story.
+It began with a Java course I took in 2013; [About the Author](about.md) tells that story.
 
 ## What makes this book different
 
@@ -24,12 +24,12 @@ Read it front to back if you're new to Java. If you already write Java, skim eac
 | **What changed** box | How a release changed the concept |
 | **Common mistake** box | A trap, or a correction to a classic misconception |
 | **Migration tip** box | Advice for upgrading older code |
-| **From the notebook** box | A rule or interview question from my 2013 course notes, checked against modern Java |
+| **The classic rule** box | A rule that Java 7-era courses taught, checked against modern Java |
 | **Rule** box | A short rule worth memorizing |
 | `code/ch01/Hello.java` | The example's source file, runnable from the book's GitHub repository |
 
 ## Thank you
 
-To the teachers who first put BlueJ in front of a curious twelve-year-old, to the instructor whose Java course filled that notebook, and to the OpenJDK community, whose careful work over twenty releases gave this book its story.
+To the teachers who first put BlueJ in front of a curious twelve-year-old, to the instructor whose Java course started it all, and to the OpenJDK community, whose careful work over twenty releases gave this book its story.
 
 — Kshittiz Kumar, 2026

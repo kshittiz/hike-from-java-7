@@ -3,15 +3,15 @@
 > [!TIP]
 > You're reading the **complete edition**, the reference guide with every deep dive and runnable sample. For a focused read, see this chapter on the [website edition](https://hikefromjava7.com/part1/ch02-types-and-variables/).
 
-> **In this chapter:** Java's eight primitive types and why their sizes are fixed, how `char` and Unicode really fit together, when Java converts types for you and when it refuses, and how `var` (Java 10) and `_` (Java 22) changed the way we declare variables.
+> **In this chapter:** Java's eight [primitive types](https://docs.oracle.com/javase/specs/jls/se25/html/jls-4.html#jls-4.2) and why their sizes are fixed, how `char` and Unicode really fit together, when Java converts types for you and when it refuses, and how `var` (Java 10) and `_` (Java 22) changed the way we declare variables.
 
 > [!TIP]
 > **Key points**
 >
 > - **Eight primitives** with fixed sizes on every platform: `byte` 8 bits, `short` 16, `char` 16 (unsigned), `int` 32, `long` 64, `float` 32, `double` 64, plus `boolean`. Everything else is a **reference**.
-> - **Widening** (small → big) is automatic. **Narrowing** needs a cast and silently drops bits: `(byte) 130` is `-126`. Use `Math.addExact` (**Java 8**) when overflow must fail loudly.
+> - **[Widening](https://docs.oracle.com/javase/specs/jls/se25/html/jls-5.html#jls-5.1.2)** (small → big) is automatic. **[Narrowing](https://docs.oracle.com/javase/specs/jls/se25/html/jls-5.html#jls-5.1.3)** needs a cast and silently drops bits: `(byte) 130` is `-126`. Use `Math.addExact` (**Java 8**) when overflow must fail loudly.
 > - `byte + byte` is an `int`. Arithmetic on `byte`, `short` and `char` always happens in `int`.
-> - Fields get default values, local variables don't. Use `BigDecimal` for money, never `double`.
+> - Fields get default values, local variables don't. Use [`BigDecimal`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/math/BigDecimal.html) for money, never `double`.
 > - `var` (**Java 10**) infers a local's type. `_` (**Java 22**) names a variable you never use. UTF-8 is the default charset since **Java 18**.
 
 ## A variable is a named box
@@ -33,7 +33,7 @@ flowchart LR
 ```
 
 - A **primitive variable** holds the value itself. `int count = 3` puts the bits for 3 right in the variable.
-- A **reference variable** holds a pointer-like *reference* to an object on the heap. Classes, interfaces, arrays, enums, records: everything that isn't one of the eight primitives is used through references.
+- A **reference variable** holds a pointer-like *reference* to an object on the [heap](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.3). Classes, interfaces, arrays, [enums](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.9), records: everything that isn't one of the eight primitives is used through references.
 
 Java has no pointer arithmetic. You can't add 4 to a reference or turn an integer into one. That single restriction removes an entire category of C and C++ bugs.
 
@@ -90,7 +90,7 @@ double max 1.7976931348623157E308
 ```
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → All the datatypes in Java are signed. Range = −2^(n−1) to 2^(n−1) − 1, so a byte holds −128 to 127."*
 >
@@ -147,7 +147,7 @@ Early computers stored text as **ASCII**: 7 bits per character, enough for 128 s
 
 Java was designed around **Unicode** from day one, which is why its `char` is 16 bits rather than C's 8. In 1995, 65,536 code points looked like enough for every character in every language.
 
-Unicode then outgrew 16 bits. Emoji, many historic scripts and tens of thousands of rarer Chinese characters live above 65,535. Since **Java 5**, a `String` is a sequence of UTF-16 *code units*: most characters take one `char`, and the rest take a **surrogate pair** of two.
+Unicode then outgrew 16 bits. Emoji, many historic scripts and tens of thousands of rarer Chinese characters live above 65,535. Since **Java 5**, a [`String`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html) is a sequence of UTF-16 *code units*: most characters take one `char`, and the rest take a **surrogate pair** of two.
 
 **Example:** [`code/ch02/CharMath.java`](../../code/ch02/CharMath.java) · [how to run it](../../code/ch02/README.md#charmathjava) · any Java
 
@@ -271,11 +271,11 @@ Each line is a lesson:
 ## Promotion in expressions
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"In an expression, byte, short and char values are automatically promoted to int."*
 
-Here is another classic surprise from the notebook, tested:
+Here is another classic surprise, tested:
 
 **Example:** [`code/ch02/Promotion.java`](../../code/ch02/Promotion.java) · [how to run it](../../code/ch02/README.md#promotionjava) · any Java
 
@@ -330,11 +330,11 @@ Notice the third fix: compound assignment operators like `+=` include a hidden c
 ## Conversions choose your overload
 
 > [!NOTE]
-> **From the notebook, 9 July 2013**
+> **The classic rule**
 >
 > *"`show(10)` → 10 is int by default. Since `show(int)` does not exist, the compiler promotes int to the next available type."*
 
-Widening also decides which overloaded method gets called. Here's the `show(10)` experiment from the notebook, extended:
+Widening also decides which overloaded method gets called. Here's the classic `show(10)` experiment, extended:
 
 **Example:** [`code/ch02/OverloadPick.java`](../../code/ch02/OverloadPick.java) · [how to run it](../../code/ch02/README.md#overloadpickjava) · any Java
 
@@ -377,7 +377,7 @@ Each phase only runs if the previous one found nothing. So if you add a `show(In
 
 ## Fields vs. local variables
 
-The notes named the two places a variable can live: in a class (a **field**) or in a method (a **local variable**). They follow different rules.
+A variable can live in two places: in a class (a **field**) or in a method (a **local variable**). They follow different rules.
 
 **Example:** [`code/ch02/Defaults.java`](../../code/ch02/Defaults.java) · [how to run it](../../code/ch02/README.md#defaultsjava) · any Java
 
@@ -538,7 +538,7 @@ true
 
 The rules are strict on purpose:
 
-- Only for **local variables with an initializer**, including `for` loop variables and try-with-resources. Not for fields, method parameters or return types.
+- Only for **local variables with an initializer**, including `for` loop variables and [try-with-resources](https://docs.oracle.com/javase/specs/jls/se25/html/jls-14.html#jls-14.20.3). Not for fields, method parameters or return types.
 - There must be something to infer from:
 
 **Example:** [`code/ch02/VarError.java`](../../code/ch02/VarError.java) · [how to run it](../../code/ch02/README.md#varerrorjava) · Java 10+
@@ -643,7 +643,7 @@ timeline
 
 - Java's eight primitives have **fixed sizes** on every platform. All integer types are signed except `char`.
 - **Widening** is automatic. **Narrowing** needs a cast and can silently change values. Arithmetic on small types happens in **`int`**.
-- Fields get **default values**. Locals must be **definitely assigned** before use.
+- Fields get **default values**. Locals must be **[definitely assigned](https://docs.oracle.com/javase/specs/jls/se25/html/jls-16.html)** before use.
 - Use **`BigDecimal`** for money and `Math.*Exact` for overflow-sensitive math.
 - Modern Java added **`var`** (10), **compact strings** (9), **UTF-8 by default** (18) and **`_`** (22).
 

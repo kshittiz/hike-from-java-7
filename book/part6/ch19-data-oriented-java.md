@@ -105,7 +105,7 @@ upi asha@bank 900
 cash 100
 ```
 
-`case Card(String last4, long cents)` is a **record pattern** ([JEP 440](https://openjdk.org/jeps/440)): it tests the type and extracts the components in one step. Guards (`when`) refine a case. And because `Payment` is sealed, the `switch` needs no `default`. If you add `record Wallet(...) implements Payment`, this method stops compiling until you handle it. Compare that with Java 7, where a new subclass silently fell into an `else` branch.
+`case Card(String last4, long cents)` is a **[record pattern](https://docs.oracle.com/javase/specs/jls/se25/html/jls-14.html#jls-14.30.1)** ([JEP 440](https://openjdk.org/jeps/440)): it tests the type and extracts the components in one step. Guards (`when`) refine a case. And because `Payment` is sealed, the `switch` needs no `default`. If you add `record Wallet(...) implements Payment`, this method stops compiling until you handle it. Compare that with Java 7, where a new subclass silently fell into an `else` branch.
 
 ## Nested patterns
 
@@ -194,7 +194,7 @@ timeline
 > [!IMPORTANT]
 > **Migration tip**
 >
-> Good candidates: classes that only carry data (→ records), hierarchies with an `if/else instanceof` ladder or a visitor (→ sealed interface + `switch`), and "type code" enums paired with nullable fields (→ one record per case). Keep classic object-oriented polymorphism where new types are added often and operations rarely change.
+> Good candidates: classes that only carry data (→ records), hierarchies with an `if/else instanceof` ladder or a visitor (→ [sealed interface](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.1.1.2) + `switch`), and "type code" [enums](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.9) paired with nullable fields (→ one record per case). Keep classic object-oriented polymorphism where new types are added often and operations rarely change.
 
 ## Exercises
 
@@ -217,4 +217,4 @@ timeline
 - Exhaustive `switch` over sealed types turns "forgot a case" into a compile error.
 - Java 22's `_` keeps patterns focused; primitive patterns are still previewing in Java 27.
 
-**Next:** Chapter 20 closes the journey with the tools around the language: the HTTP client, `jlink`, `jpackage`, JFR and more.
+**Next:** Chapter 20 closes the journey with the tools around the language: the HTTP client, [`jlink`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jlink.html), [`jpackage`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jpackage.html), JFR and more.

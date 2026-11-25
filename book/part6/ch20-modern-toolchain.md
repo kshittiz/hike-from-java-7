@@ -3,14 +3,14 @@
 > [!TIP]
 > You're reading the **complete edition**, the reference guide with every deep dive and runnable sample. For a focused read, see this chapter on the [website edition](https://hikefromjava7.com/part6/ch20-modern-toolchain/).
 
-> **In this chapter:** the JDK tools and APIs that changed how Java programs are built, shipped and observed between Java 7 and Java 27: the standard HTTP client, a built-in web server, custom runtimes with `jlink`, native installers with `jpackage`, Flight Recorder, Markdown documentation, and the start of ahead-of-time optimization.
+> **In this chapter:** the JDK tools and APIs that changed how Java programs are built, shipped and observed between Java 7 and Java 27: the standard HTTP client, a built-in web server, custom runtimes with [`jlink`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jlink.html), native installers with [`jpackage`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jpackage.html), Flight Recorder, Markdown documentation, and the start of ahead-of-time optimization.
 
 > [!TIP]
 > **Key points**
 >
 > - **HTTP Client** (**Java 11**) replaced `HttpURLConnection`; **Java 26** added HTTP/3.
-> - **`jwebserver`** and `SimpleFileServer` (**Java 18**) serve static files for testing.
-> - **`jdeps`** finds the modules your code needs; **`jlink`** (**Java 9**) builds a runtime with only those; **`jpackage`** (**Java 16**) makes native installers.
+> - **[`jwebserver`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jwebserver.html)** and `SimpleFileServer` (**Java 18**) serve static files for testing.
+> - **[`jdeps`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jdeps.html)** finds the modules your code needs; **`jlink`** (**Java 9**) builds a runtime with only those; **`jpackage`** (**Java 16**) makes native installers.
 > - **JDK Flight Recorder** became free and open source in **Java 11**: low-overhead production profiling.
 > - **Markdown doc comments** (`///`, **Java 23**), `@snippet` (**Java 18**), and ahead-of-time caches (**Java 24–25**) round out the toolbox.
 
@@ -59,7 +59,7 @@ public class HttpClientDemo {
 ```
 
 - Immutable builders for the client and requests, and `BodyHandlers` that turn responses into strings, files or streams.
-- HTTP/2 by default, with fallback to HTTP/1.1; `sendAsync` returns a `CompletableFuture`.
+- HTTP/2 by default, with fallback to HTTP/1.1; `sendAsync` returns a [`CompletableFuture`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/CompletableFuture.html).
 - **Java 26** added HTTP/3 support ([JEP 517](https://openjdk.org/jeps/517)), opted into with `HttpClient.newBuilder().version(HttpClient.Version.HTTP_3)`.
 - On virtual threads (Chapter 18), the simple blocking `send` scales well, so you rarely need `sendAsync`.
 
@@ -193,7 +193,7 @@ Java 27 shipped in 2026
 Java 21 shipped in 2023
 ```
 
-- **Java 23** lets doc comments use **Markdown** with `///` ([JEP 467](https://openjdk.org/jeps/467)) instead of HTML inside `/** … */`. Tables, lists, `code` and links all work, and `javadoc` renders them. To older compilers, `///` is just a line comment, so this sample runs on any Java.
+- **Java 23** lets doc comments use **Markdown** with `///` ([JEP 467](https://openjdk.org/jeps/467)) instead of HTML inside `/** … */`. Tables, lists, `code` and links all work, and [`javadoc`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/javadoc.html) renders them. To older compilers, `///` is just a line comment, so this sample runs on any Java.
 - **Java 18** added `{@snippet …}` ([JEP 413](https://openjdk.org/jeps/413)) for code examples in API docs, including examples taken from real, compiled source files.
 
 ## Faster startup: the AOT cache

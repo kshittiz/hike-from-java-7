@@ -53,7 +53,7 @@ Every argument is **copied** into the method's parameters:
 - `mutate` uses its copy of the reference to reach the **same object** the caller has, so the change is visible.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Java does not support call by reference."*
 >
@@ -64,7 +64,7 @@ Every argument is **copied** into the method's parameters:
 Overloaded methods share a name and differ in their **parameter lists**: the number, types or order of parameters.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Return type of function do not play any role in case of function overloading. Access specifiers and modifiers do not play any role either."*
 
@@ -84,7 +84,7 @@ ReturnTypeOverload.java:3: error: method show(int) is already defined in class R
 1 error
 ```
 
-The reason is practical: a call like `show(5);` that ignores the result gives the compiler no way to choose. Among overloads that differ by parameter type, the compiler tries, in order: an exact match, then widening (`int` to `long`), then boxing (`int` to `Integer`), then varargs.
+The reason is practical: a call like `show(5);` that ignores the result gives the compiler no way to choose. Among overloads that differ by parameter type, the compiler tries, in order: an exact match, then [widening](https://docs.oracle.com/javase/specs/jls/se25/html/jls-5.html#jls-5.1.2) (`int` to `long`), then boxing (`int` to [`Integer`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html)), then varargs.
 
 ### Varargs (Java 5)
 
@@ -115,16 +115,16 @@ sum(int...) over 0 values = 0
 varargs, in, the, JDK
 ```
 
-`int... values` is an `int[]` inside the method, and the compiler builds the array at each call. A fixed-arity overload always beats a varargs one when both fit, because varargs is the last phase of overload resolution. That's also why `main(String... args)` (in the notebook) and `main(String[] args)` are the same thing.
+`int... values` is an `int[]` inside the method, and the compiler builds the array at each call. A fixed-arity overload always beats a varargs one when both fit, because varargs is the last phase of [overload resolution](https://docs.oracle.com/javase/specs/jls/se25/html/jls-15.html#jls-15.12.2). That's also why `main(String... args)` and `main(String[] args)` are the same thing.
 
 ### Operator overloading
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Java does not support any kind of operator overloading explicitly."*
 
-You can't define `+` for your own classes, and still can't in Java 27. The language itself overloads `+` for `String` concatenation, which is the one built-in exception.
+You can't define `+` for your own classes, and still can't in Java 27. The language itself overloads `+` for [`String`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html) concatenation, which is the one built-in exception.
 
 ## Static vs. dynamic binding
 
@@ -178,7 +178,7 @@ flowchart LR
 - **Static methods are not overridden.** A static method with the same signature in a subclass *hides* the parent's. Which one runs depends only on the type you name.
 
 > [!NOTE]
-> **From the notebook**
+> **The classic rule**
 >
 > *"Rule → Polymorphism is always achieved by behaviour of an object."*
 >
@@ -186,7 +186,7 @@ flowchart LR
 
 ## Methods as values: method references (Java 8)
 
-Java 8 added lambdas (Chapter 10) and **method references**, which let you pass an existing method where a functional interface is expected:
+Java 8 added lambdas (Chapter 10) and **[method references](https://docs.oracle.com/javase/specs/jls/se25/html/jls-15.html#jls-15.13)**, which let you pass an existing method where a [functional interface](https://docs.oracle.com/javase/specs/jls/se25/html/jls-9.html#jls-9.8) is expected:
 
 **Example:** [`code/ch06/MethodRefs.java`](../../code/ch06/MethodRefs.java) · [how to run it](../../code/ch06/README.md#methodrefsjava) · Java 8+
 
@@ -237,7 +237,7 @@ Chapter 7 covers inheritance, but the rules for a valid override belong next to 
 1. Same name and parameter types.
 2. Return type the same or a **subtype** (covariant returns, Java 5).
 3. Access **not weaker** than the overridden method.
-4. **No new or broader checked exceptions** (Chapter 13).
+4. **No new or broader [checked exceptions](https://docs.oracle.com/javase/specs/jls/se25/html/jls-11.html#jls-11.1.1)** (Chapter 13).
 5. `static`, `private` and `final` methods can't be overridden.
 
 Annotate overrides with `@Override` (Java 5; allowed on interface methods since Java 6). The compiler then rejects a method that only *looks* like an override, such as `equals(Money m)` instead of `equals(Object o)`, a bug that otherwise compiles silently.
@@ -264,4 +264,4 @@ Annotate overrides with `@Override` (Java 5; allowed on interface methods since 
 - Overrides are chosen at run time from the object's class. Static methods are hidden.
 - Varargs (Java 5) and method references (Java 8) widened what a method signature can do.
 
-**Next:** Chapter 7 builds classes on other classes: inheritance, `super`, `final`, composition, and Java 17's sealed classes.
+**Next:** Chapter 7 builds classes on other classes: inheritance, `super`, `final`, composition, and Java 17's [sealed classes](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.1.1.2).

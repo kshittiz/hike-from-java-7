@@ -3,15 +3,15 @@
 > [!TIP]
 > You're reading the **complete edition**, the reference guide with every deep dive and runnable sample. For a focused read, see this chapter on the [website edition](https://hikefromjava7.com/part6/ch17-dates-and-times/).
 
-> **In this chapter:** why `java.util.Date` and `Calendar` caused so many bugs, and how Java 8's `java.time` fixed them with immutable types that say exactly what they mean: a date, a time, a moment, or a duration.
+> **In this chapter:** why `java.util.Date` and [`Calendar`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Calendar.html) caused so many bugs, and how Java 8's `java.time` fixed them with immutable types that say exactly what they mean: a date, a time, a moment, or a duration.
 
 > [!TIP]
 > **Key points**
 >
-> - Java 7's `Date` is mutable, `Calendar` months start at **0**, `Date.getYear()` counts from **1900**, and `SimpleDateFormat` isn't thread-safe.
-> - **Java 8**'s `java.time` ([JSR 310](https://jcp.org/en/jsr/detail?id=310)) has immutable, thread-safe types: `LocalDate`, `LocalTime`, `LocalDateTime`, `ZonedDateTime`, `Instant`, `Duration`, `Period`.
+> - Java 7's `Date` is mutable, `Calendar` months start at **0**, `Date.getYear()` counts from **1900**, and [`SimpleDateFormat`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/text/SimpleDateFormat.html) isn't thread-safe.
+> - **Java 8**'s `java.time` ([JSR 310](https://jcp.org/en/jsr/detail?id=310)) has immutable, thread-safe types: [`LocalDate`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/LocalDate.html), `LocalTime`, [`LocalDateTime`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/LocalDateTime.html), [`ZonedDateTime`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/ZonedDateTime.html), [`Instant`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/Instant.html), [`Duration`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/Duration.html), [`Period`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/Period.html).
 > - Pick by meaning: a birthday is a `LocalDate`, a meeting is a `ZonedDateTime`, a log timestamp is an `Instant`.
-> - `ZonedDateTime` handles daylight saving time correctly. `DateTimeFormatter` is immutable and safe to share.
+> - `ZonedDateTime` handles daylight saving time correctly. [`DateTimeFormatter`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/format/DateTimeFormatter.html) is immutable and safe to share.
 
 ## The trouble with `Date` and `Calendar`
 
@@ -108,9 +108,9 @@ days: 4891
 next Monday after release day: 2026-09-21
 ```
 
-- Months are 1-based, or use the `Month` enum.
+- Months are 1-based, or use the `Month` [enum](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.9).
 - `plusMonths` returns a **new** date; the original is unchanged.
-- `Period` measures in calendar units; `ChronoUnit.DAYS.between` counts days exactly. (The notebook's first page is dated 1 July 2013, 4,891 days before this book's first draft.)
+- `Period` measures in calendar units; `ChronoUnit.DAYS.between` counts days exactly.
 - `TemporalAdjusters` answer questions like "next Monday" or "last day of the month."
 
 ## Time zones and daylight saving

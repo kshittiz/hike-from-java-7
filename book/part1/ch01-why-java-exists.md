@@ -3,16 +3,16 @@
 > [!TIP]
 > You're reading the **complete edition**, the reference guide with every deep dive and runnable sample. For a focused read, see this chapter on the [website edition](https://hikefromjava7.com/part1/ch01-why-java-exists/).
 
-> **In this chapter:** the problem Java was built to solve, what really happens between typing `javac` and seeing output, how the JDK, JRE and JVM fit together, and how "running a Java program" changed between Java 7 and Java 25.
+> **In this chapter:** the problem Java was built to solve, what really happens between typing [`javac`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/javac.html) and seeing output, how the JDK, JRE and JVM fit together, and how "running a Java program" changed between Java 7 and Java 25.
 
 > [!TIP]
 > **Key points**
 >
 > - `javac` compiles `.java` into platform-neutral **bytecode** (`.class`). A platform-specific **JVM** runs it: load → verify → interpret → JIT-compile the hot parts.
-> - Objects live on the **heap**, method calls on per-thread **stacks**. Class metadata moved from PermGen to **Metaspace** in **Java 8**.
-> - **Java 11** dropped the separate JRE download; **Java 9**'s `jlink` builds trimmed runtimes instead.
-> - Every class file records its Java version: *major − 44*. Mismatch → `UnsupportedClassVersionError`. Compile with `--release N`.
-> - Running Java got lighter: `jshell` (**9**), `java Hello.java` (**11**), multi-file launch (**22**), and in **Java 25**, a whole program can be `void main() { IO.println("Hi"); }`.
+> - Objects live on the **[heap](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.3)**, method calls on per-thread **stacks**. Class metadata moved from PermGen to **Metaspace** in **Java 8**.
+> - **Java 11** dropped the separate JRE download; **Java 9**'s [`jlink`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jlink.html) builds trimmed runtimes instead.
+> - Every [class file](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.1) records its Java version: *major − 44*. Mismatch → `UnsupportedClassVersionError`. Compile with `--release N`.
+> - Running Java got lighter: [`jshell`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jshell.html) (**9**), `java Hello.java` (**11**), multi-file launch (**22**), and in **Java 25**, a whole program can be `void main() { IO.println("Hi"); }`.
 
 ## A program that only runs at home
 
@@ -36,7 +36,7 @@ The traditional fix was to keep the source code and compile it again on every pl
 - **Machine code is a dead end.** You can't easily inspect it, check it for safety, or optimize it later for the machine it lands on.
 
 > [!NOTE]
-> **From the notebook, 1 July 2013**
+> **The classic rule**
 >
 > *"Problem → machine code is compatible to one particular environment. It will not run on another O.S. Solution → there should be a language where M.C can run on any O.S."*
 >
@@ -105,7 +105,7 @@ $ java Hello            # note: the class name, not the file name
 Hello from the JVM!
 ```
 
-Some ground rules from the course notes that still hold:
+Some ground rules from the Java 7 days that still hold:
 
 - The source file ends in `.java`. If you save it from a plain text editor, make sure the editor doesn't quietly add `.txt`.
 - `java Hello` takes a **class name**, not a file name. Typing `java Hello.class` fails with `Could not find or load main class Hello.class`, in every version. (From Java 11 you can run the `.java` source file directly, covered later in this chapter.)
@@ -113,7 +113,7 @@ Some ground rules from the course notes that still hold:
 
 ### Peeking at the bytecode
 
-The JDK ships a disassembler, `javap`, that shows what the compiler produced. Running `javap -c Hello` on the class above prints this (from a real run, with spacing trimmed):
+The JDK ships a disassembler, [`javap`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/javap.html), that shows what the compiler produced. Running `javap -c Hello` on the class above prints this (from a real run, with spacing trimmed):
 
 ```text
 public class Hello {
@@ -152,7 +152,7 @@ flowchart TD
 
 **The class loader** finds the bytes for a class, from a directory, a JAR file or anywhere else, and turns them into a class the JVM understands. Classes are loaded lazily, the first time they're needed, not all at startup.
 
-**The bytecode verifier** checks that the bytes follow the rules: instructions are valid, types line up, the stack can't overflow or underflow, and code can't jump into the middle of an instruction. Class files can come from anywhere, so the JVM refuses to trust them blindly.
+**The [bytecode verifier](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.10)** checks that the bytes follow the rules: instructions are valid, types line up, the stack can't overflow or underflow, and code can't jump into the middle of an instruction. Class files can come from anywhere, so the JVM refuses to trust them blindly.
 
 > [!WARNING]
 > **A common misconception**
@@ -163,7 +163,7 @@ flowchart TD
 
 ## Where things live: the JVM's memory areas
 
-The course notes drew the JVM's memory as a set of boxes. The picture still holds, with one important rename in Java 8.
+Java 7-era courses drew the JVM's memory as a set of boxes. The picture still holds, with one important rename in Java 8.
 
 ```mermaid
 flowchart TB
@@ -180,11 +180,11 @@ flowchart TB
     end
 ```
 
-- **Method area.** One copy of each loaded class: its methods' bytecode, field and method descriptions, and its *runtime constant pool* (the literals and symbolic references the class uses).
-- **Heap.** Every object you create with `new` lives here, no matter which method created it. The garbage collector reclaims objects nobody can reach anymore (Chapter 12).
-- **Stack.** Each thread has its own stack. Every method call pushes a *frame* holding that call's local variables and working values, and the frame disappears when the method returns. Too much recursion fills the stack and causes a `StackOverflowError`.
-- **PC register.** Each thread tracks which bytecode instruction it's executing.
-- **Native method stack.** Used when Java calls into code written in C or C++.
+- **[Method area](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.4).** One copy of each loaded class: its methods' bytecode, field and method descriptions, and its [*runtime constant pool*](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.5) (the literals and symbolic references the class uses).
+- **[Heap](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.3).** Every object you create with `new` lives here, no matter which method created it. The garbage collector reclaims objects nobody can reach anymore (Chapter 12).
+- **[Stack](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.2).** Each thread has its own stack. Every method call pushes a *frame* holding that call's local variables and working values, and the frame disappears when the method returns. Too much recursion fills the stack and causes a `StackOverflowError`.
+- **[PC register](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.1).** Each thread tracks which bytecode instruction it's executing.
+- **[Native method stack](https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5.6).** Used when Java calls into code written in C or C++.
 
 > [!NOTE]
 > **What changed: PermGen became Metaspace (Java 8)**
@@ -217,7 +217,7 @@ In 2013, end users installed a JRE from java.com and developers installed the JD
 >
 > - **Java 9 (2017)** split the platform into **modules** ([JEP 200](https://openjdk.org/jeps/200)) and removed `rt.jar` and `tools.jar` ([JEP 220](https://openjdk.org/jeps/220)). It also added `jlink` ([JEP 282](https://openjdk.org/jeps/282)), which builds a runtime containing only the modules your application needs.
 > - **Java 11 (2018)**: Oracle stopped offering a separate JRE or Server JRE download. Only the JDK is offered, and you can use `jlink` to build a smaller runtime.
-> - **Today**: applications usually ship *with* their own runtime, either inside a container image or bundled by `jlink`/`jpackage`, rather than relying on whatever JRE a user installed. Some vendors still publish JRE-style builds, but the "install Java on every PC" era is over.
+> - **Today**: applications usually ship *with* their own runtime, either inside a container image or bundled by `jlink`/[`jpackage`](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jpackage.html), rather than relying on whatever JRE a user installed. Some vendors still publish JRE-style builds, but the "install Java on every PC" era is over.
 >
 > You can see the modules in your own JDK with `java --list-modules`. On the JDK 21 used to test this book, the list has 69 entries, starting with `java.base`.
 
@@ -338,11 +338,11 @@ public class RunTimeError {
 Exception in thread "main" java.lang.ArithmeticException: / by zero
 ```
 
-This compiled cleanly, because the compiler can't know that `args.length` will be zero. The JVM finds out when it runs. A good habit, and a recurring theme in modern Java, is to push as many mistakes as possible from run time to compile time. Features like generics (Java 5), records (16), sealed classes (17) and exhaustive `switch` (21) all exist partly to do exactly that.
+This compiled cleanly, because the compiler can't know that `args.length` will be zero. The JVM finds out when it runs. A good habit, and a recurring theme in modern Java, is to push as many mistakes as possible from run time to compile time. Features like generics (Java 5), records (16), [sealed classes](https://docs.oracle.com/javase/specs/jls/se25/html/jls-8.html#jls-8.1.1.2) (17) and exhaustive `switch` (21) all exist partly to do exactly that.
 
 ## Puzzles about `main`
 
-The notebook collected several classic interview questions about `main`, each marked **IQ**. Here they are, tested on real JDKs.
+There are several classic interview questions about `main`, marked **IQ** in this book. Here they are, tested on real JDKs.
 
 **IQ: Can a class have more than one `main`?** Yes. `main` is an ordinary static method, so it can be overloaded. The launcher only looks for the one with the right signature; the others are just methods.
 
@@ -467,7 +467,7 @@ On Java 25, running `OrderB` prints `instance main(String[])`, because the `Stri
 
 ## A short, accurate history
 
-The course notes included a version table. Here it is corrected and extended:
+Here is the version history, from the first release to Java 27:
 
 | Version | Year | Headline |
 |---|---|---|
@@ -485,17 +485,9 @@ The course notes included a version table. Here it is corrected and extended:
 
 Java was created by James Gosling's team at Sun Microsystems, starting in 1991. Oracle acquired Sun in 2010, so Java 7 was the first major release under Oracle. Since Java 10, a new version ships every six months, and some releases are designated **long-term support (LTS)**: 8, 11, 17, 21 and 25. The rest of this book follows that release train.
 
-<!-- AUTHOR: optional "From the author's notebook" story box goes here, e.g.
-> [!NOTE]
-> **From the author's notebook**
->
-> What learning Java 7 was like in 2013, and what surprised you most coming back to modern Java.
-
--->
-
 ## IQ corner
 
-The notebook marked interview questions with **IQ**. Here are this chapter's, with answers that hold for modern Java.
+**IQ** marks a classic interview question. Here are this chapter's, with answers that hold for modern Java.
 
 1. **Is Java compiled or interpreted?** Both. `javac` compiles source to bytecode ahead of time. The JVM then interprets bytecode and JIT-compiles hot code to native machine code at run time.
 2. **Is the JVM platform-independent?** No. Bytecode is platform-independent. Each platform needs its own JVM.
@@ -520,4 +512,4 @@ The notebook marked interview questions with **IQ**. Here are this chapter's, wi
 - The JDK/JRE/JVM split changed: since Java 11, Oracle ships only the JDK, and `jlink` builds trimmed runtimes.
 - Running Java got simpler: `jshell` (9), single-file launch (11), multi-file launch (22), and compact source files with instance `main` (25).
 
-**Next:** Chapter 2 looks at the values those programs work with: Java's eight primitive types, how they convert, and what `var` changed.
+**Next:** Chapter 2 looks at the values those programs work with: Java's eight [primitive types](https://docs.oracle.com/javase/specs/jls/se25/html/jls-4.html#jls-4.2), how they convert, and what `var` changed.
