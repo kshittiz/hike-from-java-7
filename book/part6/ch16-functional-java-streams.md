@@ -239,36 +239,164 @@ public class NewerStreamOps {
 
 ## Gatherers (Java 24)
 
-Before Java 24 you could write your own **terminal** operation (a custom `Collector`), but not your own **intermediate** one. Things like "group into windows of three" required collecting everything first. **Gatherers** ([JEP 485](https://openjdk.org/jeps/485)) fill that gap:
+### First, picture the stream as a conveyor belt
 
-**Example:** [`code/ch16/GathererDemo.java`](../../code/ch16/GathererDemo.java) · [how to run it](../../code/ch16/README.md#gathererdemojava) · Java 24+
+Think of a stream as a conveyor belt in a bakery. Cookies ride the belt one at a time. Along the belt stand **stations**: one throws away burnt cookies (`filter`), another adds icing (`map`). At the very end, someone **packs** whatever arrives into a box (`toList`, `collect`, `count`). The stations in the middle are **intermediate operations**; the packer at the end is the **terminal operation**.
+
+Until Java 24, every station you could put on the belt shared one limitation: it looked at **one cookie at a time and forgot it immediately**. `map` can't remember the previous cookie, and `filter` can't count. That's fine for icing, but some jobs need memory:
+
+- "Put the cookies into boxes of three."
+- "Show the total baked so far after every cookie."
+- "If the same cookie comes twice in a row, keep only one."
+
+Java already let you build your own *packer* (a custom `Collector`), but not your own *station*. The usual workaround was to stop the belt, collect everything into a list, and finish the job with an old-fashioned loop. Here's "boxes of three" done that way, adding up steps from a fitness band that records how many steps you take in each 10-minute slot of a walk:
+
+**Example:** [`code/ch16/WindowsTheOldWay.java`](../../code/ch16/WindowsTheOldWay.java) · [how to run it](../../code/ch16/README.md#windowstheoldwayjava) · any Java
 
 ```java
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Gatherers;
-import java.util.stream.Stream;
 
-public class GathererDemo {
+public class WindowsTheOldWay {
     public static void main(String[] args) {
-        List<List<Integer>> windows = Stream.of(1, 2, 3, 4, 5, 6, 7)
-                .gather(Gatherers.windowFixed(3))            // Java 24
-                .toList();
-        System.out.println(windows);
+        // steps counted in each 10-minute slot of a 70-minute walk
+        List<Integer> steps = List.of(120, 340, 410, 90, 0, 560, 380);
 
-        List<List<Integer>> sliding = Stream.of(1, 2, 3, 4)
-                .gather(Gatherers.windowSliding(2))
-                .toList();
-        System.out.println(sliding);
+        // half-hour totals: boxes of three slots, built by hand
+        List<Integer> halfHours = new ArrayList<>();
+        int sum = 0, count = 0;
+        for (int slot : steps) {
+            sum += slot;
+            count++;
+            if (count == 3) {           // box full: ship it, start a new one
+                halfHours.add(sum);
+                sum = 0;
+                count = 0;
+            }
+        }
+        if (count > 0) halfHours.add(sum);   // the half-full last box
+        System.out.println("half-hour totals : " + halfHours);
     }
 }
 ```
 
 ```text
-[[1, 2, 3], [4, 5, 6], [7]]
-[[1, 2], [2, 3], [3, 4]]
+half-hour totals : [870, 650, 380]
 ```
 
-[`Gatherers`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Gatherers.html) provides built-ins such as `windowFixed`, `windowSliding`, `fold`, `scan` and `mapConcurrent`, and you can write your own with `Gatherer.of(...)`.
+It works, but the stream is gone. You're back to counters, an `if` for the full box, and a second `if` you must not forget for the half-full last box.
+
+### A gatherer is a station you design yourself
+
+A **gatherer** ([JEP 485](https://openjdk.org/jeps/485)) is a custom intermediate operation that you plug into the belt with `.gather(...)`. Compared with `map` and `filter`, a gatherer can:
+
+- **remember** things between items: the box being filled, the previous value, a running total;
+- send **zero, one or many** items onward for each item it receives: a full box goes out as one item, a duplicate sends nothing;
+- **finish up** when the belt ends, for example by sending the last, half-full box;
+- **stop the belt early** once it has seen enough.
+
+The JDK ships ready-made gatherers in the [`Gatherers`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Gatherers.html) class (note the *s*), and you can write your own with [`Gatherer`](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Gatherer.html).
+
+### The same walk, four questions, one belt
+
+Here's the walk again: seven 10-minute slots, so 70 minutes. This time we ask four questions without ever leaving the stream:
+
+**Example:** [`code/ch16/StepTracker.java`](../../code/ch16/StepTracker.java) · [how to run it](../../code/ch16/README.md#steptrackerjava) · Java 24+
+
+```java
+import java.util.List;
+import java.util.stream.Gatherer;
+import java.util.stream.Gatherers;
+
+public class StepTracker {
+    public static void main(String[] args) {
+        // steps counted in each 10-minute slot of a 70-minute walk
+        List<Integer> steps = List.of(120, 340, 410, 90, 0, 560, 380);
+
+        // 1. half-hour totals: boxes of three slots
+        //    (the last box may hold fewer)
+        List<Integer> halfHours = steps.stream()
+                .gather(Gatherers.windowFixed(3))
+                .map(StepTracker::total)
+                .toList();
+        System.out.println("half-hour totals : " + halfHours);
+
+        // 2. rolling 30-minute total: a window of three
+        //    that slides forward one slot at a time
+        List<Integer> rolling = steps.stream()
+                .gather(Gatherers.windowSliding(3))
+                .map(StepTracker::total)
+                .toList();
+        System.out.println("rolling 30 min   : " + rolling);
+
+        // 3. running total: every in-between result is sent on
+        List<Integer> soFar = steps.stream()
+                .gather(Gatherers.scan(() -> 0, Integer::sum))
+                .toList();
+        System.out.println("steps so far     : " + soFar);
+
+        // 4. our own gatherer: drop a reading that repeats
+        //    the one just before it
+        List<Integer> heartRate = List.of(72, 72, 72, 75, 75, 80, 72);
+        List<Integer> changes = heartRate.stream()
+                .gather(dropRepeats())
+                .toList();
+        System.out.println("heart rate       : " + changes);
+    }
+
+    static int total(List<Integer> box) {
+        return box.stream().mapToInt(Integer::intValue).sum();
+    }
+
+    /** A station that remembers the last value it let through. */
+    static <T> Gatherer<T, ?, T> dropRepeats() {
+        class Memory {
+            T last;
+            boolean seenAny;
+        }
+        return Gatherer.ofSequential(
+                Memory::new,              // fresh memory per stream
+                Gatherer.Integrator.<Memory, T, T>ofGreedy(
+                        (memory, value, downstream) -> {
+                    if (memory.seenAny && value.equals(memory.last)) {
+                        return true;      // a repeat: send nothing
+                    }
+                    memory.last = value;
+                    memory.seenAny = true;
+                    return downstream.push(value); // pass it on
+                }));
+    }
+}
+```
+
+```text
+half-hour totals : [870, 650, 380]
+rolling 30 min   : [870, 840, 500, 650, 940]
+steps so far     : [120, 460, 870, 960, 960, 1520, 1900]
+heart rate       : [72, 75, 80, 72]
+```
+
+What each one does:
+
+1. **`windowFixed(3)`** fills boxes of three slots, which here means half-hour blocks. Seven slots don't divide evenly by three, so the last box holds just the final slot (380). The JDK documents this: the last window may be smaller.
+2. **`windowSliding(3)`** uses a window that moves forward one slot at a time, like the "last 30 minutes" figure on a fitness dashboard. Seven slots give five windows: slots 1–3, 2–4, 3–5, 4–6 and 5–7.
+3. **`scan`** starts from a value (0) and combines it with each item in turn, sending every intermediate result onward. That's the "steps today so far" number on your wrist.
+4. **`dropRepeats()`** is our own gatherer. Its memory is a small `Memory` object holding the last value it let through. For each heart-rate reading it either drops it (same as last time) or remembers it and pushes it on. The final 72 survives because the reading before it was 80, not 72. `ofGreedy` tells Java that this station never stops the belt early.
+
+### The built-in gatherers at a glance
+
+| Gatherer | What it does | Everyday picture |
+|---|---|---|
+| `windowFixed(n)` | Groups items into lists of `n`; the last list may be shorter | Packing eggs into cartons of six |
+| `windowSliding(n)` | Lists of `n` that move forward one item at a time | A "last 7 days" average |
+| `fold(start, combine)` | Combines every item into **one** result, sent at the end | Adding up a till receipt |
+| `scan(start, combine)` | Like `fold`, but sends **every** intermediate result | Your bank balance after each payment |
+| `mapConcurrent(n, function)` | Runs a function on up to `n` items at once using virtual threads (Chapter 18), and keeps the original order | Checking 100 web addresses, 10 at a time |
+
+> [!IMPORTANT]
+> **Gatherer or Collector?**
+>
+> A **Collector** ends the stream and gives you the final answer. A **Gatherer** sits in the middle and gives you *more stream*. If you need the answer, collect; if you need to keep working on the items, gather.
 
 ## The journey at a glance
 

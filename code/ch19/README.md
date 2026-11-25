@@ -1,4 +1,4 @@
-# Samples for chapter 19
+# Samples for Chapter 19
 
 Every sample here is compiled and run by [`scripts/verify.sh`](../../scripts/verify.sh), and its output is compared with the expected output below.
 

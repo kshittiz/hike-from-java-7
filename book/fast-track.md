@@ -169,3 +169,10 @@ The key points of every chapter on one page. Follow any heading to read the full
 3. Find **JDK-internal API use** with `jdeps --jdk-internals` and replace it.
 4. Remove **obsolete JVM flags** (PermGen, CMS, old GC logging).
 5. Run your tests, then **modernize gradually**: records, switch expressions, text blocks, virtual threads.
+
+## [C. Good to know: look-alike interfaces](appendices/c-good-to-know.md)
+
+- **`Comparable`** is a class saying "here is my **one** natural order" (`compareTo`). **`Comparator`** is an outside rule for **any other** order (`compare`). You can have many comparators, but only one natural order.
+- Never compare numbers with `a - b`: it can overflow. Use `Integer.compare(a, b)` or `Comparator.comparingInt`.
+- **`Iterable`** is something you can loop over: the **book**. **`Iterator`** is one pass over it: a **bookmark** that remembers its place and only moves forward.
+- Removing from a collection inside a for-each loop throws `ConcurrentModificationException`. Use `iterator.remove()` or `removeIf` (**Java 8**).

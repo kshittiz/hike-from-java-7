@@ -1,25 +1,8 @@
-# Samples for chapter 16
+# Samples for Chapter 16
 
 Every sample here is compiled and run by [`scripts/verify.sh`](../../scripts/verify.sh), and its output is compared with the expected output below.
 
 Run one sample from this folder with the command shown, or run them all from the repository root with `bash scripts/verify.sh`.
-
-## GathererDemo.java
-
-Source: [GathererDemo.java](GathererDemo.java)
-
-**Stream gatherers: fixed and sliding windows (Java 24+).** (Java 24+)
-
-```bash
-javac -d out GathererDemo.java && java -cp out GathererDemo
-```
-
-Expected output:
-
-```text
-[[1, 2, 3], [4, 5, 6], [7]]
-[[1, 2], [2, 3], [3, 4]]
-```
 
 ## Grouping.java
 
@@ -114,4 +97,39 @@ ASHA@EXAMPLE.COM
 no email
 true
 send to asha@example.com
+```
+
+## StepTracker.java
+
+Source: [StepTracker.java](StepTracker.java)
+
+**Gatherers on a walk: fixed windows, sliding windows, a running total and a custom gatherer that drops repeats.** (Java 24+)
+
+```bash
+javac -d out StepTracker.java && java -cp out StepTracker
+```
+
+Expected output:
+
+```text
+half-hour totals : [870, 650, 380]
+rolling 30 min   : [870, 840, 500, 650, 940]
+steps so far     : [120, 460, 870, 960, 960, 1520, 1900]
+heart rate       : [72, 75, 80, 72]
+```
+
+## WindowsTheOldWay.java
+
+Source: [WindowsTheOldWay.java](WindowsTheOldWay.java)
+
+**Before gatherers: grouping into windows meant leaving the stream for a hand-written loop.** (any Java)
+
+```bash
+javac -d out WindowsTheOldWay.java && java -cp out WindowsTheOldWay
+```
+
+Expected output:
+
+```text
+half-hour totals : [870, 650, 380]
 ```

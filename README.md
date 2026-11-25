@@ -60,6 +60,7 @@ This repository is the **complete edition**: a reference guide that follows each
 
 - [A. Java 7 → 27 at a glance](book/at-a-glance.md)
 - [B. Migration checklist](book/appendices/b-migration-checklist.md)
+- [C. Good to know: look-alike interfaces](book/appendices/c-good-to-know.md)
 - [About the Author](book/about.md)
 - [Copyright](book/copyright.md)
 
@@ -67,6 +68,7 @@ This repository is the **complete edition**: a reference guide that follows each
 
 | Chapter | Tested samples |
 |---|---|
+| [Appendix C](code/appc/README.md) | 3 |
 | [Chapter 1](code/ch01/README.md) | 17 |
 | [Chapter 2](code/ch02/README.md) | 16 |
 | [Chapter 3](code/ch03/README.md) | 9 |
@@ -82,7 +84,7 @@ This repository is the **complete edition**: a reference guide that follows each
 | [Chapter 13](code/ch13/README.md) | 7 |
 | [Chapter 14](code/ch14/README.md) | 6 |
 | [Chapter 15](code/ch15/README.md) | 6 |
-| [Chapter 16](code/ch16/README.md) | 6 |
+| [Chapter 16](code/ch16/README.md) | 7 |
 | [Chapter 17](code/ch17/README.md) | 4 |
 | [Chapter 18](code/ch18/README.md) | 6 |
 | [Chapter 19](code/ch19/README.md) | 5 |

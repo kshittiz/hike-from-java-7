@@ -1,0 +1,1 @@
+Comparing with a - b overflows and sorts wrongly; Integer.compare is always correct.

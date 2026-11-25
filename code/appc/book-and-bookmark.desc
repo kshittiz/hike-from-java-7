@@ -1,0 +1,1 @@
+An Iterable hands out independent Iterators; how to remove elements safely while looping.
